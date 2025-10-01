@@ -46,13 +46,12 @@ function App() {
           You can help make a difference by donating, volunteering, or partnering with us
           to reach more families in need.
         </p>
-        <a href="mailto:info@yourorg.org" className="btn">Donate or Volunteer</a>
+        <a href="mailto:admin@maeday.org" className="btn">Donate or Volunteer</a>
       </section>
 
       <section id="contact" className="content">
         <h2>Contact Us</h2>
-        <p>Email: <a href="mailto:info@yourorg.org">info@yourorg.org</a></p>
-        <p>Phone: (555) 123-4567</p>
+        <p>Email: <a href="mailto:admin@maeday.org">admin@maeday.org</a></p>
       </section>
 
       <footer>
