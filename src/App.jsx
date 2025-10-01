@@ -55,7 +55,7 @@ function App() {
       </section>
 
       <footer>
-        <p>&copy; 2025 Hope for Rare Diseases | All Rights Reserved</p>
+        <p>&copy; 2025 MAEDAY Foundation | All Rights Reserved</p>
       </footer>
     </div>
   );
