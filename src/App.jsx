@@ -4,7 +4,7 @@ function App() {
       <header className="navbar">
         <div className="logo">
           <img src="/logo.png" alt="Nonprofit Logo" />
-          <h1>Hope for Rare Diseases</h1>
+          <h1>The MAEday Foundation: Hope for Rare Diseases</h1>
         </div>
         <nav>
           <a href="#mission">Mission</a>
