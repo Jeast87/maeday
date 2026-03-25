@@ -247,8 +247,8 @@ nav a:hover::after {
 
 .hero-image {
   flex-shrink: 0;
-  width: 263px;
-  height: 315px;
+  width: 395px;
+  height: 473px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -648,8 +648,8 @@ nav a:hover::after {
   }
 
   .hero-image {
-    width: 175px;
-    height: 210px;
+    width: 263px;
+    height: 315px;
   }
 
   .footer-inner {
