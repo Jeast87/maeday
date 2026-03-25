@@ -248,13 +248,13 @@ nav a:hover::after {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: 420px;
+  height: 252px;
 }
 
 .hero-image img {
   height: 100%;
   width: auto;
-  max-width: 340px;
+  max-width: 204px;
   object-fit: contain;
   mix-blend-mode: lighten;
   filter: drop-shadow(0 0 40px rgba(245, 166, 35, 0.15));
@@ -655,7 +655,7 @@ nav a:hover::after {
   }
 
   .hero-image {
-    height: 280px;
+    height: 168px;
     order: -1;
   }
 
