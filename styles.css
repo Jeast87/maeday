@@ -637,30 +637,17 @@ nav a:hover::after {
   }
 
   .hero {
-    padding: 4rem 0 6rem;
+    padding: 3rem 0 5rem;
   }
 
   .hero-inner {
-    grid-template-columns: 1fr;
-    text-align: center;
+    grid-template-columns: 1fr 168px;
+    gap: 1.25rem;
     padding: 0 1.5rem;
-  }
-
-  .hero-text {
-    text-align: center;
-  }
-
-  .hero-sub {
-    margin: 0 auto 2rem;
   }
 
   .hero-image {
     height: 168px;
-    order: -1;
-  }
-
-  .hero-cta {
-    justify-content: center;
   }
 
   .footer-inner {
