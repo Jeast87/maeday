@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYNGAP1: From Brain to Atom</title>
+<style>
+  :root{
+    --level-color: #7c3aed;
+    --level-color-soft: #7c3aed22;
+    --bg-1: #0f0b1e;
+    --bg-2: #1a1330;
+    --panel: #ffffff;
+    --ink: #1c1730;
+    --ink-soft: #5b5470;
+    --line: #e8e4f5;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 800px at 15% -10%, var(--level-color-soft), transparent),
+                linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    background-repeat: no-repeat;
+    color: var(--ink);
+    min-height: 100vh;
+    transition: background 0.6s ease;
+  }
+  .wrap{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 28px 20px 64px;
+  }
+
+  /* Header */
+  header.top{
+    text-align:center;
+    color:#fff;
+    margin-bottom: 22px;
+  }
+  header.top h1{
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    margin: 0 0 6px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  header.top p{
+    margin: 0;
+    color: #cfc9e6;
+    font-size: 0.98rem;
+  }
+
+  /* Mode toggle (Family guide vs Research view) */
+  .modeToggle{
+    display:flex;
+    justify-content:center;
+    gap:2px;
+    margin: 0 auto 22px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px;
+    padding: 4px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .modeToggle button{
+    background:none;
+    border:none;
+    color:#cfc9e6;
+    font: inherit;
+    font-weight:700;
+    font-size: 0.82rem;
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor:pointer;
+    transition: all 0.2s ease;
+    white-space:nowrap;
+  }
+  .modeToggle button:hover{ color:#fff; }
+  .modeToggle button.active{
+    background:#fff;
+    color:#14101f;
+    box-shadow: 0 6px 16px -6px rgba(0,0,0,0.4);
+  }
+  @media (max-width:480px){
+    .modeToggle button{ font-size:0.72rem; padding:8px 11px; }
+  }
+
+  /* Level map / progress ladder */
+  .levelmap{
+    display:flex;
+    justify-content:center;
+    gap: 6px;
+    margin: 22px auto 18px;
+    flex-wrap: wrap;
+    max-width: 900px;
+  }
+  .levelmap button{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 8px 10px;
+    cursor:pointer;
+    color:#cfc9e6;
+    font-size: 0.68rem;
+    font-weight:600;
+    transition: all 0.2s ease;
+    min-width: 72px;
+  }
+  .levelmap button .ic{ font-size:1.15rem; line-height:1; }
+  .levelmap button:hover{ background: rgba(255,255,255,0.14); transform: translateY(-1px); }
+  .levelmap button.active{
+    background: var(--level-color);
+    border-color: var(--level-color);
+    color:#fff;
+    box-shadow: 0 6px 18px -6px var(--level-color);
+  }
+  .levelmap button.done{ color:#fff; }
+  .levelmap button:disabled{ cursor:not-allowed; opacity:0.55; }
+  .levelmap .connector{
+    align-self:center;
+    color: rgba(255,255,255,0.25);
+    font-size: 0.8rem;
+  }
+
+  /* Breadcrumb */
+  .crumbs{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:4px;
+    color:#cfc9e6;
+    font-size:0.82rem;
+    margin: 0 auto 18px;
+    max-width: 900px;
+    justify-content:center;
+  }
+  .crumbs button{
+    background:none;
+    border:none;
+    color:#cfc9e6;
+    font: inherit;
+    cursor:pointer;
+    padding: 2px 4px;
+    border-radius: 6px;
+  }
+  .crumbs button:hover{ color:#fff; text-decoration: underline; }
+  .crumbs button.current{ color:#fff; font-weight:700; text-decoration:none; cursor:default; }
+  .crumbs .sep{ opacity:0.4; }
+
+  /* 3D viewer */
+  .viewer-wrap{
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    background: radial-gradient(600px 400px at 30% 20%, var(--level-color-soft), transparent), linear-gradient(160deg, #0c0a18, #171227);
+    box-shadow: 0 30px 60px -22px rgba(0,0,0,0.55);
+    height: min(56vw, 440px);
+    min-height: 260px;
+    margin-bottom: 16px;
+    transition: background 0.6s ease;
+    animation: rise 0.45s ease;
+  }
+  .viewer-host{ position:absolute; inset:0; }
+  .viewer-host canvas{ display:block; width:100%; height:100%; touch-action:none; }
+  .viewer-labels{ position:absolute; inset:0; pointer-events:none; }
+  .viewer-label{
+    position:absolute; left:0; top:0;
+    background: rgba(10,8,20,0.72);
+    color:#fff;
+    font-size: 0.72rem;
+    font-weight:700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space:nowrap;
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(2px);
+  }
+  .viewer-topbar{
+    position:absolute; top:12px; left:14px; right:14px;
+    display:flex; justify-content:space-between; align-items:flex-start;
+    pointer-events:none;
+    z-index:3;
+  }
+  .viewer-badge{
+    background: rgba(255,255,255,0.1);
+    color:#fff;
+    font-size:0.7rem;
+    font-weight:700;
+    letter-spacing:0.03em;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .viewer-instructions{
+    position:absolute; left:14px; bottom:12px;
+    color: rgba(255,255,255,0.78);
+    font-size: 0.72rem;
+    background: rgba(10,8,20,0.5);
+    padding: 5px 10px;
+    border-radius: 999px;
+    pointer-events:none;
+    z-index:3;
+  }
+  .viewer-controls{
+    position:absolute; right:12px; bottom:12px;
+    display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;
+    max-width: 60%;
+    z-index:4;
+  }
+  .viewer-controls .vc-btn{
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.22);
+    color:#fff;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight:700;
+    padding: 6px 11px;
+    border-radius: 999px;
+    cursor:pointer;
+    transition: all 0.15s ease;
+  }
+  .viewer-controls .vc-btn:hover{ background: rgba(255,255,255,0.22); }
+  .viewer-controls .vc-btn.active{
+    background: #fff;
+    color: #14101f;
+  }
+  .viewer-controls .vc-toggle{
+    display:flex; align-items:center; gap:8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.22);
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor:pointer;
+    color:#fff;
+    font-size:0.72rem;
+    font-weight:700;
+  }
+  .vc-toggle .dot{
+    width:32px; height:18px; border-radius:999px;
+    background: rgba(255,255,255,0.25);
+    position:relative;
+    transition: background 0.2s ease;
+    flex-shrink:0;
+  }
+  .vc-toggle .dot::after{
+    content:"";
+    position:absolute; top:2px; left:2px;
+    width:14px; height:14px; border-radius:50%;
+    background:#fff;
+    transition: transform 0.2s ease;
+  }
+  .vc-toggle.on .dot{ background:#ef4444; }
+  .vc-toggle.on .dot::after{ transform: translateX(14px); }
+
+  .viewer-loading{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    color: rgba(255,255,255,0.65);
+    font-size:0.85rem;
+    z-index:2;
+  }
+  .viewer-fallback{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;
+    color: rgba(255,255,255,0.7);
+    font-size:0.82rem;
+    text-align:center;
+    padding: 20px;
+  }
+  .viewer-fallback .big{ font-size:2.4rem; }
+
+  /* --- Layman / research mode switching for the viewer --- */
+  .viewer2d{
+    display:none;
+    position:absolute; inset:0;
+    align-items:center; justify-content:center;
+    flex-direction:column;
+    gap: 10px;
+    padding: 20px;
+    cursor:default;
+  }
+  .viewer2d svg{ display:block; max-width:min(78%, 340px); max-height:70%; overflow:visible; }
+  .viewer2d .v2d-caption{
+    color:#e4defc;
+    font-size:0.82rem;
+    font-weight:600;
+    text-align:center;
+    max-width: 420px;
+    line-height:1.45;
+  }
+  .viewer2d .v2d-hint{
+    position:absolute; left:14px; bottom:12px;
+    color: rgba(255,255,255,0.78);
+    font-size: 0.72rem;
+    background: rgba(10,8,20,0.5);
+    padding: 5px 10px;
+    border-radius: 999px;
+    z-index:3;
+  }
+  .viewer2d.clickable{ cursor:pointer; }
+
+  .viewer-wrap.mode-layman .viewer-host,
+  .viewer-wrap.mode-layman .viewer-labels,
+  .viewer-wrap.mode-layman .viewer-controls,
+  .viewer-wrap.mode-layman .viewer-instructions,
+  .viewer-wrap.mode-layman .viewer-loading,
+  .viewer-wrap.mode-layman #viewerBadge{
+    display:none !important;
+  }
+  .viewer-wrap.mode-layman .viewer2d{ display:flex; }
+
+  /* Illustration animations */
+  @keyframes v2dPulse{ 0%,100%{ transform:scale(1); opacity:1; } 50%{ transform:scale(1.06); opacity:0.88; } }
+  @keyframes v2dGlow{ 0%,100%{ opacity:0.35; } 50%{ opacity:0.75; } }
+  @keyframes v2dBob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+  @keyframes v2dWireTravel{ 0%{ offset-distance:0%; opacity:0; } 8%{ opacity:1; } 92%{ opacity:1; } 100%{ offset-distance:100%; opacity:0; } }
+  @keyframes v2dRing{ 0%{ transform:scale(0.6); opacity:0.9; } 100%{ transform:scale(1.9); opacity:0; } }
+  @keyframes v2dTalk{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.12); } }
+  @keyframes v2dNote{ 0%{ transform:translateX(0) scale(0.6); opacity:0; } 15%{ opacity:1; } 50%{ transform:translateX(38px) scale(1); opacity:1; } 85%{ opacity:1; } 100%{ transform:translateX(76px) scale(0.6); opacity:0; } }
+  @keyframes v2dPress{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(-16deg); } }
+  @keyframes v2dSpin{ from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
+  @keyframes v2dSpinRev{ from{ transform:rotate(360deg); } to{ transform:rotate(0deg); } }
+  @keyframes v2dShimmer{ 0%,100%{ opacity:0.85; } 50%{ opacity:1; transform:scale(1.08); } }
+
+  /* Main card */
+  .card{
+    background: var(--panel);
+    border-radius: 22px;
+    padding: clamp(20px, 4vw, 40px);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45);
+    animation: rise 0.45s ease;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(14px) scale(0.99); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  .card-head{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom: 6px;
+  }
+  .card-head .icon{
+    font-size: 2.4rem;
+    line-height:1;
+    background: var(--level-color-soft);
+    border-radius: 16px;
+    padding: 10px 12px;
+    flex-shrink:0;
+  }
+  .card-head h2{
+    margin:0 0 4px;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .card-head .tagline{
+    margin:0;
+    color: var(--level-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .level-pill{
+    display:inline-block;
+    font-size: 0.68rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing: 0.06em;
+    color: var(--level-color);
+    background: var(--level-color-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+
+  .summary{
+    font-size: 1.05rem;
+    line-height:1.6;
+    color: var(--ink);
+    margin: 18px 0 22px;
+    padding: 16px 18px;
+    background: #faf9ff;
+    border-left: 4px solid var(--level-color);
+    border-radius: 10px;
+  }
+
+  .factbox{
+    margin: 22px 0;
+  }
+  .factbox h3, .sections h3, .citebox h3{
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+    font-weight: 800;
+  }
+  .factbox ul{
+    margin:0;
+    padding:0;
+    list-style:none;
+    display:grid;
+    gap:10px;
+  }
+  .factbox li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size: 0.95rem;
+    line-height:1.5;
+    color: var(--ink);
+  }
+  .factbox li::before{
+    content:"";
+    width:8px;height:8px;
+    border-radius:50%;
+    background: var(--level-color);
+    margin-top:7px;
+    flex-shrink:0;
+  }
+
+  .sections{ margin: 26px 0; }
+  .sections .sec{ margin-bottom: 18px; }
+  .sections .sec h4{
+    margin: 0 0 6px;
+    font-size: 1.02rem;
+    color: var(--ink);
+  }
+  .sections .sec p{
+    margin:0;
+    color: var(--ink-soft);
+    line-height:1.65;
+    font-size: 0.96rem;
+  }
+
+  .citebox{
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .citebox ol{
+    margin:0;
+    padding-left: 1.1em;
+    display:grid;
+    gap:8px;
+  }
+  .citebox li{
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height:1.5;
+  }
+  .citebox a{
+    color: var(--level-color);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .citebox a:hover{ text-decoration:underline; }
+
+  .navrow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap: 12px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  .navbtn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:none;
+    cursor:pointer;
+    font: inherit;
+    font-weight:700;
+    font-size: 0.92rem;
+    padding: 12px 18px;
+    border-radius: 12px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .navbtn:active{ transform: scale(0.97); }
+  .navbtn.prev{
+    background: #f2effc;
+    color: var(--ink);
+  }
+  .navbtn.prev:hover{ background:#e8e3f9; }
+  .navbtn.next{
+    background: var(--level-color);
+    color:#fff;
+    box-shadow: 0 10px 24px -10px var(--level-color);
+    margin-left:auto;
+  }
+  .navbtn.next:hover{ filter: brightness(1.08); }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; box-shadow:none; }
+  .navbtn .arrow{ transition: transform 0.15s ease; }
+  .navbtn.next:hover .arrow{ transform: translateX(3px); }
+  .navbtn.prev:hover .arrow{ transform: translateX(-3px); }
+
+  .zoomhint{
+    text-align:center;
+    color:#a89fd4;
+    font-size:0.78rem;
+    margin-top: 10px;
+  }
+
+  footer.app-footer{
+    max-width: 900px;
+    margin: 30px auto 0;
+    color: #a89fd4;
+    font-size: 0.78rem;
+    text-align:center;
+    line-height:1.6;
+  }
+  footer.app-footer strong{ color:#cfc9e6; }
+
+  @media (max-width: 640px){
+    .levelmap button{ min-width: 58px; padding:6px 7px; font-size:0.6rem;}
+    .card-head{ flex-direction:column; }
+    .viewer-controls{ max-width: 100%; left:12px; right:12px; justify-content:flex-start; bottom:auto; top:52px; }
+    .viewer-instructions{ display:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <h1>SYNGAP1: From Brain to Atom</h1>
+      <p id="headerSub">A simple, illustrated guide to SYNGAP1-Related Disorder — explore step by step, from the whole brain down to the tiny building blocks involved.</p>
+    </header>
+
+    <div class="modeToggle" id="modeToggle" role="group" aria-label="Explanation depth">
+      <button type="button" class="active" data-mode="layman">👪 For Families</button>
+      <button type="button" data-mode="research">🔬 For Researchers</button>
+    </div>
+
+    <nav class="levelmap" id="levelmap" aria-label="Level navigator"></nav>
+    <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+
+    <div class="viewer-wrap mode-layman" id="viewerWrap">
+      <div class="viewer-host" id="viewerHost"></div>
+      <div class="viewer-labels" id="viewerLabels"></div>
+      <div class="viewer-topbar">
+        <span class="viewer-badge" id="viewerBadge">3D</span>
+        <span></span>
+      </div>
+      <div class="viewer-controls" id="viewerControls"></div>
+      <div class="viewer-instructions" id="viewerInstructions">🖱️ Drag to rotate • Scroll to zoom • Click the glowing marker to zoom in</div>
+      <div class="viewer-loading" id="viewerLoading">Loading 3D view…</div>
+      <div class="viewer2d" id="viewer2d"></div>
+    </div>
+
+    <main class="card" id="card">
+      <p style="color:#888;">Loading…</p>
+    </main>
+
+    <footer class="app-footer" id="footer"></footer>
+  </div>
+
+<script id="app-data" type="application/json">{
+  "meta": {
+    "title": "SYNGAP1: From Brain to Atom",
+    "description": "An interactive explainer that traces SYNGAP1-Related Disorder from the whole brain down to the chemical elements it is built from, with plain-language facts and real published research at every level.",
+    "disclaimer": "This app is an educational summary compiled from published scientific and medical literature. It is not medical advice. Research is evolving quickly — always check with a physician or genetic counselor for guidance specific to an individual, and consult the original sources for the most current findings. The 3D models in this app are stylized, schematic visualizations built to teach concepts and relative proportions — they are not photorealistic anatomy, true atomic-scale structures, or the literal solved 3D fold of SYNGAP1.",
+    "lastUpdated": "2026-08-15"
+  },
+  "levels": [
+    {
+      "id": "brain",
+      "order": 0,
+      "name": "The Brain",
+      "shortName": "Brain",
+      "tagline": "Where SYNGAP1-Related Disorder is seen and diagnosed",
+      "icon": "🧠",
+      "color": "#7c3aed",
+      "childId": "brain-regions",
+      "summary": "SYNGAP1-Related Disorder (SYNGAP1-RD) is a genetic neurodevelopmental disorder caused by changes in a single copy of the SYNGAP1 gene on chromosome 6. Nearly all cases arise new in the child (de novo) rather than being inherited. Because the disorder affects how synapses mature and how brain circuits wire up during development, its effects show up across intellectual, motor, sensory, and behavioral domains — not in one isolated area.",
+      "facts": [
+        "Caused by de novo (new, non-inherited) pathogenic variants in one copy of the SYNGAP1 gene on chromosome 6p21.32",
+        "Mechanism is haploinsufficiency: one working gene copy makes too little SynGAP protein for typical brain development",
+        "Intellectual disability occurs in essentially all affected individuals, typically moderate to severe",
+        "Epilepsy develops in roughly 65-85% of patients, often between 6 months and 7 years of age",
+        "Brain MRI is usually structurally normal — this is a disorder of synaptic wiring and timing, not visible brain malformation"
+      ],
+      "sections": [
+        {
+          "heading": "What is SYNGAP1-Related Disorder?",
+          "text": "SYNGAP1-Related Disorder (SYNGAP1-RD, also called SYNGAP1-related intellectual disability, historically 'MRD5') is caused by pathogenic variants in the SYNGAP1 gene, which provides instructions for a protein critical at the synapse — the junction where brain cells communicate. When one copy of the gene is broken or missing, the body can't produce enough of this protein, a mechanism called haploinsufficiency. This disrupts how synapses mature and how neural circuits form during early brain development."
+        },
+        {
+          "heading": "How common is it?",
+          "text": "Estimates vary depending on how the condition is counted. Framed as a rare disease, SYNGAP1-related developmental and epileptic encephalopathy is estimated to affect fewer than 1 in 1,000,000 people, and global patient registries have identified roughly 1,800+ confirmed cases worldwide — a floor, since it only counts people who have had genetic testing and registered. Framed instead as a cause of intellectual disability, SYNGAP1 variants are found in about 0.75% of children with intellectual disability in large sequencing cohorts and roughly 1% of people with epileptic encephalopathy — making it one of the more frequently identified single-gene causes once broad genetic testing (exome/genome sequencing) is performed."
+        },
+        {
+          "heading": "Core clinical effects",
+          "text": "Intellectual disability occurs in essentially all affected individuals, typically moderate to severe, with about one-third remaining nonverbal. Epilepsy develops in a majority of patients with a fairly distinctive seizure profile: eyelid myoclonia with absences, myoclonic and myoclonic-atonic seizures ('drop attacks'), atypical absences, and generalized tonic-clonic seizures, sometimes triggered by eating. About half of patients respond to a single anti-seizure medication; the rest are drug-resistant. Autism spectrum features appear in roughly half of individuals. Early hypotonia (low muscle tone) is nearly universal in infancy, walking is typically delayed to around 26 months, and many children develop an unsteady, ataxic gait. Sleep difficulties, an elevated pain threshold, sound sensitivity (hyperacusis), and behavioral challenges such as inattention and self-injurious behavior are also commonly reported."
+        },
+        {
+          "heading": "The state of research",
+          "text": "Research interest has grown substantially since SYNGAP1 was first linked to intellectual disability in 2009, accelerating over the past decade as genetic sequencing became routine. Patient organizations such as CURE SYNGAP1 (formerly SynGAP Research Fund) fund research, run natural-history patient registries, and have committed over $8 million to research partners. Current therapeutic development is moving toward gene- and RNA-based approaches aimed at restoring SYNGAP1 protein levels rather than only managing symptoms. In July 2026, CAMP4 Therapeutics received Australian regulatory clearance to begin a first-in-human trial of CMP-002, an RNA-targeting (antisense oligonucleotide) therapy designed to increase SYNGAP1 gene expression, while other groups are separately pursuing AAV-based gene-therapy strategies."
+        }
+      ],
+      "citations": [
+        {
+          "title": "SYNGAP1-Related Intellectual Disability — GeneReviews®, NCBI Bookshelf",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"
+        },
+        {
+          "title": "Orphanet: SYNGAP1-related developmental and epileptic encephalopathy",
+          "url": "https://www.orpha.net/en/disease/detail/544254"
+        },
+        {
+          "title": "NORD — SYNGAP1-Related Non-Syndromic Intellectual Disability",
+          "url": "https://rarediseases.org/rare-diseases/syngap1/"
+        },
+        {
+          "title": "Child Neurology Foundation — SYNGAP1-Related Disorder",
+          "url": "https://www.childneurologyfoundation.org/disorder/syngap1-related-disorder/"
+        },
+        {
+          "title": "Epilepsy Foundation — SYNGAP1-Related Epilepsy",
+          "url": "https://www.epilepsy.com/node/2139266"
+        },
+        {
+          "title": "CURE SYNGAP1 (formerly SynGAP Research Fund)",
+          "url": "https://curesyngap1.org/"
+        },
+        {
+          "title": "Clinical signatures of SYNGAP1-related disorders through data integration — Genetics in Medicine",
+          "url": "https://www.gimjournal.org/article/S1098-3600(25)00066-8/abstract"
+        },
+        {
+          "title": "SYNGAP1 mutations: Clinical, genetic, and pathophysiological features — PubMed",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31454529/"
+        },
+        {
+          "title": "CAMP4 Therapeutics Secures Australian Regulatory Clearance for CMP-002 Phase 1/2 Trial",
+          "url": "https://www.globenewswire.com/news-release/2026/07/27/3333378/0/en/CAMP4-Therapeutics-Secures-Australian-Regulatory-Clearance-to-Initiate-First-in-Human-Clinical-Trial-of-CMP-002-in-Patients-With-SYNGAP1-Related-Disorder.html"
+        }
+      ],
+      "model3d": {
+        "type": "brain"
+      },
+      "laymanTagline": "Where SYNGAP1-Related Disorder shows up and gets diagnosed",
+      "laymanSummary": "SYNGAP1-Related Disorder is caused by a change in one copy of a gene called SYNGAP1. It's not something a child catches, and it's not something a parent did — it almost always happens as a brand-new, one-time change. Because this gene helps the brain's connections grow and mature correctly, its effects can touch many parts of life: learning, movement, communication, and behavior.",
+      "laymanFacts": [
+        "It's caused by a change in one copy of the SYNGAP1 gene — almost always a brand-new change, not something passed down from a parent.",
+        "It affects learning and thinking in nearly everyone diagnosed, usually in the moderate-to-severe range.",
+        "Seizures happen in most children with SYNGAP1-RD, often starting somewhere between infancy and age 7.",
+        "A brain MRI or scan usually looks normal — the differences are in how the brain's wiring works, not in its visible shape."
+      ],
+      "laymanCaption": "Think of the brain as mission control for everything the body does."
+    },
+    {
+      "id": "brain-regions",
+      "order": 1,
+      "name": "Brain Regions",
+      "shortName": "Regions",
+      "tagline": "The hippocampus and cortex are where SYNGAP1 research concentrates",
+      "icon": "🗺️",
+      "color": "#6d28d9",
+      "childId": "neural-circuits",
+      "summary": "Within the brain, SYNGAP1 research concentrates heavily on two regions: the hippocampus, the brain's memory-formation hub, and the neocortex, especially layer 2/3, which integrates sensory and cognitive information. Notably, structural brain scans (MRI) in people with SYNGAP1-RD are usually normal — the disorder shows up in how circuits function and wire together, not in visible brain structure.",
+      "facts": [
+        "The hippocampus is the most-studied region because it drives memory formation and is the classic model for long-term potentiation (LTP)",
+        "Syngap1 heterozygous mice show roughly 45-50% weaker LTP at the hippocampal CA3-to-CA1 synapse, tracking with spatial memory deficits",
+        "Neocortical layer 2/3 pyramidal neurons show premature dendritic spine and synapse maturation, shortening a normal developmental 'critical period'",
+        "Loss of SynGAP specifically in inhibitory interneurons in sensory cortex impairs the brain's ability to filter irrelevant sensory input",
+        "Structural brain MRI is typically normal or nonspecific despite substantial functional impact — 'normal scan, abnormal function'"
+      ],
+      "sections": [
+        {
+          "heading": "Hippocampus: the memory hub",
+          "text": "The hippocampus is the single most-studied region in SYNGAP1 research because it is the brain's core hub for forming new memories and for long-term potentiation (LTP) — the leading laboratory model of how learning physically strengthens synapses. Because SynGAP protein is highly enriched at excitatory synapses in hippocampal neurons, most foundational mouse studies record electrical activity directly from hippocampal brain slices, especially the CA3-to-CA1 synapse. Syngap1 heterozygous mice show roughly 45-50% weaker LTP at this synapse, which tracks closely with deficits on hippocampus-dependent spatial memory tasks like the Morris water maze — giving researchers a direct physical link between a single gene, a specific synapse, and a measurable memory problem."
+        },
+        {
+          "heading": "Neocortex: sensory and cognitive integration",
+          "text": "SynGAP is also highly expressed in the cortex, and layer 2/3 pyramidal neurons — cells central to relaying and integrating sensory and cognitive information — mature abnormally when SynGAP is reduced. Studies find 'precocious' (too-early) dendritic spine and synapse maturation in cortical pyramidal cells, shortening a normal developmental critical period during which circuits are supposed to stay flexible and fine-tune themselves. This may help explain why SYNGAP1-RD involves broad cognitive impairment rather than damage confined to one skill. When SynGAP is lost specifically from inhibitory (GABAergic) interneurons in sensory cortex, neurons lose their ability to filter out irrelevant sensory information and animals struggle to learn sensory-discrimination tasks — a plausible circuit-level explanation for sensory processing difficulties in SYNGAP1-RD."
+        },
+        {
+          "heading": "Other regions and human imaging",
+          "text": "The cerebellum is not a major focus of SYNGAP1 research, though SynGAP protein is expressed there during development. Thalamus, primary sensory cortex circuits, and anterior cingulate cortex have also been studied in mouse models, tied to sensory dysregulation and behavior. Notably, structural brain MRI in people with SYNGAP1-RD is typically reported as normal or without a consistent, distinctive abnormality, despite significant intellectual disability, epilepsy, and autism features. This 'normal scan, abnormal function' pattern supports the conclusion from animal models that SYNGAP1-RD is primarily a disease of synaptic wiring and timing rather than gross structural brain malformation."
+        }
+      ],
+      "citations": [
+        {
+          "title": "Mouse models of SYNGAP1-related intellectual disability (review)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10500186/"
+        },
+        {
+          "title": "Hyperexcitability and translational phenotypes in a preclinical model of SYNGAP1 mutations",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10543290/"
+        },
+        {
+          "title": "Syngap1 haploinsufficiency damages a postnatal critical period of pyramidal cell structural maturation linked to cortical circuit assembly",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4326604/"
+        },
+        {
+          "title": "Pathogenic SYNGAP1 mutations impair cognitive development by disrupting maturation of dendritic spine synapses",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/23141534/"
+        },
+        {
+          "title": "Interneuron-Targeted Disruption of SYNGAP1 Alters Sensory Representations in the Neocortex and Impairs Sensory Learning",
+          "url": "https://www.jneurosci.org/content/43/35/6212"
+        },
+        {
+          "title": "Twenty Years of SynGAP Research: From Synapses to Cognition (review)",
+          "url": "https://www.jneurosci.org/content/40/8/1596"
+        },
+        {
+          "title": "SYNGAP1 encephalopathy: A distinctive generalized developmental and epileptic encephalopathy — Neurology",
+          "url": "https://www.neurology.org/doi/10.1212/WNL.0000000000006729"
+        }
+      ],
+      "model3d": {
+        "type": "regions",
+        "regions": [
+          {
+            "id": "hippocampus",
+            "name": "Hippocampus",
+            "color": "#f59e0b",
+            "desc": "Memory formation & LTP"
+          },
+          {
+            "id": "cortex",
+            "name": "Cortex (layer 2/3)",
+            "color": "#14b8a6",
+            "desc": "Sensory & cognitive integration"
+          },
+          {
+            "id": "cerebellum",
+            "name": "Cerebellum",
+            "color": "#9ca3af",
+            "desc": "Not a major research focus"
+          }
+        ]
+      },
+      "laymanTagline": "Two ‘rooms’ of the brain where researchers look closest",
+      "laymanSummary": "Researchers focus closely on two parts of the brain: the hippocampus, which helps form memories, and the outer layer of the brain (the cortex), which handles thinking and processing the senses. Even though brain scans usually look normal, these two areas don't function quite the same way in someone with SYNGAP1-RD.",
+      "laymanFacts": [
+        "The hippocampus is like the brain's memory room — it's one of the most-studied areas in SYNGAP1 research.",
+        "The outer 'thinking layer' of the brain, the cortex, matures a bit too fast and too early, which can shortcut normal learning.",
+        "Even the brain's filter for sounds, touch, and other senses can be affected, making some input feel overwhelming.",
+        "A brain scan (MRI) almost always looks normal — the changes are too small to see in a picture, only in how the brain works."
+      ],
+      "laymanCaption": "Picture the brain as a house with different rooms, each with its own job."
+    },
+    {
+      "id": "neural-circuits",
+      "order": 2,
+      "name": "Neural Circuits",
+      "shortName": "Circuits",
+      "tagline": "Excitation and inhibition fall out of balance",
+      "icon": "🕸️",
+      "color": "#5b21b6",
+      "childId": "neurons",
+      "summary": "Every brain circuit runs on a balance between excitatory signals (which push neurons to fire) and inhibitory signals (which restrain firing). SYNGAP1 loss tips this excitation/inhibition (E/I) balance toward excess excitation, producing measurable network hyperexcitability that is linked to seizures, and disrupting the developmental timing that lets circuits refine themselves through experience.",
+      "facts": [
+        "E/I balance keeps neural networks stable and paces 'critical periods' when circuits are especially moldable by experience",
+        "SynGAP normally restrains how fast excitatory synapses mature; without it, circuits 'lock in' before experience has shaped them",
+        "SynGAP is also expressed in inhibitory interneurons, where it helps regulate their synaptic drive and excitability",
+        "Mouse models show elevated EEG power, more frequent electrographic spikes, and abnormal bursting — the electrophysiological signature of seizure-prone circuits",
+        "In somatosensory cortex, altered E/I balance degrades sensory information coding, linking circuit disruption to sensory processing differences, not just seizures"
+      ],
+      "sections": [
+        {
+          "heading": "What is excitation/inhibition balance?",
+          "text": "Every brain circuit runs on a balance between excitatory signals (which push neurons to fire, mainly via glutamate) and inhibitory signals (which restrain firing, mainly via GABA-releasing interneurons). This E/I balance keeps neural networks active enough to process information but not so active that activity runs away uncontrolled. It also sets the pace of 'critical periods' — developmental windows when circuits are especially moldable by experience. When balance tips toward excess excitation or insufficient inhibition, the result can range from subtle circuit noise to seizures."
+        },
+        {
+          "heading": "How SYNGAP1 loss disrupts the balance",
+          "text": "SynGAP normally acts as a brake on excitatory synapses, restraining how fast they mature and how many receptors they accumulate. With only one working copy of SYNGAP1, this brake is weakened: excitatory synapses mature too fast and accumulate excess receptors ahead of schedule. In mouse cortex, this causes critical periods of synaptic plasticity to close prematurely — the circuit 'locks in' before experience has had normal time to shape it. SynGAP is also expressed in inhibitory interneurons themselves, where it helps regulate their synaptic drive; reducing SynGAP there impairs inhibitory synapse formation and function. The E/I imbalance in SYNGAP1-RD appears to come from at least two directions: excess, premature excitatory drive and compromised inhibitory circuitry."
+        },
+        {
+          "heading": "Hyperexcitability and seizures",
+          "text": "Multiple mouse-model studies find measurable network hyperexcitability: elevated EEG power, more frequent and longer electrographic spike events, and abnormal bursting patterns in cortical networks. This is consistent with excess excitation overwhelming inhibitory control, producing circuits prone to synchronized, runaway firing — the electrophysiological substrate of seizures. Human SYNGAP1-RD is associated with epilepsy in the large majority of patients. Beyond seizures, altered E/I balance disrupts how sensory circuits are built: in somatosensory cortex, SYNGAP1 heterozygous mice show reduced and abnormal touch-evoked neural activity and degraded sensory information coding, connecting circuit-level disruption directly to the sensory processing differences seen in SYNGAP1-RD, not only to seizures."
+        }
+      ],
+      "citations": [
+        {
+          "title": "SYNGAP1 Links the Maturation Rate of Excitatory Synapses to the Duration of Critical-Period Synaptic Plasticity",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3685838/"
+        },
+        {
+          "title": "Hyperexcitability and translational phenotypes in a preclinical mouse model of SYNGAP1-related intellectual disability",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10984035/"
+        },
+        {
+          "title": "SYNGAP1 Heterozygosity Disrupts Sensory Processing by Reducing Touch-Related Activity within Somatosensory Cortex Circuits",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6309426/"
+        },
+        {
+          "title": "Interneuron-Targeted Disruption of SYNGAP1 Alters Sensory Representations in the Neocortex and Impairs Sensory Learning",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10476640/"
+        },
+        {
+          "title": "Decrease of SYNGAP1 in GABAergic cells impairs inhibitory synapse connectivity, synaptic inhibition and cognitive function — Nature Communications",
+          "url": "https://www.nature.com/articles/ncomms13340"
+        }
+      ],
+      "model3d": {
+        "type": "circuits",
+        "toggle": {
+          "offLabel": "Typical E/I balance",
+          "onLabel": "SYNGAP1-affected (hyperexcitable)"
+        }
+      },
+      "laymanTagline": "The brain's 'go' and 'stop' signals fall out of balance",
+      "laymanSummary": "Brain circuits work a bit like a phone network — some signals say 'go' (excite) and some say 'stop' (inhibit), and a healthy brain keeps them balanced. In SYNGAP1-RD, there's too much 'go' signal and not enough 'stop,' which is a big part of why seizures and sensory overload can happen.",
+      "laymanFacts": [
+        "Think of it like a phone network where too many calls are getting through at once, without enough operators to say 'hold on.'",
+        "This imbalance can make the brain's circuits form too quickly, before they've had a chance to fine-tune themselves through everyday experience.",
+        "It's linked to seizures, because an overexcited circuit can trigger a much bigger electrical 'storm.'",
+        "It can also make everyday sounds, lights, or textures feel like 'too much,' because the brain has a harder time filtering them out."
+      ],
+      "laymanCaption": "Like a telephone wire carrying too many calls at once, with too few operators to manage the traffic."
+    },
+    {
+      "id": "neurons",
+      "order": 3,
+      "name": "Neurons",
+      "shortName": "Neurons",
+      "tagline": "Dendritic spines mature too early",
+      "icon": "🧬",
+      "color": "#4c1d95",
+      "childId": "synapses",
+      "summary": "Dendritic spines are tiny protrusions on neurons that house excitatory synapses. Spines normally mature slowly, letting a young brain sample many possible connections before settling on useful ones. SYNGAP1 loss causes spines to mature too early and too uniformly, denying neurons the normal window of 'trial and error' needed to build precisely tuned circuits.",
+      "facts": [
+        "Dendritic spines are the receiving end of excitatory synapses; young spines are thin and motile, maturing over weeks into stable, mushroom-shaped structures",
+        "SynGAP normally restrains signaling that drives spine maturation; without it, spines thicken and stabilize prematurely",
+        "The damage happens in a defined early developmental window — restoring SynGAP in adulthood does not reverse the resulting cognitive deficits",
+        "The effect is selective for excitatory (glutamatergic) neurons; removing SynGAP only from inhibitory interneurons has no cognitive effect",
+        "Human iPSC-derived neurons with SYNGAP1 loss show the same accelerated maturation seen in mice: larger dendrites, more synapses, earlier and burstier activity"
+      ],
+      "sections": [
+        {
+          "heading": "What dendritic spines are and why they matter",
+          "text": "Dendritic spines are tiny, mushroom- or thorn-shaped protrusions that stud the branches (dendrites) of excitatory neurons. Each mature spine houses one excitatory synapse — the postsynaptic density where signals from an upstream neuron are received and converted into electrical and biochemical changes. Spine shape is not static: young spines are long, thin, and motile, and normally mature slowly over weeks into stubby, stable structures as circuits refine through experience. This gradual maturation lets a young brain sample many possible connections before 'locking in' the useful ones."
+        },
+        {
+          "heading": "SYNGAP1: a developmental brake on spine maturation",
+          "text": "SynGAP is highly concentrated at excitatory postsynaptic densities, where it normally restrains signaling that drives receptor insertion and spine enlargement. In Syngap1 haploinsufficient mice, this brake is weakened, and dendritic spines mature abnormally early, thickening and stabilizing prematurely instead of following the normal, protracted developmental timeline. This premature maturation produces hyperexcitable hippocampal circuits in juvenile mice, and the damage is done during a defined early developmental window: inducing the mutation later in life has little effect, and restoring SynGAP in adulthood does not reverse the cognitive deficits — establishing spine maturation timing itself as a critical determinant of later cognitive capacity."
+        },
+        {
+          "heading": "Cell-type specificity and human confirmation",
+          "text": "The damage is selective for excitatory neurons: restricting Syngap1 haploinsufficiency to forebrain glutamatergic neurons is sufficient to cause cognitive deficits, while manipulating the gene only in inhibitory interneurons has no cognitive effect. Because spines mature too fast and too uniformly, individual neurons lose the normal period of synaptic 'trial and error' needed to build precisely tuned circuits, producing persistently enhanced excitatory synaptic strength that predicts cognitive impairment. Using human stem-cell-derived neurons with CRISPR-edited SYNGAP1 loss, researchers confirmed the same acceleration in human cells: neurons grew larger dendritic arbors, formed more excitatory synapses, and showed elevated, burstier network firing — showing the mouse findings translate to human neurobiology."
+        }
+      ],
+      "citations": [
+        {
+          "title": "Pathogenic SYNGAP1 mutations impair cognitive development by disrupting maturation of dendritic spine synapses",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/23141534/"
+        },
+        {
+          "title": "Reduced cognition in Syngap1 mutants is caused by isolated damage within developing forebrain excitatory neurons",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4104574/"
+        },
+        {
+          "title": "Syngap1 haploinsufficiency damages a postnatal critical period of pyramidal cell structural maturation linked to cortical circuit assembly",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4326604/"
+        },
+        {
+          "title": "SYNGAP1 Controls the Maturation of Dendrites, Synaptic Function, and Network Activity in Developing Human Neurons",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/32887745/"
+        },
+        {
+          "title": "SYNGAP1 Links the Maturation Rate of Excitatory Synapses to the Duration of Critical-Period Synaptic Plasticity",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3685838/"
+        },
+        {
+          "title": "Re-expression of SynGAP protein in adulthood improves translatable measures of brain function and behavior — eLife",
+          "url": "https://elifesciences.org/articles/46752"
+        }
+      ],
+      "model3d": {
+        "type": "neuron",
+        "toggle": {
+          "offLabel": "Typical spine timing",
+          "onLabel": "SYNGAP1 (premature spines)"
+        }
+      },
+      "laymanTagline": "Brain cells 'grow up' too fast",
+      "laymanSummary": "Neurons are the brain's individual message-carriers, a bit like tiny telephones passing calls to each other. The connection points on a neuron normally take their time growing strong and steady. In SYNGAP1-RD, those connections mature too quickly and too uniformly — like phones that lock onto one line before they've had a chance to try out others.",
+      "laymanFacts": [
+        "Each neuron has thousands of tiny connection points, and they're supposed to grow slowly, testing out different connections before settling down.",
+        "With SYNGAP1-RD, those connection points lock in place too early, so the brain doesn't get its full 'trial and error' period.",
+        "This happens during a specific, early window in development — which is why researchers care so much about early diagnosis and intervention.",
+        "It shows up the same way in brain cells grown in a lab from people with SYNGAP1-RD, which helps confirm this isn't just something seen in animal studies."
+      ],
+      "laymanCaption": "Like a telephone that locks onto one line before you've had a chance to try the others."
+    },
+    {
+      "id": "synapses",
+      "order": 4,
+      "name": "Synapses",
+      "shortName": "Synapses",
+      "tagline": "SynGAP is a gatekeeper of synaptic strength",
+      "icon": "⚡",
+      "color": "#3730a3",
+      "childId": "protein",
+      "summary": "A synapse is the junction where neurons communicate. SynGAP is one of the most abundant proteins in the postsynaptic density of excitatory synapses, where it acts as a brake on signaling that inserts glutamate receptors into the synaptic membrane. This brake is what allows synapses to strengthen in a controlled, timed way during learning — and losing half of it leaves synapses wired too strong, too early.",
+      "facts": [
+        "SynGAP is one of the most abundant proteins in the postsynaptic density (PSD) of excitatory synapses, at concentrations similar to the master scaffold protein PSD-95",
+        "It works by keeping Ras/Rap signaling low, restraining insertion of AMPA-type glutamate receptors into the synaptic membrane",
+        "During learning (long-term potentiation), calcium signaling causes SynGAP to briefly disperse from the spine, releasing the brake and allowing the synapse to strengthen",
+        "With only half the normal SynGAP, this brake is chronically weakened, causing excessive baseline receptor accumulation and premature spine maturation",
+        "SynGAP forms high-concentration, membraneless droplets with PSD-95 — a physical explanation for why the brain is so sensitive to SynGAP dosage"
+      ],
+      "sections": [
+        {
+          "heading": "What is a synapse?",
+          "text": "A synapse is the junction where one neuron sends a chemical signal to the next. At excitatory synapses, the sending neuron releases the neurotransmitter glutamate, which binds receptors on the receiving neuron's dendritic spine. Just inside the receiving membrane sits the postsynaptic density (PSD) — a dense mesh of proteins that holds neurotransmitter receptors in place and decides, moment to moment, how strongly that synapse responds. The PSD is where synapses get physically and functionally tuned."
+        },
+        {
+          "heading": "SynGAP's role at the synapse",
+          "text": "SynGAP is one of the most abundant proteins in the PSD of excitatory synapses — brain-specific, found essentially only in excitatory neurons. It encodes a Ras/Rap GTPase-activating protein (GAP) that normally acts as a brake, keeping Ras/Rap signaling low and restraining AMPA receptor insertion into the synaptic membrane, which keeps baseline synaptic strength in check. During long-term potentiation (the cellular basis of learning and memory), calcium influx activates an enzyme (CaMKII) that causes SynGAP to rapidly disperse out of the spine, releasing the brake. This lets Ras signaling drive receptor insertion and spine enlargement, strengthening the synapse in a controlled, transient window."
+        },
+        {
+          "heading": "What happens with only half the protein",
+          "text": "With only about 50% of normal SynGAP, as in SYNGAP1-RD, this Ras/Rap brake is chronically weakened. This produces excessive baseline signaling and premature, excessive receptor accumulation at synapses, causing dendritic spines to mature too early and excitatory transmission to be abnormally elevated. It also shortens or shifts the normal critical period of synaptic plasticity during development. The net effect is synapses that are wired too strong, too early, and less able to undergo normal experience-dependent refinement — a proposed cellular mechanism underlying the intellectual disability, autism features, and epilepsy seen in SYNGAP1-RD."
+        }
+      ],
+      "citations": [
+        {
+          "title": "Rapid Dispersion of SynGAP from Synaptic Spines Triggers AMPA Receptor Insertion and Spine Enlargement during LTP — Neuron",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25569349/"
+        },
+        {
+          "title": "Anchoring High Concentrations of SynGAP at Postsynaptic Densities via Liquid-Liquid Phase Separation",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6548289/"
+        },
+        {
+          "title": "Pathogenic SYNGAP1 Mutations Impair Cognitive Development by Disrupting Maturation of Dendritic Spine Synapses",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3500766/"
+        },
+        {
+          "title": "SYNGAP1 Links the Maturation Rate of Excitatory Synapses to the Duration of Critical-Period Synaptic Plasticity",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/23785156/"
+        },
+        {
+          "title": "SYNGAP1: Mind the Gap — Frontiers in Cellular Neuroscience",
+          "url": "https://www.frontiersin.org/journals/cellular-neuroscience/articles/10.3389/fncel.2016.00032/full"
+        },
+        {
+          "title": "Multi-parametric Analysis of 57 SYNGAP1 Variants Reveal Impacts on GTPase Signaling, Localization, and Protein Stability",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7820741/"
+        },
+        {
+          "title": "SynGAP Isoforms Exert Opposing Effects on Synaptic Strength",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3621422/"
+        }
+      ],
+      "model3d": {
+        "type": "synapse",
+        "toggle": {
+          "offLabel": "Typical receptor density",
+          "onLabel": "SYNGAP1 (excess receptors)"
+        }
+      },
+      "laymanTagline": "The handshake between brain cells happens too soon",
+      "laymanSummary": "A synapse is the tiny gap where one brain cell 'talks' to the next — like two people passing a note back and forth. The SYNGAP1 protein normally acts like a pause button, making sure that conversation strengthens gradually, at the right pace, as we learn. With only half the normal amount of this protein, that pause button is weaker, so synapses get 'loud' too soon.",
+      "laymanFacts": [
+        "Think of a synapse as two people talking — one sends a message, the other receives it.",
+        "The SYNGAP1 protein is like a pause button that keeps that conversation from getting too loud, too fast.",
+        "With only half the usual amount of this protein, the pause button is weaker, so connections strengthen before they should.",
+        "This is one of the most important discoveries in SYNGAP1 research — a hands-on explanation for why the timing of brain development gets thrown off."
+      ],
+      "laymanCaption": "Like two people passing a note — SYNGAP1 is what keeps the conversation from getting too loud too fast."
+    },
+    {
+      "id": "protein",
+      "order": 5,
+      "name": "The SYNGAP1 Protein",
+      "shortName": "Protein",
+      "tagline": "A multi-domain molecular brake, 1,343 amino acids long",
+      "icon": "🔗",
+      "color": "#1e3a8a",
+      "childId": "amino-acids",
+      "summary": "SynGAP is a modular protein built from several folded domains, each with its own job: anchoring to the membrane, sensing calcium/lipids, and — most importantly — catalyzing a chemical reaction that turns off Ras/Rap signaling. The full-length protein is 1,343 amino acids long, encoded by the SYNGAP1 gene on chromosome 6, and mutations that disrupt any part of this structure can reduce its function.",
+      "facts": [
+        "Full-length human SynGAP (isoform α1) is 1,343 amino acids, about 148 kDa, encoded by SYNGAP1 on chromosome 6p21.32",
+        "Its modular structure includes a PH domain, a C2 domain, a catalytic RasGAP domain, a coiled-coil region, and (in some isoforms) a PDZ-binding tail",
+        "The RasGAP domain contains an 'arginine finger' that speeds up GTP hydrolysis roughly 1,000-fold, turning off Ras/Rap signaling",
+        "Four isoforms (α1, α2, β, γ) differ mainly at the C-terminus, changing where and how strongly each version acts",
+        "Nonsense/frameshift variants typically eliminate functional protein; missense variants in the C2 or RasGAP domains distort the fold and cripple catalytic activity"
+      ],
+      "sections": [
+        {
+          "heading": "What is a protein domain?",
+          "text": "A protein domain is a self-contained, folded section of a protein that acts like a functional module — similar to a Swiss Army knife with separate, purpose-built tools attached to one handle. Each domain folds into a specific 3D shape that lets it perform one job: gripping a membrane, binding a partner protein, or catalyzing a chemical reaction. If a domain's shape is disrupted, even by a change in one amino acid, it can lose its grip or catalytic ability, breaking the whole protein's function."
+        },
+        {
+          "heading": "SynGAP's domain architecture",
+          "text": "SynGAP is built (from one end to the other) from a PH domain that helps anchor it to membranes; a C2 domain, a calcium/lipid-sensing fold that works with the PH domain to regulate access to the catalytic domain; a RasGAP domain, the catalytic core, which contains an 'arginine finger' that reaches into a bound Ras or Rap GTPase and speeds up its shutoff roughly 1,000-fold; a coiled-coil region that lets SynGAP molecules bind each other; and, in some isoforms, a short C-terminal tail that plugs into scaffold proteins like PSD-95, physically anchoring SynGAP inside the postsynaptic density."
+        },
+        {
+          "heading": "Size, location, and core function",
+          "text": "The full-length human SynGAP protein is 1,343 amino acids, with a molecular weight of about 148 kDa. The SYNGAP1 gene is located on chromosome 6, band 6p21.32. Biochemically, SynGAP is a Ras/Rap GTPase-activating protein (GAP): small GTPases like Ras and Rap act as molecular on/off switches, and SynGAP's GAP domain dramatically speeds up their shutoff, restraining downstream signaling that controls receptor insertion at synapses."
+        },
+        {
+          "heading": "Isoforms and how mutations cause disease",
+          "text": "Alternative splicing produces several isoforms — α1, α2, β, and γ — that differ mainly in their tail and differ in localization and signaling strength. SYNGAP1-RD is caused by haploinsufficiency: one gene copy carries a pathogenic variant, and the resulting reduced total SynGAP protein is insufficient for normal synaptic regulation. Nonsense and frameshift variants typically create premature stop codons leading to a broken or absent protein. Missense variants, especially in the C2 or RasGAP domains, distort the domain's fold or cripple its catalytic activity — again lowering effective SynGAP function even though the gene itself isn't entirely broken."
+        }
+      ],
+      "citations": [
+        {
+          "title": "Ras/Rap GTPase-activating protein SynGAP — UniProtKB Q96PV0",
+          "url": "https://www.uniprot.org/uniprotkb/Q96PV0/entry"
+        },
+        {
+          "title": "SYNGAP1-Related Intellectual Disability — GeneReviews®",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"
+        },
+        {
+          "title": "SYNGAP1 Gene — GeneCards",
+          "url": "https://www.genecards.org/cgi-bin/carddisp.pl?gene=SYNGAP1"
+        },
+        {
+          "title": "Key roles of C2/GAP domains in SYNGAP1-related pathophysiology",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39269903/"
+        },
+        {
+          "title": "SynGAP isoforms differentially regulate synaptic plasticity and dendritic development — eLife",
+          "url": "https://elifesciences.org/articles/56273"
+        },
+        {
+          "title": "Anchoring high concentrations of SynGAP at postsynaptic densities via liquid-liquid phase separation",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6548289/"
+        }
+      ],
+      "model3d": {
+        "type": "protein",
+        "proteinLength": 1343,
+        "note": "Schematic domain map, not the literal solved 3D fold. PH, C2, and RasGAP boundaries are from UniProt/published literature; the coiled-coil segment's exact boundaries were not confirmed in our sources and are shown in an approximate, representative position.",
+        "domains": [
+          {
+            "name": "PH domain",
+            "start": 150,
+            "end": 240,
+            "color": "#3b82f6",
+            "desc": "Membrane-anchoring, protein-protein contact fold"
+          },
+          {
+            "name": "C2 domain",
+            "start": 245,
+            "end": 363,
+            "color": "#10b981",
+            "desc": "Calcium/lipid-sensing fold"
+          },
+          {
+            "name": "RasGAP domain",
+            "start": 459,
+            "end": 667,
+            "color": "#ef4444",
+            "desc": "Catalytic core — switches off Ras/Rap signaling"
+          },
+          {
+            "name": "Coiled-coil (approx.)",
+            "start": 750,
+            "end": 900,
+            "color": "#8b5cf6",
+            "desc": "Lets SynGAP molecules bind each other"
+          },
+          {
+            "name": "PDZ-binding motif",
+            "start": 1339,
+            "end": 1343,
+            "color": "#6b7280",
+            "desc": "C-terminal tail (\"-QTRV\") that docks onto PSD-95"
+          }
+        ]
+      },
+      "laymanTagline": "A built-in 'brake pedal' inside brain cells",
+      "laymanSummary": "The SYNGAP1 protein is a long chain of building blocks folded into a working shape, a bit like a tool with several parts. Its most important part acts like a brake pedal, slowing down a chemical signal that would otherwise make brain connections grow too fast. When the gene that makes this protein doesn't work correctly, that brake is too weak.",
+      "laymanFacts": [
+        "SYNGAP1 makes a protein that acts like a brake pedal inside brain cells, keeping connections from growing too fast.",
+        "The protein has several working parts, but the most important one is the part that presses the brake.",
+        "A change (mutation) in the gene can weaken or remove this brake, depending on exactly where the change happens.",
+        "This is why the condition is named after the gene — 'SYNGAP1-Related Disorder' literally means a disorder related to this brake-pedal protein."
+      ],
+      "laymanCaption": "Like a brake pedal that keeps things from speeding up too fast."
+    },
+    {
+      "id": "amino-acids",
+      "order": 6,
+      "name": "Amino Acids",
+      "shortName": "Amino Acids",
+      "tagline": "The 20 letters that spell out every protein",
+      "icon": "🧩",
+      "color": "#0e7490",
+      "childId": "elements",
+      "summary": "Amino acids are the building blocks that link together to form proteins, much like letters combine into words. The order of amino acids in SYNGAP1 — dictated by the gene's DNA sequence — determines how the protein folds into its working 3D shape. Changing even one amino acid at a critical position can break the whole protein's function.",
+      "facts": [
+        "There are 20 standard amino acids, each sharing the same backbone but with a unique side chain (R-group) that gives it distinct chemistry",
+        "A protein's amino acid sequence ('primary structure') is dictated by the gene's DNA/mRNA codon sequence",
+        "The chemistry of each side chain causes the chain to fold into a precise 3D shape, creating functional pockets like SynGAP's catalytic site",
+        "Amino acids are grouped by side-chain chemistry: nonpolar/hydrophobic, polar/uncharged, charged (acidic/basic), and aromatic",
+        "A single amino acid substitution ('missense' change) in a compact catalytic domain like RasGAP can impair enzyme activity or destabilize the whole protein"
+      ],
+      "sections": [
+        {
+          "heading": "What are amino acids?",
+          "text": "Amino acids are the small molecular building blocks that link together, end to end, to form proteins — much like letters combine to form words. There are 20 standard amino acids used by human cells. Every amino acid shares the same basic backbone (an amino group, a carboxyl group, and a central carbon), but each one has a unique side chain attached to that backbone, giving it a distinct size, shape, charge, and chemical behavior. A protein like SYNGAP1 is a specific, precisely ordered chain of hundreds of these amino acids."
+        },
+        {
+          "heading": "From sequence to shape to function",
+          "text": "The order of amino acids in a protein is dictated by the sequence of codons in the gene — in this case, SYNGAP1. As the chain is assembled, the chemical properties of each amino acid's side chain cause it to bend, twist, and fold into a precise three-dimensional shape. This 3D shape creates functional pockets and surfaces, such as the catalytic site in SynGAP's RasGAP domain that acts on Ras/Rap signaling proteins. Function follows directly from shape, and shape follows directly from sequence."
+        },
+        {
+          "heading": "Why one amino acid change can break the whole protein",
+          "text": "Because folding and function depend on the precise chemistry of each amino acid, swapping even a single one (a 'missense' change) at a critical position can be catastrophic — especially inside a compact catalytic domain like RasGAP, where a handful of residues must line up exactly to bind and act on their target. Research on SYNGAP1 missense variants has shown that substitutions in or near the GAP/C2 domains can impair enzymatic activity, destabilize the protein's fold, or disrupt its normal localization within neurons — all from changing just one 'letter' in a chain of over a thousand. This is the molecular logic behind many SYNGAP1-RD missense variants: the protein is rarely entirely 'gone' — more often, one wrong building block subtly or severely breaks its 3D machinery."
+        }
+      ],
+      "citations": [
+        {
+          "title": "Biochemistry, Essential Amino Acids — StatPearls (NCBI Bookshelf)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557845/"
+        },
+        {
+          "title": "Biochemistry, Primary Protein Structure — StatPearls (NCBI Bookshelf)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK564343/"
+        },
+        {
+          "title": "The Shape and Structure of Proteins — NCBI/NIH, Molecular Biology of the Cell",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK26830/"
+        },
+        {
+          "title": "Protein Structure — Nature Scitable",
+          "url": "https://www.nature.com/scitable/topicpage/protein-structure-14122136/"
+        },
+        {
+          "title": "Multi-parametric analysis of 57 SYNGAP1 variants reveals impacts on GTPase signaling, localization, and protein stability — AJHG",
+          "url": "https://www.cell.com/ajhg/fulltext/S0002-9297(20)30408-0"
+        },
+        {
+          "title": "Key roles of C2/GAP domains in SYNGAP1-related pathophysiology — Cell Reports",
+          "url": "https://www.cell.com/cell-reports/fulltext/S2211-1247(24)01084-2"
+        }
+      ],
+      "model3d": {
+        "type": "amino-acid",
+        "examples": [
+          {
+            "id": "glycine",
+            "name": "Glycine",
+            "rGroupLabel": "H",
+            "hasSulfur": false
+          },
+          {
+            "id": "cysteine",
+            "name": "Cysteine",
+            "rGroupLabel": "CH₂-SH",
+            "hasSulfur": true
+          }
+        ]
+      },
+      "laymanTagline": "The building blocks that spell out every protein",
+      "laymanSummary": "Amino acids are small chemical building blocks that link together, one after another, like beads on a string, to build a protein. The exact order of these beads — spelled out by the gene's DNA — determines whether the finished protein, including SYNGAP1's brake pedal, works the way it's supposed to.",
+      "laymanFacts": [
+        "There are 20 different kinds of amino acid 'beads' that the body uses to build every protein.",
+        "The order they're strung together in is set by the DNA code in the gene — like a recipe that spells out the exact sequence.",
+        "Once strung together, the chain folds up into a specific 3D shape — that shape is what lets the protein actually do its job.",
+        "Even swapping out just one bead in the wrong spot can keep the whole protein from folding or working correctly."
+      ],
+      "laymanCaption": "Like beads strung together on a necklace, in a very specific order."
+    },
+    {
+      "id": "elements",
+      "order": 7,
+      "name": "Chemical Elements",
+      "shortName": "Elements",
+      "tagline": "The atoms behind SYNGAP1 — and the whole brain",
+      "icon": "⚛️",
+      "color": "#065f46",
+      "childId": null,
+      "summary": "Every protein in the body, including SYNGAP1, is ultimately built from a handful of atom types: carbon, hydrogen, nitrogen, oxygen, and (in two amino acids) sulfur. These simple atoms bond into amino acids, which chain into the SYNGAP1 protein, which sits at synapses, which connect into neurons, which wire into circuits, which build the brain systems responsible for learning and cognition.",
+      "facts": [
+        "Carbon (atomic number 6) forms four strong bonds at once, letting it build the long chains, branches, and rings needed for complex biological molecules",
+        "Hydrogen (atomic number 1) fills bonding spots and enables hydrogen bonding, the weak, reversible attractions that let proteins fold into precise shapes",
+        "Nitrogen (atomic number 7) forms the amino group (-NH2) that defines amino acids and the peptide bonds that link them into chains",
+        "Oxygen (atomic number 8) forms the carboxyl group (-COOH) and its high electronegativity drives protein folding and reactivity",
+        "Sulfur (atomic number 16), found in cysteine and methionine, can form disulfide bonds that act like molecular staples locking a protein's 3D shape in place"
+      ],
+      "sections": [
+        {
+          "heading": "The five key elements",
+          "text": "Carbon (C, atomic number 6) is the backbone of life: each atom can form four strong bonds at once, letting it link into the long chains, branches, and rings needed for complex, stable biological shapes. Hydrogen (H, atomic number 1), the lightest and most abundant element, fills the remaining bonding spots on carbon, nitrogen, and oxygen, and is central to hydrogen bonding — the weak attractions that let proteins fold into precise 3D shapes. Nitrogen (N, atomic number 7) forms three bonds and defines the 'amino' part of amino acid, the amino group (-NH2), and is essential to the peptide bonds that link amino acids into chains. Oxygen (O, atomic number 8) forms two bonds and appears in the carboxyl group (-COOH); its strong pull on shared electrons helps create the polarity that drives protein folding. Sulfur (S, atomic number 16) appears in only two of the twenty amino acids — cysteine and methionine — but its disulfide bonds act like molecular staples that lock a protein's 3D shape in place."
+        },
+        {
+          "heading": "Why these elements build the molecules of life",
+          "text": "Carbon, hydrogen, nitrogen, and oxygen are the most common elements in living things because they are light, abundant, and form strong yet adjustable covalent bonds. Carbon's four bonding sites give it structural versatility; nitrogen and oxygen contribute the reactive, polar chemical groups that give amino acids their distinctive 'front' and 'back' ends, allowing them to link head-to-tail into indefinitely long chains; hydrogen fills gaps and enables folding; sulfur adds extra structural locking where needed. Small differences in how these atoms are arranged create the twenty different amino acid building blocks used to build every protein, including SynGAP."
+        },
+        {
+          "heading": "Zooming back out",
+          "text": "These simple atoms bond into amino acids. Amino acids link in a specific order — dictated by the SYNGAP1 gene — into a folded protein chain: the SYNGAP1 protein. That protein sits at synapses, the tiny junctions where neurons communicate, where it helps regulate signal strength as a brake on excitatory signaling. Synapses connect into neurons, neurons wire into circuits, and circuits form the brain systems responsible for learning, movement, and cognition. When SYNGAP1's amino acid sequence is altered by a genetic variant, the change can ripple all the way up — from atom, to protein, to synapse, to neuron, to circuit, to the whole brain — producing the features seen in SYNGAP1-Related Disorder."
+        }
+      ],
+      "citations": [
+        {
+          "title": "Biochemistry, Amino Acid Synthesis and Degradation — StatPearls (NCBI Bookshelf)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK559250/"
+        },
+        {
+          "title": "Biochemistry, Primary Protein Structure — StatPearls (NCBI Bookshelf)",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK564343/"
+        },
+        {
+          "title": "Periodic Table of the Elements — Royal Society of Chemistry",
+          "url": "https://periodic-table.rsc.org/"
+        },
+        {
+          "title": "Periodic Table Resources — RSC Education",
+          "url": "https://edu.rsc.org/resources/periodic-table"
+        },
+        {
+          "title": "SYNGAP1 gene — NCBI Gene",
+          "url": "https://www.ncbi.nlm.nih.gov/gene/8831"
+        },
+        {
+          "title": "SYNGAP1 gene — MedlinePlus Genetics (NIH)",
+          "url": "https://medlineplus.gov/download/genetics/gene/syngap1.pdf"
+        }
+      ],
+      "model3d": {
+        "type": "elements",
+        "items": [
+          {
+            "symbol": "H",
+            "name": "Hydrogen",
+            "atomicNumber": 1,
+            "protons": 1,
+            "neutrons": 0,
+            "shells": [
+              1
+            ],
+            "color": "#e5e7eb"
+          },
+          {
+            "symbol": "C",
+            "name": "Carbon",
+            "atomicNumber": 6,
+            "protons": 6,
+            "neutrons": 6,
+            "shells": [
+              2,
+              4
+            ],
+            "color": "#6b7280"
+          },
+          {
+            "symbol": "N",
+            "name": "Nitrogen",
+            "atomicNumber": 7,
+            "protons": 7,
+            "neutrons": 7,
+            "shells": [
+              2,
+              5
+            ],
+            "color": "#3b82f6"
+          },
+          {
+            "symbol": "O",
+            "name": "Oxygen",
+            "atomicNumber": 8,
+            "protons": 8,
+            "neutrons": 8,
+            "shells": [
+              2,
+              6
+            ],
+            "color": "#ef4444"
+          },
+          {
+            "symbol": "S",
+            "name": "Sulfur",
+            "atomicNumber": 16,
+            "protons": 16,
+            "neutrons": 16,
+            "shells": [
+              2,
+              8,
+              6
+            ],
+            "color": "#eab308"
+          }
+        ]
+      },
+      "laymanTagline": "The tiny pieces everything else is built from",
+      "laymanSummary": "Zoom in far enough, and every amino acid — and every protein, cell, and brain — is built from just a handful of simple atoms: carbon, hydrogen, nitrogen, oxygen, and sulfur. These tiny pieces snap together like building blocks, forming amino acids, which form the SYNGAP1 protein, which sits at synapses, which connect neurons, which build the circuits and brain systems where SYNGAP1-RD shows up.",
+      "laymanFacts": [
+        "Just five basic types of atoms — carbon, hydrogen, nitrogen, oxygen, and sulfur — build nearly every protein in the body, including SYNGAP1.",
+        "Carbon is the most important connector — it can link to four other atoms at once, letting it build long chains and complex shapes.",
+        "These atoms combine into amino acids, the 'beads' from the level before this one.",
+        "It's the same handful of atomic building blocks, all the way from a single molecule up to an entire, complex brain."
+      ],
+      "laymanCaption": "Like the smallest LEGO bricks, snapped together to build everything bigger."
+    }
+  ]
+}</script>
+<script type="module">
+import * as THREE from './vendor/three.module.min.js';
+import { OrbitControls } from './vendor/OrbitControls.js';
+import { GLTFLoader } from './vendor/GLTFLoader.js';
+
+/* ---------------------------------------------------------------------
+   Data loading (fetch data.json when served over http(s); otherwise
+   fall back to the embedded snapshot below so the app still works
+   when the file is opened directly from disk).
+--------------------------------------------------------------------- */
+var DATA = null;
+try {
+  var res = await fetch('data.json', {cache: 'no-store'});
+  if(res.ok){ DATA = await res.json(); }
+} catch(e){ /* file:// CORS block — fall back below */ }
+if(!DATA){
+  try { DATA = JSON.parse(document.getElementById('app-data').textContent); }
+  catch(e){ console.error('Failed to parse embedded data', e); }
+}
+
+var levels = (DATA && DATA.levels) ? DATA.levels.slice().sort(function(a,b){return a.order-b.order;}) : [];
+var byId = {};
+levels.forEach(function(l){ byId[l.id] = l; });
+
+var current = 0;
+var maxSeen = 0;
+var isFirstRender = true;
+var mode = 'layman'; // 'layman' (For Families) or 'research' (For Researchers)
+
+var levelmapEl = document.getElementById('levelmap');
+var crumbsEl = document.getElementById('crumbs');
+var cardEl = document.getElementById('card');
+var footerEl = document.getElementById('footer');
+var viewerControlsEl = document.getElementById('viewerControls');
+var viewerInstructionsEl = document.getElementById('viewerInstructions');
+var viewerWrapEl = document.getElementById('viewerWrap');
+var viewer2dEl = document.getElementById('viewer2d');
+var modeToggleEl = document.getElementById('modeToggle');
+var headerSubEl = document.getElementById('headerSub');
+
+var HEADER_SUB = {
+  layman: 'A simple, illustrated guide to SYNGAP1-Related Disorder — explore step by step, from the whole brain down to the tiny building blocks involved.',
+  research: 'An interactive 3D map of SYNGAP1-Related Disorder — rotate and click down through the levels, from the whole brain to the chemical elements that build it.'
+};
+
+/* ---------------------------------------------------------------------
+   Simple 2D illustrations for "For Families" mode — flat, animated
+   SVG scenes using everyday metaphors instead of the 3D research models.
+--------------------------------------------------------------------- */
+var ILLUS = {
+  brain: function(color){
+    return '<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">' +
+      '<defs><radialGradient id="brainGlow" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0%" stop-color="'+color+'" stop-opacity="0.55"/>' +
+      '<stop offset="100%" stop-color="'+color+'" stop-opacity="0"/></radialGradient></defs>' +
+      '<circle cx="100" cy="80" r="78" fill="url(#brainGlow)" style="animation:v2dGlow 3.2s ease-in-out infinite;"/>' +
+      '<path d="M100,25 C70,25 48,42 46,62 C30,66 22,82 32,96 C28,112 42,126 60,122 C66,136 88,140 98,128 C114,138 136,128 134,112 C150,105 148,84 132,76 C138,55 118,28 100,25 Z" ' +
+      'fill="'+color+'" style="animation:v2dPulse 4s ease-in-out infinite; transform-origin:90px 80px;"/>' +
+      '<path d="M100,30 C100,55 92,65 92,80 C92,98 104,108 100,128" fill="none" stroke="rgba(15,11,30,0.35)" stroke-width="3" stroke-linecap="round"/>' +
+      '<path d="M60,55 C70,60 74,68 70,76" fill="none" stroke="rgba(15,11,30,0.28)" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<path d="M128,58 C118,64 116,72 122,80" fill="none" stroke="rgba(15,11,30,0.28)" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<circle cx="100" cy="80" r="4" fill="#fff" style="animation:v2dPulse 2s ease-in-out infinite;"/>' +
+      '</svg>';
+  },
+  regions: function(color){
+    return '<svg viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg">' +
+      '<polygon points="100,20 170,72 30,72" fill="'+color+'" opacity="0.9"/>' +
+      '<rect x="40" y="72" width="120" height="86" rx="8" fill="'+color+'" opacity="0.55"/>' +
+      '<rect x="58" y="94" width="26" height="26" rx="4" fill="#fff" style="animation:v2dGlow 2.6s ease-in-out infinite;"/>' +
+      '<rect x="87" y="94" width="26" height="26" rx="4" fill="#fff" opacity="0.92" style="animation:v2dGlow 2.6s ease-in-out infinite 0.4s;"/>' +
+      '<rect x="116" y="94" width="26" height="26" rx="4" fill="#fff" opacity="0.8" style="animation:v2dGlow 2.6s ease-in-out infinite 0.8s;"/>' +
+      '<rect x="86" y="128" width="30" height="30" rx="3" fill="rgba(15,11,30,0.35)"/>' +
+      '</svg>';
+  },
+  circuits: function(color){
+    var path = 'M28,55 Q110,112 192,45';
+    return '<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg">' +
+      '<line x1="28" y1="40" x2="28" y2="122" stroke="'+color+'" stroke-width="6" stroke-linecap="round"/>' +
+      '<line x1="12" y1="55" x2="44" y2="55" stroke="'+color+'" stroke-width="5" stroke-linecap="round"/>' +
+      '<line x1="192" y1="28" x2="192" y2="122" stroke="'+color+'" stroke-width="6" stroke-linecap="round"/>' +
+      '<line x1="176" y1="43" x2="208" y2="43" stroke="'+color+'" stroke-width="5" stroke-linecap="round"/>' +
+      '<path d="'+path+'" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2.5"/>' +
+      '<circle r="5" fill="#fff"><animateMotion dur="2.6s" repeatCount="indefinite" path="'+path+'"/></circle>' +
+      '<circle r="5" fill="'+color+'"><animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" path="'+path+'"/></circle>' +
+      '<circle r="4" fill="#fff" opacity="0.8"><animateMotion dur="2.6s" begin="0.65s" repeatCount="indefinite" path="'+path+'"/></circle>' +
+      '</svg>';
+  },
+  neuron: function(color){
+    return '<svg viewBox="0 0 180 160" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect x="35" y="92" width="110" height="48" rx="14" fill="'+color+'"/>' +
+      '<circle cx="60" cy="116" r="10" fill="rgba(255,255,255,0.85)"/>' +
+      '<circle cx="120" cy="116" r="10" fill="rgba(255,255,255,0.85)"/>' +
+      '<g style="animation:v2dBob 2.4s ease-in-out infinite; transform-origin:90px 70px;">' +
+      '<rect x="45" y="55" width="90" height="24" rx="12" fill="'+color+'"/>' +
+      '<circle cx="55" cy="67" r="13" fill="'+color+'"/>' +
+      '<circle cx="125" cy="67" r="13" fill="'+color+'"/>' +
+      '</g>' +
+      '<path d="M90,120 C70,130 110,138 90,148" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="3"/>' +
+      '<path d="M40,60 C28,50 28,36 38,26" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.7" style="animation:v2dGlow 1.8s ease-in-out infinite;"/>' +
+      '<path d="M30,66 C12,52 12,30 28,16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.45" style="animation:v2dGlow 1.8s ease-in-out infinite 0.3s;"/>' +
+      '</svg>';
+  },
+  synapse: function(color){
+    return '<svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg">' +
+      '<g style="animation:v2dTalk 2.6s ease-in-out infinite; transform-origin:55px 110px;">' +
+      '<circle cx="55" cy="55" r="22" fill="'+color+'"/>' +
+      '<path d="M25,140 C25,105 40,90 55,90 C70,90 85,105 85,140 Z" fill="'+color+'"/>' +
+      '</g>' +
+      '<g style="animation:v2dTalk 2.6s ease-in-out infinite 1.3s; transform-origin:165px 110px;">' +
+      '<circle cx="165" cy="55" r="22" fill="'+color+'" opacity="0.85"/>' +
+      '<path d="M135,140 C135,105 150,90 165,90 C180,90 195,105 195,140 Z" fill="'+color+'" opacity="0.85"/>' +
+      '</g>' +
+      '<circle cx="85" cy="72" r="7" fill="#fff" style="animation:v2dNote 2.2s ease-in-out infinite;"/>' +
+      '</svg>';
+  },
+  protein: function(color){
+    return '<svg viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect x="30" y="140" width="140" height="14" rx="7" fill="rgba(255,255,255,0.18)"/>' +
+      '<g style="animation:v2dPress 2.2s ease-in-out infinite; transform-origin:60px 140px;">' +
+      '<rect x="50" y="60" width="18" height="80" rx="8" fill="'+color+'"/>' +
+      '<rect x="28" y="44" width="62" height="26" rx="10" fill="'+color+'"/>' +
+      '</g>' +
+      '<path d="M110,58 C130,48 150,53 164,40" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.55"/>' +
+      '<path d="M118,80 C136,72 152,75 168,63" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.35" style="animation:v2dGlow 2s ease-in-out infinite 0.3s;"/>' +
+      '<circle cx="168" cy="40" r="6" fill="#fff" style="animation:v2dPulse 1.6s ease-in-out infinite;"/>' +
+      '</svg>';
+  },
+  'amino-acid': function(color){
+    var pts = [[15,52],[45,30],[75,46],[105,60],[135,46],[165,30],[195,52]];
+    var beads = '';
+    pts.forEach(function(p, i){
+      var op = 0.65 + 0.35*(i%3===0?1:0.6);
+      beads += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="13" fill="'+color+'" opacity="'+op.toFixed(2)+'" ' +
+        'style="animation:v2dShimmer 2.4s ease-in-out infinite '+(i*0.22).toFixed(2)+'s;"/>';
+    });
+    return '<svg viewBox="0 0 210 90" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M15,52 Q45,20 75,46 T135,46 T195,52" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="4"/>' +
+      beads +
+      '</svg>';
+  },
+  elements: function(color){
+    function ring(rot, cls, rev){
+      return '<g transform="rotate('+rot+' 100 100)"><g style="transform-origin:100px 100px; animation:'+(rev?'v2dSpinRev':'v2dSpin')+' '+cls+'s linear infinite;">' +
+        '<ellipse cx="100" cy="100" rx="82" ry="32" fill="none" stroke="'+color+'" stroke-width="2.5" opacity="0.45"/>' +
+        '<circle cx="182" cy="100" r="6" fill="#fff" opacity="0.9"/>' +
+        '</g></g>';
+    }
+    return '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
+      ring(0, 7, false) + ring(60, 9, true) + ring(120, 11, false) +
+      '<circle cx="100" cy="100" r="14" fill="'+color+'" style="animation:v2dPulse 2.4s ease-in-out infinite;"/>' +
+      '</svg>';
+  }
+};
+
+function renderIllustration(level){
+  if(!viewer2dEl) return;
+  var m = level.model3d || {};
+  var builder = ILLUS[m.type];
+  var svg = builder ? builder(level.color) : '';
+  var caption = level.laymanCaption || '';
+  var hint = level.childId ? 'Tap the picture (or the button below) to continue →' : 'You\'ve reached the smallest scale — nice work! ⚛️';
+  viewer2dEl.innerHTML = svg + (caption ? '<div class="v2d-caption">' + escapeHtml(caption) + '</div>' : '') +
+    '<div class="v2d-hint">' + escapeHtml(hint) + '</div>';
+  viewer2dEl.classList.toggle('clickable', !!level.childId);
+  viewer2dEl.onclick = function(){ if(level.childId){ goTo(current+1); } };
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+function renderLevelMap(){
+  levelmapEl.innerHTML = '';
+  levels.forEach(function(l, i){
+    if(i > 0){
+      var conn = document.createElement('span');
+      conn.className = 'connector';
+      conn.textContent = '→';
+      levelmapEl.appendChild(conn);
+    }
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'level' + (i === current ? ' active' : '') + (i <= maxSeen ? ' done' : '');
+    btn.innerHTML = '<span class="ic">' + l.icon + '</span><span>' + escapeHtml(l.shortName) + '</span>';
+    btn.disabled = i > maxSeen;
+    btn.addEventListener('click', function(){ goTo(i); });
+    levelmapEl.appendChild(btn);
+  });
+}
+
+function renderCrumbs(){
+  crumbsEl.innerHTML = '';
+  for(var i=0;i<=current;i++){
+    if(i>0){
+      var sep = document.createElement('span');
+      sep.className = 'sep';
+      sep.textContent = '/';
+      crumbsEl.appendChild(sep);
+    }
+    var l = levels[i];
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    if(i === current){
+      btn.className = 'current';
+      btn.textContent = l.name;
+      btn.disabled = true;
+    } else {
+      btn.textContent = l.name;
+      btn.addEventListener('click', function(idx){ return function(){ goTo(idx); }; }(i));
+    }
+    crumbsEl.appendChild(btn);
+  }
+}
+
+function renderCard(){
+  var l = levels[current];
+  var isLayman = mode === 'layman';
+  document.documentElement.style.setProperty('--level-color', l.color);
+  document.documentElement.style.setProperty('--level-color-soft', l.color + '1f');
+
+  var tagline = (isLayman && l.laymanTagline) ? l.laymanTagline : l.tagline;
+  var summary = (isLayman && l.laymanSummary) ? l.laymanSummary : l.summary;
+  var facts = (isLayman && l.laymanFacts && l.laymanFacts.length) ? l.laymanFacts : l.facts;
+
+  var html = '';
+  html += '<div class="level-pill">Level ' + (current+1) + ' of ' + levels.length + '</div>';
+  html += '<div class="card-head">';
+  html += '  <div class="icon">' + l.icon + '</div>';
+  html += '  <div><h2>' + escapeHtml(l.name) + '</h2><p class="tagline">' + escapeHtml(tagline) + '</p></div>';
+  html += '</div>';
+
+  html += '<p class="summary">' + escapeHtml(summary) + '</p>';
+
+  if(!isLayman && l.model3d && l.model3d.note){
+    html += '<p style="font-size:0.78rem;color:var(--ink-soft);margin:-14px 0 20px;font-style:italic;">Note on the 3D model: ' + escapeHtml(l.model3d.note) + '</p>';
+  }
+
+  if(facts && facts.length){
+    html += '<div class="factbox"><h3>' + (isLayman ? 'In plain language' : 'Quick facts') + '</h3><ul>';
+    facts.forEach(function(f){ html += '<li>' + escapeHtml(f) + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  if(!isLayman && l.sections && l.sections.length){
+    html += '<div class="sections"><h3>The research</h3>';
+    l.sections.forEach(function(s){
+      html += '<div class="sec"><h4>' + escapeHtml(s.heading) + '</h4><p>' + escapeHtml(s.text) + '</p></div>';
+    });
+    html += '</div>';
+  }
+
+  if(isLayman && l.sections && l.sections.length){
+    html += '<p style="font-size:0.85rem;color:var(--ink-soft);margin:18px 0;">Want the full research write-up? Switch to <strong>🔬 For Researchers</strong> above.</p>';
+  }
+
+  if(l.citations && l.citations.length){
+    html += '<div class="citebox"><h3>Published sources</h3><ol>';
+    l.citations.forEach(function(c){
+      html += '<li><a href="' + escapeHtml(c.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(c.title) + '</a></li>';
+    });
+    html += '</ol></div>';
+  }
+
+  html += '<div class="navrow">';
+  html += '<button class="navbtn prev" id="prevBtn" ' + (current===0?'disabled':'') + '><span class="arrow">←</span> Back up</button>';
+  if(l.childId){
+    html += '<button class="navbtn next" id="nextBtn">Zoom into ' + escapeHtml(byId[l.childId].shortName) + ' <span class="arrow">→</span></button>';
+  } else {
+    html += '<span style="color:#a89fd4; font-weight:600; font-size:0.85rem; margin-left:auto;">You\'ve reached the smallest scale ⚛️</span>';
+  }
+  html += '</div>';
+  html += '<p class="zoomhint">' + (isLayman
+    ? 'Tap the picture above, use the level map, the breadcrumb, or ← / → arrow keys to navigate.'
+    : 'Click the 3D model above, use the level map, the breadcrumb, or ← / → arrow keys to navigate.') + '</p>';
+
+  cardEl.innerHTML = html;
+
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  if(prevBtn) prevBtn.addEventListener('click', function(){ goTo(current-1); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ goTo(current+1); });
+
+  if(!isFirstRender){
+    document.getElementById('viewerWrap').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  isFirstRender = false;
+}
+
+function renderFooter(){
+  var meta = DATA.meta || {};
+  footerEl.innerHTML = '<strong>' + escapeHtml(meta.title||'') + '</strong> — ' + escapeHtml(meta.disclaimer||'') +
+    (meta.lastUpdated ? ' <br>Last updated ' + escapeHtml(meta.lastUpdated) : '');
+}
+
+function goTo(i){
+  if(i < 0 || i >= levels.length) return;
+  current = i;
+  if(i > maxSeen) maxSeen = i;
+  renderLevelMap();
+  renderCrumbs();
+  renderCard();
+  renderIllustration(levels[current]);
+  Viewer3D.loadLevel(levels[current]);
+}
+
+document.addEventListener('keydown', function(e){
+  var tag = (document.activeElement && document.activeElement.tagName) || '';
+  if(tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if(e.key === 'ArrowRight'){ goTo(current+1); }
+  if(e.key === 'ArrowLeft'){ goTo(current-1); }
+});
+
+/* ---------------- mode toggle (For Families vs For Researchers) ---------------- */
+
+function setMode(newMode){
+  if(mode === newMode) return;
+  mode = newMode;
+  if(modeToggleEl){
+    Array.prototype.forEach.call(modeToggleEl.querySelectorAll('button'), function(b){
+      b.classList.toggle('active', b.getAttribute('data-mode') === mode);
+    });
+  }
+  if(viewerWrapEl){ viewerWrapEl.classList.toggle('mode-layman', mode === 'layman'); }
+  if(headerSubEl){ headerSubEl.textContent = HEADER_SUB[mode]; }
+  renderCard();
+}
+
+if(modeToggleEl){
+  Array.prototype.forEach.call(modeToggleEl.querySelectorAll('button'), function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });
+  });
+}
+
+/* =======================================================================
+   Viewer3D — a small Three.js engine that hosts one procedural, rotatable
+   "scene" per level. Every scene exposes: group (THREE.Group to render),
+   clickables (meshes that advance to the next level on click), optional
+   labels ([{anchor:Vector3-in-group-space, text}]), optional toggle(on)
+   for the typical/affected state switch, optional setExample(idx) for
+   tabbed sub-variants, camPos/camTarget for the default view, and
+   update(t) called every frame.
+======================================================================= */
+var Viewer3D = (function(){
+  var hostEl, labelsEl, loadingEl, badgeEl;
+  var renderer, camera, scene, controls, raycaster, pointer;
+  var currentGroup = null, currentSceneObj = null, currentModel3d = null;
+  var clock = new THREE.Clock();
+  var ready = false;
+  var camAnim = null;
+  var pointerDownInfo = null;
+  var idleTimer = null;
+  var advanceCallback = function(){};
+
+  function easeInOutCubic(x){ return x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; }
+
+  function mulberry32(seed){
+    var a = seed >>> 0;
+    return function(){
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function resize(){
+    if(!renderer || !hostEl) return;
+    var w = hostEl.clientWidth || 1, h = hostEl.clientHeight || 1;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+
+  function init(opts){
+    hostEl = opts.hostEl; labelsEl = opts.labelsEl; loadingEl = opts.loadingEl; badgeEl = opts.badgeEl;
+    advanceCallback = opts.onAdvance || function(){};
+    try{
+      renderer = new THREE.WebGLRenderer({antialias:true, alpha:true, powerPreference:'low-power'});
+    } catch(e){
+      return false;
+    }
+    if(!renderer){ return false; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+    hostEl.appendChild(renderer.domElement);
+
+    camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0,0,7);
+
+    scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0c0a18, 9, 20);
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x1a1330, 1.15));
+    var d1 = new THREE.DirectionalLight(0xffffff, 1.0); d1.position.set(4,6,5); scene.add(d1);
+    var d2 = new THREE.DirectionalLight(0x8fa8ff, 0.45); d2.position.set(-5,-3,-4); scene.add(d2);
+
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.minDistance = 1.8;
+    controls.maxDistance = 22;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.55;
+    controls.enablePan = false;
+
+    raycaster = new THREE.Raycaster();
+    pointer = new THREE.Vector2();
+
+    renderer.domElement.addEventListener('pointerdown', onPointerDown);
+    renderer.domElement.addEventListener('pointerup', onPointerUp);
+    renderer.domElement.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('resize', resize);
+    if(window.ResizeObserver){
+      new ResizeObserver(resize).observe(hostEl);
+    }
+
+    resize();
+    ready = true;
+    if(loadingEl) loadingEl.style.display = 'none';
+    animate();
+    return true;
+  }
+
+  function wakeAutoRotate(){
+    controls.autoRotate = false;
+    if(idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(function(){ controls.autoRotate = true; }, 3500);
+  }
+
+  function onPointerDown(e){
+    pointerDownInfo = {x:e.clientX, y:e.clientY, t:performance.now()};
+    wakeAutoRotate();
+  }
+  function onPointerUp(e){
+    if(!pointerDownInfo) return;
+    var dx = e.clientX-pointerDownInfo.x, dy = e.clientY-pointerDownInfo.y;
+    var dist = Math.sqrt(dx*dx+dy*dy);
+    var dt = performance.now()-pointerDownInfo.t;
+    pointerDownInfo = null;
+    if(dist < 6 && dt < 600){ handleClick(e); }
+  }
+  function onPointerMove(e){
+    if(!currentSceneObj || !currentSceneObj.clickables || !currentSceneObj.clickables.length){
+      renderer.domElement.style.cursor = 'grab';
+      return;
+    }
+    setPointerFromEvent(e);
+    raycaster.setFromCamera(pointer, camera);
+    var hits = raycaster.intersectObjects(currentSceneObj.clickables, true);
+    renderer.domElement.style.cursor = hits.length ? 'pointer' : 'grab';
+  }
+  function setPointerFromEvent(e){
+    var rect = renderer.domElement.getBoundingClientRect();
+    pointer.x = ((e.clientX-rect.left)/rect.width)*2-1;
+    pointer.y = -((e.clientY-rect.top)/rect.height)*2+1;
+  }
+  function handleClick(e){
+    if(!currentSceneObj || !currentSceneObj.clickables || !currentSceneObj.clickables.length) return;
+    setPointerFromEvent(e);
+    raycaster.setFromCamera(pointer, camera);
+    var hits = raycaster.intersectObjects(currentSceneObj.clickables, true);
+    if(hits.length && currentModel3d && currentModel3d.canAdvance){
+      advanceCallback();
+    }
+  }
+
+  function disposeObject3D(obj){
+    obj.traverse(function(node){
+      if(node.geometry) node.geometry.dispose();
+      if(node.material){
+        var mats = Array.isArray(node.material) ? node.material : [node.material];
+        mats.forEach(function(m){
+          for(var k in m){ if(m[k] && m[k].isTexture) m[k].dispose(); }
+          m.dispose();
+        });
+      }
+    });
+  }
+
+  function flyTo(pos, target, duration){
+    camAnim = {
+      fromPos: camera.position.clone(), fromTarget: controls.target.clone(),
+      toPos: pos.clone(), toTarget: target.clone(),
+      t0: performance.now(), duration: duration || 950
+    };
+  }
+
+  function makeHotspot(colorHex, localPos){
+    var g = new THREE.Group();
+    g.position.copy(localPos);
+    var core = new THREE.Mesh(new THREE.SphereGeometry(0.085,16,16), new THREE.MeshBasicMaterial({color:0xffffff}));
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.017,8,32), new THREE.MeshBasicMaterial({color:new THREE.Color(colorHex), transparent:true, opacity:0.9}));
+    ring.rotation.x = Math.PI/2;
+    var ring2 = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.017,8,32), new THREE.MeshBasicMaterial({color:new THREE.Color(colorHex), transparent:true, opacity:0.4}));
+    ring2.rotation.x = Math.PI/2;
+    g.add(core, ring, ring2);
+    g.userData = {core:core, ring:ring, ring2:ring2};
+    return g;
+  }
+  function pulseHotspot(h, t){
+    h.userData.ring.scale.setScalar(1+0.22*Math.sin(t*3));
+    h.userData.ring2.scale.setScalar(1.5+0.5*Math.sin(t*3+0.7));
+    h.userData.ring2.material.opacity = 0.28+0.18*Math.sin(t*3+0.7);
+    h.userData.core.scale.setScalar(1+0.35*Math.sin(t*3+1.1));
+  }
+
+  /* ---------------- scene builders ---------------- */
+
+  // High-fidelity brain mesh, sourced from NIH 3D (3d.nih.gov) — a real MRI-derived
+  // brain surface reconstruction, decimated for the web. Loaded once and cached;
+  // every scene that wants it (brain, regions) reuses the same parsed geometry.
+  var MODEL_URLS = { brainWhole: './models/brain-whole.glb' };
+  var brainGeometryPromise = null;
+  function getBrainGeometry(){
+    if(!brainGeometryPromise){
+      brainGeometryPromise = new Promise(function(resolve, reject){
+        new GLTFLoader().load(MODEL_URLS.brainWhole, function(gltf){
+          var mesh = null;
+          gltf.scene.traverse(function(o){ if(o.isMesh && !mesh) mesh = o; });
+          if(!mesh){ reject(new Error('no mesh found in brain-whole.glb')); return; }
+          mesh.geometry.center();
+          if(!mesh.geometry.attributes.normal) mesh.geometry.computeVertexNormals();
+          resolve(mesh.geometry);
+        }, undefined, reject);
+      });
+    }
+    return brainGeometryPromise;
+  }
+  // The source model's local axes don't match our scene's Y-up convention;
+  // this rotation + scale, found by visual inspection, orients it correctly.
+  var BRAIN_MODEL_ROTATION_X = -Math.PI/2;
+  var BRAIN_MODEL_SCALE = 0.024;
+  var BRAIN_MODEL_YAW = 0;
+
+  function buildProceduralBrainGeometry(){
+    var geo = new THREE.IcosahedronGeometry(1.7, 4);
+    var pos = geo.attributes.position, v = new THREE.Vector3();
+    for(var i=0;i<pos.count;i++){
+      v.fromBufferAttribute(pos, i);
+      var n = v.clone().normalize();
+      var bump = 0.09*Math.sin(n.x*8+n.y*5) + 0.07*Math.sin(n.y*10+n.z*6) + 0.06*Math.sin(n.z*9+n.x*7);
+      var groove = Math.exp(-Math.pow(v.x*3.2,2)) * 0.16;
+      var scale = 1+bump-groove;
+      v.multiplyScalar(scale);
+      pos.setXYZ(i, v.x, v.y*1.03, v.z*0.9);
+    }
+    geo.computeVertexNormals();
+    return geo;
+  }
+
+  function buildBrain(level){
+    var group = new THREE.Group();
+    var cancelled = false;
+
+    // Instant low-poly placeholder shown immediately; swapped out once the
+    // real NIH 3D model finishes loading (a few hundred KB, usually well
+    // under a second on a local server, but never blocks first paint).
+    var placeholderGeo = buildProceduralBrainGeometry();
+    var placeholder = new THREE.Mesh(placeholderGeo, new THREE.MeshStandardMaterial({color:0xf0b6a8, roughness:0.68, metalness:0.04}));
+    group.add(placeholder);
+
+    var glow = new THREE.Mesh(placeholderGeo.clone(), new THREE.MeshBasicMaterial({color:new THREE.Color(level.color), transparent:true, opacity:0.10, side:THREE.BackSide}));
+    glow.scale.setScalar(1.14);
+    group.add(glow);
+
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(0.95, 0.25, 1.25));
+    group.add(hotspot);
+
+    var brainMesh = placeholder;
+    getBrainGeometry().then(function(geo){
+      if(cancelled) return;
+      var mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({color:0xf0b6a8, roughness:0.62, metalness:0.03}));
+      mesh.rotation.x = BRAIN_MODEL_ROTATION_X;
+      mesh.scale.setScalar(BRAIN_MODEL_SCALE);
+      group.remove(placeholder);
+      disposeObject3D(placeholder);
+      group.add(mesh);
+      group.remove(glow);
+      disposeObject3D(glow);
+      brainMesh = mesh;
+    }).catch(function(err){
+      console.warn('High-fidelity brain model failed to load; keeping stylized placeholder.', err);
+    });
+
+    return {
+      group: group,
+      clickables: [group],
+      camPos: new THREE.Vector3(0, 0.35, 6.4),
+      camTarget: new THREE.Vector3(0,0,0),
+      onDispose: function(){ cancelled = true; },
+      update: function(t){ brainMesh.rotation.y = BRAIN_MODEL_YAW + Math.sin(t*0.05)*0.03; pulseHotspot(hotspot, t); }
+    };
+  }
+
+  function regionColor(id, model3d, fallback){
+    var r = model3d && model3d.regions && model3d.regions.filter(function(x){return x.id===id;})[0];
+    return (r && r.color) || fallback;
+  }
+
+  function buildRegions(level, model3d){
+    var group = new THREE.Group();
+    var clickables = [group], labels = [];
+    var cancelled = false;
+
+    var shellPlaceholderGeo = buildProceduralBrainGeometry();
+    var shell = new THREE.Mesh(shellPlaceholderGeo, new THREE.MeshStandardMaterial({color:0xe7d9ff, transparent:true, opacity:0.14, roughness:1, side:THREE.DoubleSide}));
+    group.add(shell);
+
+    getBrainGeometry().then(function(geo){
+      if(cancelled) return;
+      var hiFiShell = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({color:0xe7d9ff, transparent:true, opacity:0.13, roughness:1, side:THREE.DoubleSide}));
+      hiFiShell.rotation.x = BRAIN_MODEL_ROTATION_X;
+      hiFiShell.rotation.y = Math.PI;
+      hiFiShell.scale.setScalar(BRAIN_MODEL_SCALE);
+      group.remove(shell);
+      disposeObject3D(shell);
+      group.add(hiFiShell);
+      shell = hiFiShell;
+    }).catch(function(err){
+      console.warn('High-fidelity brain shell failed to load; keeping stylized placeholder.', err);
+    });
+
+    var hippoColor = regionColor('hippocampus', model3d, '#f59e0b');
+    var hippoPts = [
+      new THREE.Vector3(0.72,-0.2,0.55), new THREE.Vector3(0.95,-0.05,0.15),
+      new THREE.Vector3(0.85,0.1,-0.25), new THREE.Vector3(0.55,0.05,-0.5),
+      new THREE.Vector3(0.28,-0.1,-0.55)
+    ];
+    var hippoCurve = new THREE.CatmullRomCurve3(hippoPts);
+    var hippoMat = new THREE.MeshStandardMaterial({color:new THREE.Color(hippoColor), roughness:0.4, emissive:new THREE.Color(hippoColor), emissiveIntensity:0.18});
+    var hippoMesh = new THREE.Mesh(new THREE.TubeGeometry(hippoCurve, 40, 0.09, 10, false), hippoMat);
+    group.add(hippoMesh); clickables.push(hippoMesh);
+    labels.push({anchor:new THREE.Vector3(0.85,0.2,-0.25), text:'Hippocampus'});
+    var hippoMesh2 = hippoMesh.clone(); hippoMesh2.scale.x = -1; group.add(hippoMesh2); clickables.push(hippoMesh2);
+
+    var cortexColor = regionColor('cortex', model3d, '#14b8a6');
+    var cap = new THREE.Mesh(
+      new THREE.SphereGeometry(1.78, 24, 24, 0, Math.PI*0.7, 0, Math.PI*0.5),
+      new THREE.MeshStandardMaterial({color:new THREE.Color(cortexColor), roughness:0.5, transparent:true, opacity:0.88, emissive:new THREE.Color(cortexColor), emissiveIntensity:0.12})
+    );
+    cap.rotation.set(0.3, -0.5, 0);
+    group.add(cap); clickables.push(cap);
+    labels.push({anchor:new THREE.Vector3(-0.35,1.35,0.95), text:'Cortex (layer 2/3)'});
+
+    var cbColor = regionColor('cerebellum', model3d, '#9ca3af');
+    var cb = new THREE.Mesh(new THREE.SphereGeometry(0.55,16,12), new THREE.MeshStandardMaterial({color:new THREE.Color(cbColor), roughness:0.9}));
+    cb.position.set(-0.1,-0.9,-1.4); cb.scale.set(1.3,0.8,0.9);
+    group.add(cb); clickables.push(cb);
+    labels.push({anchor:new THREE.Vector3(-0.1,-0.9,-1.4), text:'Cerebellum'});
+
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(0,-1.6,1.35));
+    group.add(hotspot); clickables.push(hotspot);
+
+    return {
+      group: group, clickables: clickables, labels: labels,
+      camPos: new THREE.Vector3(1.3,0.6,5.7), camTarget: new THREE.Vector3(0,0,0),
+      onDispose: function(){ cancelled = true; },
+      update: function(t){
+        pulseHotspot(hotspot, t);
+        var e = 0.18+0.1*Math.sin(t*2);
+        hippoMesh.material.emissiveIntensity = e; hippoMesh2.material.emissiveIntensity = e;
+      }
+    };
+  }
+
+  function buildCircuits(level){
+    var group = new THREE.Group();
+    var rng = mulberry32(42);
+    var N = 14, nodes = [];
+    for(var i=0;i<N;i++){
+      var theta = rng()*Math.PI*2, phi = Math.acos(2*rng()-1), r = 1.1+rng()*0.9;
+      var p = new THREE.Vector3(r*Math.sin(phi)*Math.cos(theta), r*Math.sin(phi)*Math.sin(theta)*0.7, r*Math.cos(phi));
+      var mat = new THREE.MeshStandardMaterial({color:0xffffff, emissive:0x332244, emissiveIntensity:0.3});
+      var mesh = new THREE.Mesh(new THREE.SphereGeometry(0.11,14,14), mat);
+      mesh.position.copy(p);
+      group.add(mesh);
+      nodes.push({mesh:mesh, pos:p});
+    }
+    var edges = [];
+    for(var i=0;i<N;i++){
+      var dists = [];
+      for(var j=0;j<N;j++){ if(i!==j) dists.push({j:j, d:nodes[i].pos.distanceTo(nodes[j].pos)}); }
+      dists.sort(function(a,b){return a.d-b.d;});
+      var linkCount = 2+Math.floor(rng()*2);
+      for(var k=0;k<linkCount;k++){
+        var j = dists[k].j;
+        var key = i<j ? i+'-'+j : j+'-'+i;
+        if(edges.some(function(e){return e.key===key;})) continue;
+        var excitatory = rng() < 0.8;
+        var mid = nodes[i].pos.clone().lerp(nodes[j].pos,0.5).multiplyScalar(1.15);
+        var curve = new THREE.QuadraticBezierCurve3(nodes[i].pos, mid, nodes[j].pos);
+        var geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(20));
+        var baseColor = excitatory ? 0xf97316 : 0x38bdf8;
+        var line = new THREE.Line(geo, new THREE.LineBasicMaterial({color:baseColor, transparent:true, opacity:0.55}));
+        group.add(line);
+        var particle = new THREE.Mesh(new THREE.SphereGeometry(0.045,8,8), new THREE.MeshBasicMaterial({color:baseColor}));
+        group.add(particle);
+        edges.push({key:key, curve:curve, particle:particle, baseSpeed:0.25+rng()*0.2, phase:rng()});
+      }
+    }
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(0,0,2.15));
+    group.add(hotspot);
+
+    var affected = false;
+    function setState(on){
+      affected = on;
+      edges.forEach(function(e){ e.speed = on ? e.baseSpeed*2.4 : e.baseSpeed; });
+      nodes.forEach(function(n){
+        n.mesh.material.emissive.set(on ? 0xff3355 : 0x332244);
+        n.mesh.material.emissiveIntensity = on ? 0.7 : 0.3;
+      });
+    }
+    edges.forEach(function(e){ e.speed = e.baseSpeed; });
+
+    return {
+      group: group,
+      clickables: nodes.map(function(n){return n.mesh;}).concat([hotspot]),
+      camPos: new THREE.Vector3(0,0.3,5.3), camTarget: new THREE.Vector3(0,0,0),
+      toggle: setState,
+      update: function(t){
+        pulseHotspot(hotspot, t);
+        edges.forEach(function(e){
+          var tt = (t*e.speed+e.phase) % 1;
+          e.particle.position.copy(e.curve.getPoint(tt));
+        });
+      }
+    };
+  }
+
+  function buildNeuron(level){
+    var group = new THREE.Group();
+    var rng = mulberry32(123);
+    group.add(new THREE.Mesh(new THREE.SphereGeometry(0.35,20,20), new THREE.MeshStandardMaterial({color:0xffb4a2, roughness:0.5})));
+
+    var spineMeshes = [];
+    function branch(origin, dir, len, radius, depth){
+      if(depth<=0 || len<0.05) return;
+      var pts = [origin.clone()], cur = origin.clone(), d = dir.clone();
+      for(var s=0;s<3;s++){
+        d.x += (rng()-0.5)*0.5; d.y += (rng()-0.5)*0.5; d.z += (rng()-0.5)*0.5; d.normalize();
+        cur = cur.clone().add(d.clone().multiplyScalar(len/3));
+        pts.push(cur.clone());
+      }
+      var curve = new THREE.CatmullRomCurve3(pts);
+      var mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 8, Math.max(radius,0.015), 6, false), new THREE.MeshStandardMaterial({color:0xffd6c9, roughness:0.6}));
+      group.add(mesh);
+      if(depth<=2){
+        for(var i=0;i<2;i++){
+          var tt = 0.3+rng()*0.6;
+          var spine = new THREE.Mesh(new THREE.SphereGeometry(0.028,6,6), new THREE.MeshStandardMaterial({color:0xfca5a5}));
+          spine.position.copy(curve.getPoint(tt));
+          spine.userData.depth = depth;
+          spine.visible = false;
+          group.add(spine);
+          spineMeshes.push(spine);
+        }
+      }
+      var branches = depth>1 ? 2 : 0;
+      for(var b=0;b<branches;b++){
+        var nd = d.clone();
+        nd.x += (rng()-0.5)*0.9; nd.y += (rng()-0.5)*0.9; nd.z += (rng()-0.5)*0.9; nd.normalize();
+        branch(cur, nd, len*0.68, radius*0.65, depth-1);
+      }
+    }
+    var roots = 5;
+    for(var i=0;i<roots;i++){
+      var theta = (i/roots)*Math.PI*2 + rng();
+      var dir = new THREE.Vector3(Math.cos(theta), 0.4+rng()*0.6, Math.sin(theta)).normalize();
+      branch(dir.clone().multiplyScalar(0.35), dir, 0.9, 0.06, 3);
+    }
+
+    var axonDir = new THREE.Vector3(0,-1,0.2).normalize();
+    var axonPts = [new THREE.Vector3(0,-0.35,0)], cur = axonPts[0].clone();
+    for(var s=0;s<5;s++){
+      cur = cur.clone().add(axonDir.clone().multiplyScalar(0.5)).add(new THREE.Vector3((rng()-0.5)*0.15,0,(rng()-0.5)*0.15));
+      axonPts.push(cur.clone());
+    }
+    var axonCurve = new THREE.CatmullRomCurve3(axonPts);
+    var axon = new THREE.Mesh(new THREE.TubeGeometry(axonCurve, 30, 0.045, 8, false), new THREE.MeshStandardMaterial({color:0x93c5fd, roughness:0.5}));
+    group.add(axon);
+    var boutons = [];
+    for(var i=0;i<3;i++){
+      var b = new THREE.Mesh(new THREE.SphereGeometry(0.06,10,10), new THREE.MeshStandardMaterial({color:0x60a5fa, emissive:0x1e40af, emissiveIntensity:0.3}));
+      b.position.copy(axonCurve.getPoint(0.82+i*0.06));
+      group.add(b); boutons.push(b);
+    }
+
+    function setSpineState(premature){
+      spineMeshes.forEach(function(sp){
+        if(premature){ sp.visible = true; sp.scale.setScalar(1.15); }
+        else { sp.visible = sp.userData.depth === 1; sp.scale.setScalar(0.8); }
+      });
+    }
+    setSpineState(false);
+
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(1.05,0.55,0.55));
+    group.add(hotspot);
+
+    return {
+      group: group,
+      clickables: [group.children[0], axon, hotspot],
+      camPos: new THREE.Vector3(0,0.15,4.7), camTarget: new THREE.Vector3(0,-0.2,0),
+      toggle: setSpineState,
+      update: function(t){
+        pulseHotspot(hotspot, t);
+        boutons.forEach(function(b,i){ b.material.emissiveIntensity = 0.3+0.4*Math.abs(Math.sin(t*2+i)); });
+      }
+    };
+  }
+
+  function buildSynapse(level){
+    var group = new THREE.Group();
+    var rng = mulberry32(77);
+
+    var pre = new THREE.Mesh(
+      new THREE.SphereGeometry(0.55,24,24, 0, Math.PI*2, 0, Math.PI*0.65),
+      new THREE.MeshStandardMaterial({color:0x93c5fd, roughness:0.5, side:THREE.DoubleSide})
+    );
+    pre.rotation.x = Math.PI; pre.position.set(-1.1,0.3,0);
+    group.add(pre);
+
+    var vesicles = [];
+    for(var i=0;i<10;i++){
+      var vmesh = new THREE.Mesh(new THREE.SphereGeometry(0.06,10,10), new THREE.MeshStandardMaterial({color:0xfacc15, emissive:0x854d0e, emissiveIntensity:0.2}));
+      var a = rng()*Math.PI*2, r = 0.15+rng()*0.25;
+      vmesh.position.set(-1.1+Math.cos(a)*r, 0.15+rng()*0.3, Math.sin(a)*r);
+      vmesh.userData.t = rng(); vmesh.userData.base = vmesh.position.clone(); vmesh.userData.idx = i;
+      group.add(vmesh); vesicles.push(vmesh);
+    }
+
+    var post = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.9,0.9,1.6,24,1,true,Math.PI*0.7,Math.PI*0.6),
+      new THREE.MeshStandardMaterial({color:0xc4b5fd, roughness:0.6, side:THREE.DoubleSide})
+    );
+    post.rotation.z = Math.PI/2; post.position.set(1.0,0,0);
+    group.add(post);
+
+    var receptors = [];
+    var cols=4, rows=4;
+    for(var c=0;c<cols;c++){
+      for(var r=0;r<rows;r++){
+        var rmesh = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.06,0.22,8), new THREE.MeshStandardMaterial({color:0x22c55e}));
+        rmesh.rotation.z = Math.PI/2;
+        rmesh.position.set(0.82, -0.45+r*0.3, -0.45+c*0.3);
+        rmesh.visible = false;
+        group.add(rmesh); receptors.push(rmesh);
+      }
+    }
+    function setReceptorState(excess){
+      var activeCount = excess ? receptors.length : Math.round(receptors.length*0.45);
+      receptors.forEach(function(r,i){ r.visible = i<activeCount; });
+    }
+    setReceptorState(false);
+
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(0,-1.1,0.6));
+    group.add(hotspot);
+
+    return {
+      group: group,
+      clickables: [pre, post, hotspot],
+      camPos: new THREE.Vector3(0,0.1,4.5), camTarget: new THREE.Vector3(0,-0.1,0),
+      toggle: setReceptorState,
+      update: function(t){
+        pulseHotspot(hotspot, t);
+        vesicles.forEach(function(v){
+          var cycle = (t*0.3+v.userData.t) % 1;
+          if(cycle > 0.85){
+            var k = (cycle-0.85)/0.15;
+            v.position.x = v.userData.base.x + k*2.05;
+            v.material.transparent = true; v.material.opacity = 1-k;
+          } else {
+            v.position.x = v.userData.base.x + Math.cos(t*0.5+v.userData.idx)*0.03;
+            v.material.transparent = false; v.material.opacity = 1;
+          }
+        });
+      }
+    };
+  }
+
+  function buildProtein(level, model3d){
+    var group = new THREE.Group();
+    var domains = (model3d && model3d.domains) || [];
+    var total = (model3d && model3d.proteinLength) || 1343;
+    var N = 220, pts = [];
+    for(var i=0;i<=N;i++){
+      var u = i/N, ang = u*Math.PI*6, r = 1.2;
+      pts.push(new THREE.Vector3(Math.cos(ang)*r*(0.5+0.5*u), (u-0.5)*3.3, Math.sin(ang)*r*(0.5+0.5*u)));
+    }
+    var baseMesh = new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 220, 0.045, 8, false),
+      new THREE.MeshStandardMaterial({color:0xd1d5db, roughness:0.6})
+    );
+    group.add(baseMesh);
+
+    var labels = [], segMeshes = [];
+    domains.forEach(function(d){
+      var u0 = Math.max(0, d.start/total), u1 = Math.min(1, d.end/total);
+      var i0 = Math.floor(u0*N), i1 = Math.ceil(u1*N);
+      var segPts = pts.slice(Math.max(0,i0), Math.min(N,i1)+1);
+      if(segPts.length < 2) return;
+      var curve = new THREE.CatmullRomCurve3(segPts);
+      var mesh = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, Math.max(8,segPts.length), 0.09, 10, false),
+        new THREE.MeshStandardMaterial({color:new THREE.Color(d.color), roughness:0.45, emissive:new THREE.Color(d.color), emissiveIntensity:0.2})
+      );
+      group.add(mesh); segMeshes.push(mesh);
+      labels.push({anchor: segPts[Math.floor(segPts.length/2)].clone(), text: d.name});
+    });
+
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(0,1.95,0.5));
+    group.add(hotspot);
+
+    return {
+      group: group,
+      clickables: segMeshes.concat([baseMesh, hotspot]),
+      labels: labels,
+      camPos: new THREE.Vector3(2.5,0.3,3.5), camTarget: new THREE.Vector3(0,0,0),
+      update: function(t){ pulseHotspot(hotspot, t); group.rotation.y = t*0.05; }
+    };
+  }
+
+  function buildAminoAcid(level, model3d){
+    var group = new THREE.Group();
+    var examples = (model3d && model3d.examples) || [{id:'glycine',name:'Glycine',hasSulfur:false}];
+    var CPK = { C:0x6b7280, H:0xf3f4f6, N:0x3b82f6, O:0xef4444, S:0xeab308 };
+    var allAtoms = [];
+
+    function atom(elem, p, radius){
+      var m = new THREE.Mesh(new THREE.SphereGeometry(radius,20,20), new THREE.MeshStandardMaterial({color:CPK[elem], roughness:0.35, metalness:0.05}));
+      m.position.copy(p);
+      group.add(m); allAtoms.push(m);
+      return m;
+    }
+    function bond(a,b){
+      var dir = new THREE.Vector3().subVectors(b,a), len = dir.length();
+      var m = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,len,8), new THREE.MeshStandardMaterial({color:0xcbd5e1, roughness:0.6}));
+      m.position.copy(a).add(dir.clone().multiplyScalar(0.5));
+      m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.clone().normalize());
+      group.add(m);
+      return m;
+    }
+
+    var pCA = new THREE.Vector3(0,0,0);
+    var pN  = new THREE.Vector3(-0.9,0.55,0.2);
+    var pC  = new THREE.Vector3(0.9,0.5,-0.2);
+    var pO1 = new THREE.Vector3(1.6,1.1,-0.5);
+    var pO2 = new THREE.Vector3(1.1,-0.4,-0.6);
+    var pH  = new THREE.Vector3(0.1,-0.2,1.0);
+    var pHN1= new THREE.Vector3(-1.6,0.2,0.5);
+    var pHN2= new THREE.Vector3(-1.0,1.3,0.6);
+    var pR  = new THREE.Vector3(-0.3,-0.5,-1.1);
+    var pRS = new THREE.Vector3(-0.9,-1.3,-1.7);
+
+    atom('C', pCA, 0.22); atom('N', pN, 0.20); atom('C', pC, 0.20);
+    atom('O', pO1, 0.18); atom('O', pO2, 0.18); atom('H', pH, 0.11);
+    atom('H', pHN1, 0.10); atom('H', pHN2, 0.10);
+    bond(pCA,pN); bond(pCA,pC); bond(pC,pO1); bond(pC,pO2); bond(pCA,pH); bond(pN,pHN1); bond(pN,pHN2);
+
+    var dynamic = [];
+    function clearDynamic(){ dynamic.forEach(function(o){ group.remove(o); var idx=allAtoms.indexOf(o); if(idx>=0) allAtoms.splice(idx,1); }); dynamic = []; }
+    function buildRGroup(ex){
+      clearDynamic();
+      if(ex && ex.hasSulfur){
+        var rC = atom('C', pR, 0.19); dynamic.push(rC);
+        var rS = atom('S', pRS, 0.22); dynamic.push(rS);
+        var hR1 = atom('H', pR.clone().add(new THREE.Vector3(0.35,0.35,0)), 0.09); dynamic.push(hR1);
+        dynamic.push(bond(pCA,pR)); dynamic.push(bond(pR,pRS)); dynamic.push(bond(pR,hR1.position));
+      } else {
+        var hR = atom('H', pR, 0.13); dynamic.push(hR);
+        dynamic.push(bond(pCA,pR));
+      }
+    }
+    buildRGroup(examples[0]);
+
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(0,1.6,0.8));
+    group.add(hotspot);
+
+    return {
+      group: group,
+      clickables: allAtoms.concat([hotspot]),
+      camPos: new THREE.Vector3(0.4,0.2,4.3), camTarget: new THREE.Vector3(0,0,-0.2),
+      setExample: function(idx){ buildRGroup(examples[idx]); this.clickables = allAtoms.concat([hotspot]); },
+      update: function(t){ pulseHotspot(hotspot, t); group.rotation.y = t*0.15; }
+    };
+  }
+
+  function buildElements(level, model3d){
+    var group = new THREE.Group();
+    var items = (model3d && model3d.items) || [];
+    var nucleusGroup = new THREE.Group(), shellsGroup = new THREE.Group();
+    group.add(nucleusGroup, shellsGroup);
+    var electronMeshes = [];
+
+    function buildElement(idx){
+      nucleusGroup.clear(); shellsGroup.clear(); electronMeshes = [];
+      var el = items[idx]; if(!el) return;
+      var rng = mulberry32(el.atomicNumber*13+7);
+      var nucleons = el.protons+el.neutrons;
+      var nucleusRadius = 0.3+Math.min(nucleons,40)*0.006;
+      for(var i=0;i<Math.min(nucleons,40);i++){
+        var isProton = i<el.protons;
+        var a=rng()*Math.PI*2, b=rng()*Math.PI*2, r=rng()*nucleusRadius*0.85;
+        var p = new THREE.Vector3(Math.cos(a)*Math.sin(b)*r, Math.sin(a)*Math.sin(b)*r, Math.cos(b)*r);
+        var m = new THREE.Mesh(new THREE.SphereGeometry(0.115,10,10), new THREE.MeshStandardMaterial({color:isProton?0xef4444:0x9ca3af, roughness:0.4}));
+        m.position.copy(p);
+        nucleusGroup.add(m);
+      }
+      el.shells.forEach(function(count, si){
+        var radius = 0.9+si*0.65;
+        var ring = new THREE.Mesh(new THREE.TorusGeometry(radius,0.006,8,64), new THREE.MeshBasicMaterial({color:0x93c5fd, transparent:true, opacity:0.35}));
+        ring.rotation.x = Math.PI/2+si*0.35;
+        shellsGroup.add(ring);
+        for(var e=0;e<count;e++){
+          var ang = (e/count)*Math.PI*2;
+          var em = new THREE.Mesh(new THREE.SphereGeometry(0.07,10,10), new THREE.MeshStandardMaterial({color:0x60a5fa, emissive:0x1d4ed8, emissiveIntensity:0.5}));
+          shellsGroup.add(em);
+          electronMeshes.push({mesh:em, radius:radius, angle0:ang, tilt:si*0.35, speed:0.5-si*0.08});
+        }
+      });
+    }
+    buildElement(1);
+
+    return {
+      group: group,
+      clickables: [],
+      camPos: new THREE.Vector3(0,0.3,5.4), camTarget: new THREE.Vector3(0,0,0),
+      setExample: function(idx){ buildElement(idx); },
+      update: function(t){
+        electronMeshes.forEach(function(e){
+          var ang = e.angle0+t*e.speed;
+          e.mesh.position.set(Math.cos(ang)*e.radius, Math.sin(ang)*e.radius*Math.sin(e.tilt), Math.sin(ang)*e.radius*Math.cos(e.tilt));
+        });
+      }
+    };
+  }
+
+  var builders = {
+    brain: function(level, m){ return buildBrain(level); },
+    regions: function(level, m){ return buildRegions(level, m); },
+    circuits: function(level, m){ return buildCircuits(level); },
+    neuron: function(level, m){ return buildNeuron(level); },
+    synapse: function(level, m){ return buildSynapse(level); },
+    protein: function(level, m){ return buildProtein(level, m); },
+    'amino-acid': function(level, m){ return buildAminoAcid(level, m); },
+    elements: function(level, m){ return buildElements(level, m); }
+  };
+
+  /* ---------------- controls UI (toggle switch / tab buttons) ---------------- */
+
+  function renderControls(level, sceneObj){
+    var controlsEl = document.getElementById('viewerControls');
+    controlsEl.innerHTML = '';
+    var m = level.model3d || {};
+
+    if(sceneObj.toggle && m.toggle){
+      var wrap = document.createElement('div');
+      wrap.className = 'vc-toggle';
+      wrap.innerHTML = '<span class="offlabel">' + escapeHtml(m.toggle.offLabel) + '</span><span class="dot"></span><span class="onlabel">' + escapeHtml(m.toggle.onLabel) + '</span>';
+      var on = false;
+      wrap.addEventListener('click', function(){
+        on = !on;
+        wrap.classList.toggle('on', on);
+        sceneObj.toggle(on);
+      });
+      controlsEl.appendChild(wrap);
+    }
+
+    if(sceneObj.setExample && m.type === 'amino-acid'){
+      (m.examples||[]).forEach(function(ex, idx){
+        var b = document.createElement('button');
+        b.className = 'vc-btn' + (idx===0?' active':'');
+        b.type = 'button';
+        b.textContent = ex.name;
+        b.addEventListener('click', function(){
+          Array.prototype.forEach.call(controlsEl.querySelectorAll('.vc-btn'), function(x){x.classList.remove('active');});
+          b.classList.add('active');
+          sceneObj.setExample(idx);
+        });
+        controlsEl.appendChild(b);
+      });
+    }
+
+    if(sceneObj.setExample && m.type === 'elements'){
+      (m.items||[]).forEach(function(el, idx){
+        var b = document.createElement('button');
+        b.className = 'vc-btn' + (idx===1?' active':'');
+        b.type = 'button';
+        b.textContent = el.symbol;
+        b.title = el.name;
+        b.addEventListener('click', function(){
+          Array.prototype.forEach.call(controlsEl.querySelectorAll('.vc-btn'), function(x){x.classList.remove('active');});
+          b.classList.add('active');
+          sceneObj.setExample(idx);
+        });
+        controlsEl.appendChild(b);
+      });
+    }
+  }
+
+  /* ---------------- label overlay ---------------- */
+
+  function updateLabels(){
+    if(!labelsEl) return;
+    var labels = (currentSceneObj && currentSceneObj.labels) || [];
+    while(labelsEl.children.length < labels.length){
+      var d = document.createElement('div'); d.className = 'viewer-label'; labelsEl.appendChild(d);
+    }
+    while(labelsEl.children.length > labels.length){ labelsEl.removeChild(labelsEl.lastChild); }
+    if(!labels.length || !currentGroup) return;
+    var rect = renderer.domElement.getBoundingClientRect();
+    labels.forEach(function(l, i){
+      var el = labelsEl.children[i];
+      el.textContent = l.text;
+      var world = currentGroup.localToWorld(l.anchor.clone());
+      var ndc = world.project(camera);
+      if(ndc.z > 1 || ndc.z < -1){ el.style.display = 'none'; return; }
+      el.style.display = 'block';
+      var x = (ndc.x*0.5+0.5)*rect.width;
+      var y = (1-(ndc.y*0.5+0.5))*rect.height;
+      el.style.transform = 'translate(-50%, -125%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+    });
+  }
+
+  /* ---------------- public: load a level's scene ---------------- */
+
+  function loadLevel(level){
+    if(!ready) return;
+    if(currentSceneObj && currentSceneObj.onDispose){ currentSceneObj.onDispose(); }
+    if(currentGroup){ scene.remove(currentGroup); disposeObject3D(currentGroup); }
+    currentGroup = null; currentSceneObj = null;
+
+    var m = level.model3d || {};
+    var builder = builders[m.type];
+    if(!builder){ if(badgeEl) badgeEl.style.display='none'; return; }
+    if(badgeEl) badgeEl.style.display='inline-block';
+
+    var built = builder(level, m);
+    currentGroup = built.group;
+    currentSceneObj = built;
+    currentModel3d = { canAdvance: !!level.childId };
+    scene.add(currentGroup);
+    scene.fog.color.set(0x0c0a18);
+
+    flyTo(built.camPos, built.camTarget, 950);
+    controls.autoRotate = true;
+
+    renderControls(level, built);
+
+    if(viewerInstructionsEl){
+      viewerInstructionsEl.textContent = level.childId
+        ? '🖱️ Drag to rotate • Scroll to zoom • Click the glowing marker to zoom in'
+        : '🖱️ Drag to rotate • Scroll to zoom — smallest scale reached';
+    }
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var dt = clock.getDelta(), t = clock.elapsedTime;
+    if(camAnim){
+      var e = Math.min(1, (performance.now()-camAnim.t0)/camAnim.duration);
+      var k = easeInOutCubic(e);
+      camera.position.lerpVectors(camAnim.fromPos, camAnim.toPos, k);
+      controls.target.lerpVectors(camAnim.fromTarget, camAnim.toTarget, k);
+      if(e>=1) camAnim = null;
+    }
+    if(currentSceneObj && currentSceneObj.update) currentSceneObj.update(t, dt);
+    controls.update();
+    updateLabels();
+    renderer.render(scene, camera);
+  }
+
+  return { init: init, loadLevel: loadLevel };
+})();
+
+/* ---------------- boot ---------------- */
+
+if(levels.length){
+  renderFooter();
+  var viewerOk = false;
+  try{
+    viewerOk = Viewer3D.init({
+      hostEl: document.getElementById('viewerHost'),
+      labelsEl: document.getElementById('viewerLabels'),
+      loadingEl: document.getElementById('viewerLoading'),
+      badgeEl: document.getElementById('viewerBadge'),
+      onAdvance: function(){ goTo(current+1); }
+    });
+  } catch(e){ viewerOk = false; console.error('3D viewer failed to start', e); }
+
+  if(!viewerOk){
+    var wrap = document.getElementById('viewerWrap');
+    wrap.innerHTML = '<div class="viewer-fallback"><div class="big">🧠</div><div>3D preview isn\'t available in this browser.<br>Use the buttons and level map below to navigate instead.</div></div>';
+  }
+
+  goTo(0);
+} else {
+  cardEl.innerHTML = '<p style="color:#c00;">Could not load app data.</p>';
+}
+
+window.__syngapBooted = true;
+</script>
+<script>
+// Classic (non-module) safety net: ES module <script> tags cannot load at all
+// over the file:// protocol in Chrome/Edge (a browser security restriction,
+// not a bug in this app), which would otherwise leave a blank "Loading…" page
+// with no explanation. If the module above hasn't finished booting after a
+// couple of seconds, replace the page with clear instructions instead of
+// leaving it stuck. Firefox and any http(s)-served page are unaffected.
+setTimeout(function(){
+  if(window.__syngapBooted) return;
+  var wrap = document.getElementById('viewerWrap');
+  if(wrap) wrap.style.display = 'none';
+  var card = document.getElementById('card');
+  if(card){
+    card.innerHTML =
+      '<div style="text-align:center;padding:20px 10px;">' +
+      '<div style="font-size:2.4rem;margin-bottom:10px;">🧠</div>' +
+      '<h2 style="margin:0 0 10px;">This app needs to be served over a local web server</h2>' +
+      '<p style="color:#5b5470;max-width:520px;margin:0 auto 16px;line-height:1.6;">' +
+      'The 3D viewer uses JavaScript modules, which Chrome and Edge block when a file is opened directly from disk (a file:// address). ' +
+      'This is a one-time setup — from a terminal, in the folder with these files, run:</p>' +
+      '<pre style="background:#f2effc;padding:14px 18px;border-radius:10px;display:inline-block;text-align:left;font-size:0.9rem;">cd path/to/this/folder\npython3 -m http.server 8000</pre>' +
+      '<p style="color:#5b5470;max-width:520px;margin:16px auto 0;line-height:1.6;">Then open <strong>http://localhost:8000</strong> in your browser. ' +
+      'See the included README for details, or try Firefox, which can often run this app directly from disk.</p>' +
+      '</div>';
+  }
+}, 2200);
+</script>
+</body>
+</html>
