@@ -13,6 +13,7 @@ Both views share the same navigation (level map, breadcrumb, ← / → arrow key
 - `data.json` — the content backend: every level's facts, research summaries, citations, and 3D-model settings (domain boundaries, element data, etc.) live here
 - `vendor/` — a local copy of the Three.js 3D library the viewer uses (`three.module.min.js`, `OrbitControls.js`, `GLTFLoader.js`, `BufferGeometryUtils.js`) — no internet connection needed once you have these files
 - `models/brain-whole.glb` — the high-fidelity brain mesh used at the Brain and Brain Regions levels (see "About the 3D models" below)
+- `dna/` — a second, standalone page zooming into the DNA level and the 8 mutation types (see "The DNA & Mutations page" below)
 
 ## How to use it — run a local server (required for the 3D viewer)
 
@@ -79,3 +80,16 @@ The Brain and Brain Regions levels use a real, high-fidelity brain mesh (`models
 ## Notes on the content
 
 All facts and citations were compiled from published, peer-reviewed literature and reputable clinical/genetic resources (GeneReviews, NORD, Orphanet, PubMed/PMC, UniProt, and others — see the "Published sources" list on every level). This is an educational summary, not medical advice, and SYNGAP1 research is moving quickly — always check the original sources for the latest findings.
+
+## The DNA & Mutations page (`dna/`)
+
+A second, standalone page — "SYNGAP1: DNA & Mutations" — zooms in one level further than this app does: from Chromosome 6 → the SYNGAP1 gene → its exons → a real 51-base DNA fragment (the start of exon 1) → the individual bases. It's a rotatable 3D double helix, colored per base (A/T/G/C), and it's currently **researcher-only** (no For Families / For Researchers toggle yet — that can be added later the same way it was added to the main app).
+
+- `dna/index.html` — the DNA page (HTML/CSS/JS), same structure/pattern as the main app
+- `dna/dna-data.json` — its content backend (levels, the real sequence, and all 8 mutation-type write-ups + citations)
+- `dna/template.html` — editable source `index.html` is generated from (see "Editing content" above — same `__DATA_JSON__` injection pattern)
+- `dna/vendor/` — its own local copy of Three.js (same files as the main app's `vendor/`)
+
+It lets you choose between the 8 ways a SYNGAP1 mutation can occur — missense, nonsense, frameshift deletion, frameshift insertion, in-frame deletion/insertion, splice-site, exon deletion, and whole/partial gene deletion — and see, side by side, the original DNA next to the mutated version. The five "letter-level" mutation types render as two real double helices; the three larger-scale types (splice-site, exon deletion, gene deletion) render as a schematic exon map instead, since showing individual DNA letters wouldn't make sense at that scale. A final "Two Copies" level explains haploinsufficiency — why a working copy of SYNGAP1 alongside a broken one still isn't enough.
+
+**Cross-links:** the DNA page links back to this app (`../index.html`) from its header, footer, and final level. In the other direction, this app's **Protein** and **Amino Acids** levels (in 🔬 For Researchers mode only) show a "See how a DNA mutation…" link straight into the DNA page's helix level (`dna/index.html?level=helix`). Both apps support a `?level=<id>` URL parameter for deep-linking straight to a level (the DNA page also supports `&mutation=<id>` to pre-select a mutation type).

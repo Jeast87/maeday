@@ -1,0 +1,262 @@
+{
+  "meta": {
+    "title": "SYNGAP1: DNA & Mutations",
+    "description": "An interactive 3D explainer of how different classes of DNA mutation affect the SYNGAP1 gene — with a real coding-sequence fragment, real published example variants, and citations at every step.",
+    "disclaimer": "This page is an educational summary compiled from published scientific and clinical literature (GeneReviews, ClinVar, PubMed/PMC, UniProt, Ensembl). It is not medical advice or a genetic report. The rotatable double helix demonstrates each mutation mechanism using one real, verified 17-codon fragment from SYNGAP1 exon 1 as a stand-in — most of the specific published example variants cited on each tab occur elsewhere in the gene's 1,343 codons, not at the exact position animated. Where a demo is illustrative rather than a literal published case, that is stated explicitly.",
+    "lastUpdated": "2026-08-28",
+    "companionApp": {
+      "label": "SYNGAP1: From Brain to Atom",
+      "url": "../index.html"
+    }
+  },
+  "sequence": {
+    "refseqMrna": "NM_006772.3",
+    "refseqProtein": "NP_006763.2",
+    "uniprot": "Q96PV0",
+    "region": "CDS c.1–c.51, entirely within exon 1 (codons 1–17 of 1,343)",
+    "dna": "ATGAGCAGGTCTCGAGCCTCCATCCATCGGGGGAGCATCCCCGCGATGTCC",
+    "note": "Verified by independently fetching the NM_006772.3 GenBank record and the UniProt Q96PV0 canonical protein sequence, then translating this fragment codon-by-codon by hand to confirm the two agree.",
+    "citations": [
+      {"title": "NM_006772.3 (SYNGAP1 transcript variant 1) — NCBI GenBank record", "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_006772.3&rettype=gb&retmode=text"},
+      {"title": "UniProt Q96PV0 (SynGAP1, human) — canonical sequence", "url": "https://www.uniprot.org/uniprotkb/Q96PV0/entry"}
+    ]
+  },
+  "levels": [
+    {
+      "id": "chromosome",
+      "order": 1,
+      "name": "Chromosome 6",
+      "shortName": "Chromosome",
+      "icon": "🧬",
+      "color": "#0ea5e9",
+      "childId": "gene",
+      "tagline": "Where the SYNGAP1 gene lives",
+      "summary": "Every cell carries two copies of chromosome 6 — one inherited from each parent. Near the tip of its short arm, at cytogenetic band 6p21.32, sits a single gene called SYNGAP1. A change to just one of its two copies is enough to cause SYNGAP1-Related Disorder.",
+      "facts": [
+        "SYNGAP1 sits at cytogenetic band 6p21.32, on the short (p) arm of chromosome 6.",
+        "In the current human reference genome (GRCh38), the gene spans roughly chr6:33,419,661–33,453,689 — about 34,000 DNA letters long.",
+        "Everyone has two copies of chromosome 6, and therefore two copies of SYNGAP1 — one from each parent.",
+        "SYNGAP1-RD is autosomal dominant: a pathogenic change in just one of the two copies is enough to cause the disorder — explored further on the last page of this explorer."
+      ],
+      "citations": [
+        {"title": "SYNGAP1 — Ensembl gene summary (ENSG00000197283)", "url": "https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000197283"},
+        {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+      ],
+      "model3d": {"type": "chromosome"}
+    },
+    {
+      "id": "gene",
+      "order": 2,
+      "name": "The SYNGAP1 Gene",
+      "shortName": "Gene",
+      "icon": "🧟",
+      "color": "#6366f1",
+      "childId": "helix",
+      "tagline": "19 exons carry the instructions; introns don't",
+      "summary": "Like most human genes, SYNGAP1 isn't one continuous stretch of coding DNA. It's split into 19 exons — the segments that actually get read into protein — separated by introns, non-coding stretches that get cut out before the instructions are used. Several mutation types specifically target the boundaries between these pieces, or remove whole exons outright.",
+      "facts": [
+        "SYNGAP1 is built from 19 exons, spliced together to encode a 1,343-amino-acid protein (isoform SynGAP-α1).",
+        "Introns are removed from the raw transcript by the spliceosome, a molecular machine that recognizes short signal sequences at each exon-intron boundary.",
+        "A single mistake at one of these boundaries (a 'splice-site' variant) can cause an entire exon to be skipped, or a piece of intron to be mistakenly kept — see the Splice-site tab on the next page.",
+        "Large deletions can also remove one or more exons directly from the DNA itself, rather than through a splicing error. Chromosomal microarray testing — which looks for missing or duplicated DNA segments rather than reading letters one by one — identifies the cause this way in about 11% of published SYNGAP1-RD cases (6 of 55 in the largest reported cohort)."
+      ],
+      "citations": [
+        {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+      ],
+      "model3d": {"type": "gene", "exonCount": 19}
+    },
+    {
+      "id": "helix",
+      "order": 3,
+      "name": "DNA & Mutations",
+      "shortName": "DNA",
+      "icon": "🧬",
+      "color": "#ec4899",
+      "childId": "copies",
+      "tagline": "Same starting sequence, eight different ways it can break",
+      "summary": "This is a real 17-codon fragment from the very start of the SYNGAP1 gene (exon 1), shown as a rotatable double helix. Choose a mutation type below to see what that class of change physically does to the DNA — and what it means for the protein several steps downstream.",
+      "facts": [
+        "This fragment (codons 1–17, encoding Met-Ser-Arg-Ser-Arg-Ala-Ser-Ile-His-Arg-Gly-Ser-Ile-Pro-Ala-Met-Ser) is real SYNGAP1 coding sequence, from RefSeq NM_006772.3.",
+        "Every mutation class below has at least one real, published example found in a person with SYNGAP1-RD — see the citation on each tab.",
+        "The 3D animation always uses this same 17-codon fragment to demonstrate the mechanism; where that differs from the exact published example's position in the gene, it's noted on that tab."
+      ],
+      "citations": [
+        {"title": "NM_006772.3 (SYNGAP1 transcript variant 1) — NCBI GenBank record", "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_006772.3&rettype=gb&retmode=text"},
+        {"title": "UniProt Q96PV0 (SynGAP1, human)", "url": "https://www.uniprot.org/uniprotkb/Q96PV0/entry"}
+      ],
+      "model3d": {"type": "helix"}
+    },
+    {
+      "id": "copies",
+      "order": 4,
+      "name": "Two Copies",
+      "shortName": "2 Copies",
+      "icon": "⚖️",
+      "color": "#f59e0b",
+      "childId": null,
+      "tagline": "Why one broken copy is enough",
+      "summary": "SYNGAP1-Related Disorder isn't caused by both copies of the gene failing — it's caused by just one. This mechanism is called haploinsufficiency: one functional copy of SYNGAP1 doesn't make enough SynGAP protein to support typical brain development, even though the other copy works perfectly.",
+      "facts": [
+        "Everyone has two copies of SYNGAP1 — a typical person's cells run comfortably on the combined protein output of both.",
+        "In SYNGAP1-RD, one copy carries a pathogenic variant (any of the eight types from the previous page) and produces little to no functional protein.",
+        "The remaining working copy can't fully compensate on its own — overall SynGAP protein output drops, which is thought to be sufficient by itself to disrupt synapse development.",
+        "This is why SYNGAP1-RD is described as autosomal dominant with a loss-of-function / haploinsufficiency mechanism, rather than requiring both copies to be affected."
+      ],
+      "citations": [
+        {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+      ],
+      "model3d": {"type": "copies"}
+    }
+  ],
+  "mutationTypes": [
+    {
+      "id": "missense",
+      "order": 1,
+      "label": "Missense",
+      "mechanism": "helix",
+      "headline": "One base changes → one amino acid changes",
+      "explain": "A single DNA letter is swapped for another within one codon. Everything before and after that codon stays exactly the same — only that one codon's meaning changes, so only one amino acid in the finished protein is affected.",
+      "demo": {"type": "substitute", "codonIndex": 5, "baseIndex": 0, "newBase": "A"},
+      "realExample": {
+        "hgvs_c": "c.1685C>T",
+        "hgvs_p": "p.Pro562Leu",
+        "note": "A recurrent de novo missense change (proline→leucine at residue 562, near the Ras-GAP catalytic region), found independently in multiple unrelated people with SYNGAP1-RD and absent from population databases (gnomAD).",
+        "citations": [
+          {"title": "ClinVar: NM_006772.3(SYNGAP1):c.1685C>T (p.Pro562Leu)", "url": "https://www.ncbi.nlm.nih.gov/clinvar/variation/41462/"},
+          {"title": "Berryer et al. (2013), Mutations in SYNGAP1 cause intellectual disability, autism, and a specific form of epilepsy — Nat Commun", "url": "https://pubmed.ncbi.nlm.nih.gov/23161826/"},
+          {"title": "Mignot et al. (2016), Genetic and neurodevelopmental spectrum of SYNGAP1-associated ID and epilepsy — J Med Genet", "url": "https://pubmed.ncbi.nlm.nih.gov/26989088/"}
+        ]
+      },
+      "extraNote": {
+        "text": "Not every missense change is this well understood — many remain 'variants of uncertain significance' because their effect depends heavily on exactly where in the protein's folded structure they land. Computer-based atomistic modeling of three other missense variants showed each breaks the protein's 3D structure a different way: p.Leu327Pro loses a stabilizing hydrogen bond and unfolds part of the C2 domain; p.Glu436Lys flips a stabilizing salt bridge into repulsion; p.Ala469Asp forms a new, misplaced bond that breaks a helix in the Ras-GAP domain.",
+        "citations": [
+          {"title": "Ali et al. (2024), Atomistic simulations reveal impacts of missense mutations on the structure and function of SynGAP1 — Briefings in Bioinformatics", "url": "https://academic.oup.com/bib/article/25/6/bbae458/7765456"}
+        ]
+      }
+    },
+    {
+      "id": "nonsense",
+      "order": 2,
+      "label": "Nonsense",
+      "mechanism": "helix",
+      "headline": "One base changes → the protein stops short",
+      "explain": "A single DNA letter changes — but this time the new codon doesn't spell an amino acid at all. It spells “STOP.” Protein assembly halts immediately at that point, so everything downstream of the change is simply never built.",
+      "demo": {"type": "substitute", "codonIndex": 4, "baseIndex": 0, "newBase": "T"},
+      "realExample": {
+        "hgvs_c": "c.1735C>T",
+        "hgvs_p": "p.Arg579Ter",
+        "note": "A de novo nonsense variant creating a premature stop codon, absent from population databases; among the first SYNGAP1 variants ever published, found in a person with nonsyndromic intellectual disability.",
+        "citations": [
+          {"title": "ClinVar: NM_006772.3(SYNGAP1):c.1735C>T (p.Arg579Ter)", "url": "https://www.ncbi.nlm.nih.gov/clinvar/RCV000006765/"},
+          {"title": "Hamdan et al. (2009), Mutations in SYNGAP1 in Autosomal Nonsyndromic Mental Retardation — N Engl J Med", "url": "https://pubmed.ncbi.nlm.nih.gov/19196676/"}
+        ]
+      },
+      "extraNote": {
+        "text": "Transcripts carrying an early premature stop signal like this are usually flagged and degraded by the cell's quality-control system (nonsense-mediated mRNA decay) before they're even translated into protein — one reason loss-of-function variants like this tend to simply remove that copy's protein output, rather than producing a stable, truncated protein.",
+        "citations": [
+          {"title": "Understanding Your Genetic Report with SYNGAP1 — CURE SYNGAP1 Foundation", "url": "https://curesyngap1.org/blog/understanding-your-genetic-report-with-syngap1-a-rare-disease/"}
+        ]
+      }
+    },
+    {
+      "id": "frameshift-deletion",
+      "order": 3,
+      "label": "Frameshift Deletion",
+      "mechanism": "helix",
+      "headline": "A letter disappears → every codon after it regroups",
+      "explain": "One DNA letter is simply removed. The letters after it haven't changed at all — but because the cell reads DNA in fixed groups of three, everything downstream is now grouped differently. A completely different string of amino acids gets built from that point on, usually ending at a new, out-of-place stop codon a short distance later.",
+      "demo": {"type": "delete", "atIndex": 6, "count": 1},
+      "realExample": {
+        "hgvs_c": "c.199del",
+        "hgvs_p": "p.Leu67Tyrfs*2",
+        "note": "A single-nucleotide deletion in exon 3 shifts the reading frame and creates a new premature stop just two codons later.",
+        "citations": [
+          {"title": "ClinVar: NM_006772.3(SYNGAP1):c.199del (p.Leu67Tyrfs*2)", "url": "https://www.ncbi.nlm.nih.gov/clinvar/RCV000645738/"},
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet (reports a second example, c.333del, p.Lys114Serfs*20)", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"}
+        ]
+      }
+    },
+    {
+      "id": "frameshift-insertion",
+      "order": 4,
+      "label": "Frameshift Insertion",
+      "mechanism": "helix",
+      "headline": "An extra letter appears → every codon after it regroups",
+      "explain": "An extra DNA letter is inserted where none existed before. Just like a deletion, this doesn't change any of the surrounding letters themselves — it just shifts the reading frame for everything downstream, regrouping it into new codons and usually hitting a premature stop a short distance later.",
+      "demo": {"type": "insert", "atIndex": 6, "base": "C"},
+      "realExample": {
+        "hgvs_c": "c.3271_3272insT",
+        "hgvs_p": "p.Leu1091Leufs*62",
+        "note": "A de novo single-thymine insertion in exon 15, found in a person with epileptic encephalopathy; shifts the reading frame with a premature stop 62 codons downstream.",
+        "citations": [
+          {"title": "Zeng et al. (2023), Novel variants of SYNGAP1 associated epileptic encephalopathy: two case reports and literature review — Acta Epileptologica", "url": "https://link.springer.com/article/10.1186/s42494-022-00114-z"}
+        ]
+      }
+    },
+    {
+      "id": "inframe-indel",
+      "order": 5,
+      "label": "In-frame Deletion/Insertion",
+      "mechanism": "helix",
+      "headline": "Three letters disappear (or appear) → the frame holds",
+      "explain": "Because the cell reads DNA in groups of three, removing (or adding) letters in multiples of three leaves the reading frame intact. Everything before and after the change is translated normally — only the amino acid(s) at the site of the change are lost or gained.",
+      "demo": {"type": "delete", "atIndex": 6, "count": 3},
+      "realExample": {
+        "hgvs_p": "p.Val222_Lys254del",
+        "note": "No small, single-codon in-frame indel has been published for SYNGAP1 specifically — this 3D demo uses an illustrative single-codon deletion to show the mechanism cleanly. The closest real, functionally validated in-frame deletion in SYNGAP1 is much larger in scale: a splice-site variant (c.664-2A>G, see the Splice-site tab) was shown by a lab-based minigene assay to cause whole-exon-7 skipping — an in-frame loss of 33 amino acids (Val222–Lys254). Large, but still in-frame, for the same reason: 33 amino acids × 3 = 99 bases, a multiple of three.",
+        "citations": [
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"}
+        ]
+      }
+    },
+    {
+      "id": "splice-site",
+      "order": 6,
+      "label": "Splice-site",
+      "mechanism": "schematic",
+      "headline": "The gene's punctuation breaks → the wrong piece gets kept or cut",
+      "explain": "Introns are removed using short 'signal' sequences right at each exon-intron boundary. A variant that damages one of these signals doesn't change any amino acid directly — but it can cause the splicing machinery to misread where an exon starts or ends, skipping a whole exon or keeping a piece of intron that should have been cut out.",
+      "demo": {"type": "splice", "exonIndex": 6},
+      "realExample": {
+        "hgvs_c": "c.664-2A>G",
+        "note": "A variant destroying the splice-acceptor site immediately before exon 7. A lab-based minigene test (not just a computer prediction) confirmed it produces two abnormal transcripts: one missing all of exon 7 (an in-frame 33-amino-acid deletion), and one with a 16-base-pair partial deletion that shifts the reading frame.",
+        "citations": [
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"},
+          {"title": "Mignot et al. (2016) reports a second splice-donor example, c.509+1G>T — J Med Genet", "url": "https://pubmed.ncbi.nlm.nih.gov/26989088/"}
+        ]
+      }
+    },
+    {
+      "id": "exon-deletion",
+      "order": 7,
+      "label": "Exon Deletion",
+      "mechanism": "schematic",
+      "headline": "A whole exon goes missing from the finished instructions",
+      "explain": "Rather than a single letter changing, an entire exon can be left out of the mature instructions — either because splicing goes wrong (as in the example above) or because that stretch of DNA is physically deleted from the gene itself. Depending on the exon's length, this can either preserve the reading frame (if it's a multiple of three) or shift it entirely.",
+      "demo": {"type": "exonDelete", "exonIndex": 6},
+      "realExample": {
+        "note": "The same c.664-2A>G splice-acceptor variant (Splice-site tab) was confirmed to cause complete skipping of exon 7 in the mature transcript. Separately, a larger genomic deletion spanning exons 2 through 9 — 16.6 kilobases of DNA physically missing from one copy of the gene — has also been reported in a person with SYNGAP1-RD.",
+        "citations": [
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"},
+          {"title": "Mignot et al. (2016), Genetic and neurodevelopmental spectrum of SYNGAP1-associated ID and epilepsy — J Med Genet", "url": "https://pubmed.ncbi.nlm.nih.gov/26989088/"}
+        ]
+      }
+    },
+    {
+      "id": "gene-deletion",
+      "order": 8,
+      "label": "Gene Deletion",
+      "mechanism": "schematic",
+      "headline": "Part or all of one gene copy is missing entirely",
+      "explain": "At the largest scale, a person can be missing part or all of one copy of the SYNGAP1 gene — sometimes along with neighboring genes, as part of a larger deletion at 6p21.3. The other copy remains completely normal; the downstream mechanism is identical to every other type on this page: not enough functional SynGAP is produced from one copy alone.",
+      "demo": {"type": "geneDelete"},
+      "realExample": {
+        "note": "A 6p21.3 microdeletion involving SYNGAP1 was reported in a patient with intellectual disability, seizures, and severe speech impairment. Chromosomal microarray testing — which specifically looks for missing or duplicated DNA segments rather than reading the letters one by one — identifies the cause this way in roughly 11% of published SYNGAP1-RD cases (6 of 55 in the largest reported cohort).",
+        "citations": [
+          {"title": "Writzl et al. (2013), 6p21.3 microdeletion involving the SYNGAP1 gene — Am J Med Genet A", "url": "https://pubmed.ncbi.nlm.nih.gov/23687080/"},
+          {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+        ]
+      }
+    }
+  ]
+}

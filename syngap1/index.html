@@ -501,6 +501,23 @@
   .navbtn.next:hover .arrow{ transform: translateX(3px); }
   .navbtn.prev:hover .arrow{ transform: translateX(-3px); }
 
+  .dnalink{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:0.85rem;
+    color: var(--level-color);
+    background: var(--level-color-soft);
+    border: 1px solid var(--level-color);
+    padding: 10px 16px;
+    border-radius: 999px;
+    margin: 4px 0 6px;
+    transition: filter 0.15s ease;
+  }
+  .dnalink:hover{ filter: brightness(0.95); }
+
   .zoomhint{
     text-align:center;
     color:#a89fd4;
@@ -980,6 +997,7 @@
       "icon": "🔗",
       "color": "#1e3a8a",
       "childId": "amino-acids",
+      "dnaLink": {"url": "dna/index.html?level=helix", "label": "See how a DNA mutation breaks this protein →"},
       "summary": "SynGAP is a modular protein built from several folded domains, each with its own job: anchoring to the membrane, sensing calcium/lipids, and — most importantly — catalyzing a chemical reaction that turns off Ras/Rap signaling. The full-length protein is 1,343 amino acids long, encoded by the SYNGAP1 gene on chromosome 6, and mutations that disrupt any part of this structure can reduce its function.",
       "facts": [
         "Full-length human SynGAP (isoform α1) is 1,343 amino acids, about 148 kDa, encoded by SYNGAP1 on chromosome 6p21.32",
@@ -1093,6 +1111,7 @@
       "icon": "🧩",
       "color": "#0e7490",
       "childId": "elements",
+      "dnaLink": {"url": "dna/index.html?level=helix", "label": "See how a DNA mutation changes an amino acid →"},
       "summary": "Amino acids are the building blocks that link together to form proteins, much like letters combine into words. The order of amino acids in SYNGAP1 — dictated by the gene's DNA sequence — determines how the protein folds into its working 3D shape. Changing even one amino acid at a critical position can break the whole protein's function.",
       "facts": [
         "There are 20 standard amino acids, each sharing the same backbone but with a unique side chain (R-group) that gives it distinct chemistry",
@@ -1616,6 +1635,10 @@ function renderCard(){
       html += '<li><a href="' + escapeHtml(c.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(c.title) + '</a></li>';
     });
     html += '</ol></div>';
+  }
+
+  if(!isLayman && l.dnaLink){
+    html += '<a class="dnalink" href="' + escapeHtml(l.dnaLink.url) + '">🧬 ' + escapeHtml(l.dnaLink.label) + '</a>';
   }
 
   html += '<div class="navrow">';
@@ -2548,7 +2571,16 @@ if(levels.length){
     wrap.innerHTML = '<div class="viewer-fallback"><div class="big">🧠</div><div>3D preview isn\'t available in this browser.<br>Use the buttons and level map below to navigate instead.</div></div>';
   }
 
-  goTo(0);
+  // Deep-link support: ?level=<id> (e.g. ?level=amino-acids) jumps straight
+  // to a level — used by the "SYNGAP1: DNA & Mutations" page's back-link.
+  var initialLevelIdx = 0;
+  try{
+    var qp = new URLSearchParams(window.location.search);
+    var wantLevel = qp.get('level');
+    if(wantLevel && byId[wantLevel]) initialLevelIdx = levels.indexOf(byId[wantLevel]);
+  } catch(e){ /* URLSearchParams unsupported / file:// quirk — fall back to level 0 */ }
+
+  goTo(initialLevelIdx);
 } else {
   cardEl.innerHTML = '<p style="color:#c00;">Could not load app data.</p>';
 }

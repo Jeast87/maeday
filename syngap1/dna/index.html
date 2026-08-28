@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYNGAP1: DNA &amp; Mutations</title>
+<style>
+  :root{
+    --level-color: #0ea5e9;
+    --level-color-soft: #0ea5e922;
+    --bg-1: #0f0b1e;
+    --bg-2: #1a1330;
+    --panel: #ffffff;
+    --ink: #1c1730;
+    --ink-soft: #5b5470;
+    --line: #e8e4f5;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 800px at 15% -10%, var(--level-color-soft), transparent),
+                linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    background-repeat: no-repeat;
+    color: var(--ink);
+    min-height: 100vh;
+    transition: background 0.6s ease;
+  }
+  .wrap{ max-width: 980px; margin: 0 auto; padding: 28px 20px 64px; }
+
+  header.top{ text-align:center; color:#fff; margin-bottom: 14px; }
+  header.top h1{ font-size: clamp(1.6rem, 4vw, 2.3rem); margin: 0 0 6px; font-weight: 800; letter-spacing: -0.02em; }
+  header.top p{ margin: 0; color: #cfc9e6; font-size: 0.98rem; }
+  header.top .companion{ margin-top:10px; font-size:0.85rem; }
+  header.top .companion a{ color:#fff; font-weight:700; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.4); }
+  header.top .companion a:hover{ border-color:#fff; }
+
+  .levelmap{ display:flex; justify-content:center; gap: 6px; margin: 22px auto 18px; flex-wrap: wrap; max-width: 900px; }
+  .levelmap button{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 8px 10px; cursor:pointer; color:#cfc9e6;
+    font-size: 0.68rem; font-weight:600; transition: all 0.2s ease; min-width: 84px;
+  }
+  .levelmap button .ic{ font-size:1.15rem; line-height:1; }
+  .levelmap button:hover{ background: rgba(255,255,255,0.14); transform: translateY(-1px); }
+  .levelmap button.active{ background: var(--level-color); border-color: var(--level-color); color:#fff; box-shadow: 0 6px 18px -6px var(--level-color); }
+  .levelmap button.done{ color:#fff; }
+  .levelmap button:disabled{ cursor:not-allowed; opacity:0.55; }
+  .levelmap .connector{ align-self:center; color: rgba(255,255,255,0.25); font-size: 0.8rem; }
+
+  .crumbs{ display:flex; align-items:center; flex-wrap:wrap; gap:4px; color:#cfc9e6; font-size:0.82rem; margin: 0 auto 18px; max-width: 900px; justify-content:center; }
+  .crumbs button{ background:none; border:none; color:#cfc9e6; font: inherit; cursor:pointer; padding: 2px 4px; border-radius: 6px; }
+  .crumbs button:hover{ color:#fff; text-decoration: underline; }
+  .crumbs button.current{ color:#fff; font-weight:700; text-decoration:none; cursor:default; }
+  .crumbs .sep{ opacity:0.4; }
+
+  .viewer-wrap{
+    position: relative; border-radius: 22px; overflow: hidden;
+    background: radial-gradient(600px 400px at 30% 20%, var(--level-color-soft), transparent), linear-gradient(160deg, #0c0a18, #171227);
+    box-shadow: 0 30px 60px -22px rgba(0,0,0,0.55);
+    height: min(56vw, 420px); min-height: 260px; margin-bottom: 16px;
+    transition: background 0.6s ease; animation: rise 0.45s ease;
+  }
+  .viewer-host{ position:absolute; inset:0; }
+  .viewer-host canvas{ display:block; width:100%; height:100%; touch-action:none; }
+  .viewer-labels{ position:absolute; inset:0; pointer-events:none; }
+  .viewer-label{
+    position:absolute; left:0; top:0; background: rgba(10,8,20,0.72); color:#fff;
+    font-size: 0.72rem; font-weight:700; padding: 3px 9px; border-radius: 999px; white-space:nowrap;
+    border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(2px);
+  }
+  .viewer-topbar{ position:absolute; top:12px; left:14px; right:14px; display:flex; justify-content:space-between; align-items:flex-start; pointer-events:none; z-index:3; }
+  .viewer-badge{ background: rgba(255,255,255,0.1); color:#fff; font-size:0.7rem; font-weight:700; letter-spacing:0.03em; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); }
+  .viewer-instructions{ position:absolute; left:14px; bottom:12px; color: rgba(255,255,255,0.78); font-size: 0.72rem; background: rgba(10,8,20,0.5); padding: 5px 10px; border-radius: 999px; pointer-events:none; z-index:3; max-width: 55%; }
+  .viewer-controls{ position:absolute; right:12px; bottom:12px; display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; max-width: 60%; z-index:4; }
+  .viewer-controls .vc-btn{
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); color:#fff; font: inherit;
+    font-size: 0.72rem; font-weight:700; padding: 6px 11px; border-radius: 999px; cursor:pointer; transition: all 0.15s ease;
+  }
+  .viewer-controls .vc-btn:hover{ background: rgba(255,255,255,0.22); }
+  .viewer-controls .vc-btn.active{ background: #fff; color: #14101f; }
+  .viewer-controls .vc-toggle{ display:flex; align-items:center; gap:8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); padding: 6px 12px; border-radius: 999px; cursor:pointer; color:#fff; font-size:0.72rem; font-weight:700; }
+  .vc-toggle .dot{ width:32px; height:18px; border-radius:999px; background: rgba(255,255,255,0.25); position:relative; transition: background 0.2s ease; flex-shrink:0; }
+  .vc-toggle .dot::after{ content:""; position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#fff; transition: transform 0.2s ease; }
+  .vc-toggle.on .dot{ background:#ef4444; }
+  .vc-toggle.on .dot::after{ transform: translateX(14px); }
+  .viewer-loading{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color: rgba(255,255,255,0.65); font-size:0.85rem; z-index:2; }
+  .viewer-fallback{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color: rgba(255,255,255,0.7); font-size:0.82rem; text-align:center; padding: 20px; }
+  .viewer-fallback .big{ font-size:2.4rem; }
+
+  .card{ background: var(--panel); border-radius: 22px; padding: clamp(20px, 4vw, 40px); box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45); animation: rise 0.45s ease; }
+  @keyframes rise{ from{ opacity:0; transform: translateY(14px) scale(0.99); } to{ opacity:1; transform: translateY(0) scale(1); } }
+
+  .card-head{ display:flex; align-items:flex-start; gap:16px; margin-bottom: 6px; }
+  .card-head .icon{ font-size: 2.4rem; line-height:1; background: var(--level-color-soft); border-radius: 16px; padding: 10px 12px; flex-shrink:0; }
+  .card-head h2{ margin:0 0 4px; font-size: clamp(1.4rem, 3vw, 1.9rem); color: var(--ink); letter-spacing: -0.01em; }
+  .card-head .tagline{ margin:0; color: var(--level-color); font-weight: 600; font-size: 0.95rem; }
+  .level-pill{ display:inline-block; font-size: 0.68rem; font-weight:700; text-transform:uppercase; letter-spacing: 0.06em; color: var(--level-color); background: var(--level-color-soft); padding: 3px 9px; border-radius: 999px; margin-bottom: 8px; }
+
+  .summary{ font-size: 1.05rem; line-height:1.6; color: var(--ink); margin: 18px 0 22px; padding: 16px 18px; background: #faf9ff; border-left: 4px solid var(--level-color); border-radius: 10px; }
+
+  .factbox{ margin: 22px 0; }
+  .factbox h3, .citebox h3, .mutpanel h3{ font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin: 0 0 12px; font-weight: 800; }
+  .factbox ul{ margin:0; padding:0; list-style:none; display:grid; gap:10px; }
+  .factbox li{ display:flex; gap:10px; align-items:flex-start; font-size: 0.95rem; line-height:1.5; color: var(--ink); }
+  .factbox li::before{ content:""; width:8px;height:8px; border-radius:50%; background: var(--level-color); margin-top:7px; flex-shrink:0; }
+
+  .citebox{ margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .citebox ol{ margin:0; padding-left: 1.1em; display:grid; gap:8px; }
+  .citebox li{ font-size: 0.88rem; color: var(--ink-soft); line-height:1.5; }
+  .citebox a{ color: var(--level-color); text-decoration:none; font-weight:600; }
+  .citebox a:hover{ text-decoration:underline; }
+
+  .navrow{ display:flex; justify-content:space-between; align-items:center; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+  .navbtn{ display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer; font: inherit; font-weight:700; font-size: 0.92rem; padding: 12px 18px; border-radius: 12px; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .navbtn:active{ transform: scale(0.97); }
+  .navbtn.prev{ background: #f2effc; color: var(--ink); }
+  .navbtn.prev:hover{ background:#e8e3f9; }
+  .navbtn.next{ background: var(--level-color); color:#fff; box-shadow: 0 10px 24px -10px var(--level-color); margin-left:auto; }
+  .navbtn.next:hover{ filter: brightness(1.08); }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; box-shadow:none; }
+  .navbtn .arrow{ transition: transform 0.15s ease; }
+  .navbtn.next:hover .arrow{ transform: translateX(3px); }
+  .navbtn.prev:hover .arrow{ transform: translateX(-3px); }
+  .navbtn.companion{ background:#14101f; color:#fff; }
+  .navbtn.companion:hover{ filter:brightness(1.2); }
+
+  .zoomhint{ text-align:center; color:#a89fd4; font-size:0.78rem; margin-top: 10px; }
+
+  footer.app-footer{ max-width: 900px; margin: 30px auto 0; color: #a89fd4; font-size: 0.78rem; text-align:center; line-height:1.6; }
+  footer.app-footer strong{ color:#cfc9e6; }
+  footer.app-footer .back{ display:block; margin-top:8px; }
+  footer.app-footer a{ color:#cfc9e6; }
+
+  /* Mutation-type tab strip (inside the card) */
+  .mutTabs{ display:flex; flex-wrap:wrap; gap:8px; margin: 18px 0 4px; }
+  .mutTabs button{
+    background:#f2effc; border:1px solid transparent; color: var(--ink-soft); font: inherit; font-weight:700;
+    font-size:0.8rem; padding:9px 14px; border-radius:999px; cursor:pointer; transition: all 0.15s ease;
+  }
+  .mutTabs button:hover{ background:#e8e3f9; }
+  .mutTabs button.active{ background: var(--level-color); border-color: var(--level-color); color:#fff; }
+  .mutTabs button .mt-kind{ opacity:0.65; font-weight:600; font-size:0.68rem; margin-left:4px; }
+
+  /* Mutation panel */
+  .mutpanel{ margin: 20px 0; padding: 18px 20px; background: #fbfaff; border: 1px solid var(--line); border-radius: 14px; }
+  .mutpanel .mut-headline{ font-size:1.08rem; font-weight:800; color:var(--ink); margin:0 0 8px; }
+  .mutpanel .mut-explain{ font-size:0.94rem; line-height:1.6; color:var(--ink-soft); margin:0 0 16px; }
+
+  .codonstrip{ overflow-x:auto; padding-bottom:4px; margin-bottom:8px; }
+  .codonrow{ display:flex; gap:4px; align-items:flex-end; margin-bottom:10px; min-width:max-content; }
+  .codonrow .rowlabel{ font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft); width:74px; flex-shrink:0; padding-bottom:9px; }
+  .codon{
+    display:flex; flex-direction:column; align-items:center; gap:2px; padding:5px 7px; border-radius:8px;
+    background:#fff; border:1.5px solid var(--line); font-family: 'SF Mono', Menlo, Consolas, monospace;
+  }
+  .codon .nt{ font-size:0.86rem; font-weight:800; letter-spacing:0.04em; color:var(--ink); }
+  .codon .aa{ font-size:0.62rem; font-weight:700; color:var(--ink-soft); }
+  .codon.changed{ background: var(--level-color-soft); border-color: var(--level-color); }
+  .codon.changed .nt{ color: var(--level-color); }
+  .codon.stop{ background:#fee2e2; border-color:#ef4444; }
+  .codon.stop .nt, .codon.stop .aa{ color:#b91c1c; }
+  .codon.ghost{ opacity:0.32; }
+  .codon.gap{ border-style:dashed; opacity:0.5; background:transparent; }
+  .consequence{ font-size:0.92rem; font-weight:700; color:var(--ink); margin:10px 0 16px; padding:10px 14px; background:#fff; border-left:3px solid var(--level-color); border-radius:8px; }
+
+  .realbox{ margin-top:16px; padding:14px 16px; background:#fff; border:1px solid var(--line); border-radius:10px; }
+  .realbox .rb-label{ font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color: var(--level-color); margin-bottom:6px; }
+  .realbox .rb-hgvs{ font-family:'SF Mono', Menlo, Consolas, monospace; font-weight:700; font-size:0.88rem; color:var(--ink); margin-bottom:6px; }
+  .realbox p{ margin:0 0 8px; font-size:0.88rem; line-height:1.55; color:var(--ink-soft); }
+  .realbox ol{ margin:0; padding-left:1.1em; display:grid; gap:5px; }
+  .realbox li{ font-size:0.8rem; color:var(--ink-soft); line-height:1.5; }
+  .realbox a{ color: var(--level-color); text-decoration:none; font-weight:600; }
+  .realbox a:hover{ text-decoration:underline; }
+  .extranote{ margin-top:12px; font-size:0.85rem; line-height:1.55; color:var(--ink-soft); font-style:italic; }
+
+  @media (max-width: 640px){
+    .levelmap button{ min-width: 68px; padding:6px 7px; font-size:0.6rem;}
+    .card-head{ flex-direction:column; }
+    .viewer-controls{ max-width: 100%; left:12px; right:12px; justify-content:flex-start; bottom:auto; top:52px; }
+    .viewer-instructions{ display:none; }
+    .mutTabs button{ font-size:0.72rem; padding:8px 11px; }
+    .codonrow .rowlabel{ width:56px; font-size:0.6rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <h1>SYNGAP1: DNA &amp; Mutations</h1>
+      <p>A rotatable, real DNA fragment from the SYNGAP1 gene — explore what each class of mutation physically does, from a single swapped letter to a whole missing gene copy.</p>
+      <p class="companion">Part of the <a href="../index.html">SYNGAP1: From Brain to Atom</a> explorer</p>
+    </header>
+
+    <nav class="levelmap" id="levelmap" aria-label="Level navigator"></nav>
+    <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+
+    <div class="viewer-wrap" id="viewerWrap">
+      <div class="viewer-host" id="viewerHost"></div>
+      <div class="viewer-labels" id="viewerLabels"></div>
+      <div class="viewer-topbar">
+        <span class="viewer-badge" id="viewerBadge">3D</span>
+        <span></span>
+      </div>
+      <div class="viewer-controls" id="viewerControls"></div>
+      <div class="viewer-instructions" id="viewerInstructions">🖱️ Drag to rotate • Scroll to zoom • Click the glowing marker to zoom in</div>
+      <div class="viewer-loading" id="viewerLoading">Loading 3D view…</div>
+    </div>
+
+    <main class="card" id="card">
+      <p style="color:#888;">Loading…</p>
+    </main>
+
+    <footer class="app-footer" id="footer"></footer>
+  </div>
+
+<script id="app-data" type="application/json">{
+  "meta": {
+    "title": "SYNGAP1: DNA & Mutations",
+    "description": "An interactive 3D explainer of how different classes of DNA mutation affect the SYNGAP1 gene — with a real coding-sequence fragment, real published example variants, and citations at every step.",
+    "disclaimer": "This page is an educational summary compiled from published scientific and clinical literature (GeneReviews, ClinVar, PubMed/PMC, UniProt, Ensembl). It is not medical advice or a genetic report. The rotatable double helix demonstrates each mutation mechanism using one real, verified 17-codon fragment from SYNGAP1 exon 1 as a stand-in — most of the specific published example variants cited on each tab occur elsewhere in the gene's 1,343 codons, not at the exact position animated. Where a demo is illustrative rather than a literal published case, that is stated explicitly.",
+    "lastUpdated": "2026-08-28",
+    "companionApp": {
+      "label": "SYNGAP1: From Brain to Atom",
+      "url": "../index.html"
+    }
+  },
+  "sequence": {
+    "refseqMrna": "NM_006772.3",
+    "refseqProtein": "NP_006763.2",
+    "uniprot": "Q96PV0",
+    "region": "CDS c.1–c.51, entirely within exon 1 (codons 1–17 of 1,343)",
+    "dna": "ATGAGCAGGTCTCGAGCCTCCATCCATCGGGGGAGCATCCCCGCGATGTCC",
+    "note": "Verified by independently fetching the NM_006772.3 GenBank record and the UniProt Q96PV0 canonical protein sequence, then translating this fragment codon-by-codon by hand to confirm the two agree.",
+    "citations": [
+      {"title": "NM_006772.3 (SYNGAP1 transcript variant 1) — NCBI GenBank record", "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_006772.3&rettype=gb&retmode=text"},
+      {"title": "UniProt Q96PV0 (SynGAP1, human) — canonical sequence", "url": "https://www.uniprot.org/uniprotkb/Q96PV0/entry"}
+    ]
+  },
+  "levels": [
+    {
+      "id": "chromosome",
+      "order": 1,
+      "name": "Chromosome 6",
+      "shortName": "Chromosome",
+      "icon": "🧬",
+      "color": "#0ea5e9",
+      "childId": "gene",
+      "tagline": "Where the SYNGAP1 gene lives",
+      "summary": "Every cell carries two copies of chromosome 6 — one inherited from each parent. Near the tip of its short arm, at cytogenetic band 6p21.32, sits a single gene called SYNGAP1. A change to just one of its two copies is enough to cause SYNGAP1-Related Disorder.",
+      "facts": [
+        "SYNGAP1 sits at cytogenetic band 6p21.32, on the short (p) arm of chromosome 6.",
+        "In the current human reference genome (GRCh38), the gene spans roughly chr6:33,419,661–33,453,689 — about 34,000 DNA letters long.",
+        "Everyone has two copies of chromosome 6, and therefore two copies of SYNGAP1 — one from each parent.",
+        "SYNGAP1-RD is autosomal dominant: a pathogenic change in just one of the two copies is enough to cause the disorder — explored further on the last page of this explorer."
+      ],
+      "citations": [
+        {"title": "SYNGAP1 — Ensembl gene summary (ENSG00000197283)", "url": "https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000197283"},
+        {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+      ],
+      "model3d": {"type": "chromosome"}
+    },
+    {
+      "id": "gene",
+      "order": 2,
+      "name": "The SYNGAP1 Gene",
+      "shortName": "Gene",
+      "icon": "🧟",
+      "color": "#6366f1",
+      "childId": "helix",
+      "tagline": "19 exons carry the instructions; introns don't",
+      "summary": "Like most human genes, SYNGAP1 isn't one continuous stretch of coding DNA. It's split into 19 exons — the segments that actually get read into protein — separated by introns, non-coding stretches that get cut out before the instructions are used. Several mutation types specifically target the boundaries between these pieces, or remove whole exons outright.",
+      "facts": [
+        "SYNGAP1 is built from 19 exons, spliced together to encode a 1,343-amino-acid protein (isoform SynGAP-α1).",
+        "Introns are removed from the raw transcript by the spliceosome, a molecular machine that recognizes short signal sequences at each exon-intron boundary.",
+        "A single mistake at one of these boundaries (a 'splice-site' variant) can cause an entire exon to be skipped, or a piece of intron to be mistakenly kept — see the Splice-site tab on the next page.",
+        "Large deletions can also remove one or more exons directly from the DNA itself, rather than through a splicing error. Chromosomal microarray testing — which looks for missing or duplicated DNA segments rather than reading letters one by one — identifies the cause this way in about 11% of published SYNGAP1-RD cases (6 of 55 in the largest reported cohort)."
+      ],
+      "citations": [
+        {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+      ],
+      "model3d": {"type": "gene", "exonCount": 19}
+    },
+    {
+      "id": "helix",
+      "order": 3,
+      "name": "DNA & Mutations",
+      "shortName": "DNA",
+      "icon": "🧬",
+      "color": "#ec4899",
+      "childId": "copies",
+      "tagline": "Same starting sequence, eight different ways it can break",
+      "summary": "This is a real 17-codon fragment from the very start of the SYNGAP1 gene (exon 1), shown as a rotatable double helix. Choose a mutation type below to see what that class of change physically does to the DNA — and what it means for the protein several steps downstream.",
+      "facts": [
+        "This fragment (codons 1–17, encoding Met-Ser-Arg-Ser-Arg-Ala-Ser-Ile-His-Arg-Gly-Ser-Ile-Pro-Ala-Met-Ser) is real SYNGAP1 coding sequence, from RefSeq NM_006772.3.",
+        "Every mutation class below has at least one real, published example found in a person with SYNGAP1-RD — see the citation on each tab.",
+        "The 3D animation always uses this same 17-codon fragment to demonstrate the mechanism; where that differs from the exact published example's position in the gene, it's noted on that tab."
+      ],
+      "citations": [
+        {"title": "NM_006772.3 (SYNGAP1 transcript variant 1) — NCBI GenBank record", "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_006772.3&rettype=gb&retmode=text"},
+        {"title": "UniProt Q96PV0 (SynGAP1, human)", "url": "https://www.uniprot.org/uniprotkb/Q96PV0/entry"}
+      ],
+      "model3d": {"type": "helix"}
+    },
+    {
+      "id": "copies",
+      "order": 4,
+      "name": "Two Copies",
+      "shortName": "2 Copies",
+      "icon": "⚖️",
+      "color": "#f59e0b",
+      "childId": null,
+      "tagline": "Why one broken copy is enough",
+      "summary": "SYNGAP1-Related Disorder isn't caused by both copies of the gene failing — it's caused by just one. This mechanism is called haploinsufficiency: one functional copy of SYNGAP1 doesn't make enough SynGAP protein to support typical brain development, even though the other copy works perfectly.",
+      "facts": [
+        "Everyone has two copies of SYNGAP1 — a typical person's cells run comfortably on the combined protein output of both.",
+        "In SYNGAP1-RD, one copy carries a pathogenic variant (any of the eight types from the previous page) and produces little to no functional protein.",
+        "The remaining working copy can't fully compensate on its own — overall SynGAP protein output drops, which is thought to be sufficient by itself to disrupt synapse development.",
+        "This is why SYNGAP1-RD is described as autosomal dominant with a loss-of-function / haploinsufficiency mechanism, rather than requiring both copies to be affected."
+      ],
+      "citations": [
+        {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+      ],
+      "model3d": {"type": "copies"}
+    }
+  ],
+  "mutationTypes": [
+    {
+      "id": "missense",
+      "order": 1,
+      "label": "Missense",
+      "mechanism": "helix",
+      "headline": "One base changes → one amino acid changes",
+      "explain": "A single DNA letter is swapped for another within one codon. Everything before and after that codon stays exactly the same — only that one codon's meaning changes, so only one amino acid in the finished protein is affected.",
+      "demo": {"type": "substitute", "codonIndex": 5, "baseIndex": 0, "newBase": "A"},
+      "realExample": {
+        "hgvs_c": "c.1685C>T",
+        "hgvs_p": "p.Pro562Leu",
+        "note": "A recurrent de novo missense change (proline→leucine at residue 562, near the Ras-GAP catalytic region), found independently in multiple unrelated people with SYNGAP1-RD and absent from population databases (gnomAD).",
+        "citations": [
+          {"title": "ClinVar: NM_006772.3(SYNGAP1):c.1685C>T (p.Pro562Leu)", "url": "https://www.ncbi.nlm.nih.gov/clinvar/variation/41462/"},
+          {"title": "Berryer et al. (2013), Mutations in SYNGAP1 cause intellectual disability, autism, and a specific form of epilepsy — Nat Commun", "url": "https://pubmed.ncbi.nlm.nih.gov/23161826/"},
+          {"title": "Mignot et al. (2016), Genetic and neurodevelopmental spectrum of SYNGAP1-associated ID and epilepsy — J Med Genet", "url": "https://pubmed.ncbi.nlm.nih.gov/26989088/"}
+        ]
+      },
+      "extraNote": {
+        "text": "Not every missense change is this well understood — many remain 'variants of uncertain significance' because their effect depends heavily on exactly where in the protein's folded structure they land. Computer-based atomistic modeling of three other missense variants showed each breaks the protein's 3D structure a different way: p.Leu327Pro loses a stabilizing hydrogen bond and unfolds part of the C2 domain; p.Glu436Lys flips a stabilizing salt bridge into repulsion; p.Ala469Asp forms a new, misplaced bond that breaks a helix in the Ras-GAP domain.",
+        "citations": [
+          {"title": "Ali et al. (2024), Atomistic simulations reveal impacts of missense mutations on the structure and function of SynGAP1 — Briefings in Bioinformatics", "url": "https://academic.oup.com/bib/article/25/6/bbae458/7765456"}
+        ]
+      }
+    },
+    {
+      "id": "nonsense",
+      "order": 2,
+      "label": "Nonsense",
+      "mechanism": "helix",
+      "headline": "One base changes → the protein stops short",
+      "explain": "A single DNA letter changes — but this time the new codon doesn't spell an amino acid at all. It spells “STOP.” Protein assembly halts immediately at that point, so everything downstream of the change is simply never built.",
+      "demo": {"type": "substitute", "codonIndex": 4, "baseIndex": 0, "newBase": "T"},
+      "realExample": {
+        "hgvs_c": "c.1735C>T",
+        "hgvs_p": "p.Arg579Ter",
+        "note": "A de novo nonsense variant creating a premature stop codon, absent from population databases; among the first SYNGAP1 variants ever published, found in a person with nonsyndromic intellectual disability.",
+        "citations": [
+          {"title": "ClinVar: NM_006772.3(SYNGAP1):c.1735C>T (p.Arg579Ter)", "url": "https://www.ncbi.nlm.nih.gov/clinvar/RCV000006765/"},
+          {"title": "Hamdan et al. (2009), Mutations in SYNGAP1 in Autosomal Nonsyndromic Mental Retardation — N Engl J Med", "url": "https://pubmed.ncbi.nlm.nih.gov/19196676/"}
+        ]
+      },
+      "extraNote": {
+        "text": "Transcripts carrying an early premature stop signal like this are usually flagged and degraded by the cell's quality-control system (nonsense-mediated mRNA decay) before they're even translated into protein — one reason loss-of-function variants like this tend to simply remove that copy's protein output, rather than producing a stable, truncated protein.",
+        "citations": [
+          {"title": "Understanding Your Genetic Report with SYNGAP1 — CURE SYNGAP1 Foundation", "url": "https://curesyngap1.org/blog/understanding-your-genetic-report-with-syngap1-a-rare-disease/"}
+        ]
+      }
+    },
+    {
+      "id": "frameshift-deletion",
+      "order": 3,
+      "label": "Frameshift Deletion",
+      "mechanism": "helix",
+      "headline": "A letter disappears → every codon after it regroups",
+      "explain": "One DNA letter is simply removed. The letters after it haven't changed at all — but because the cell reads DNA in fixed groups of three, everything downstream is now grouped differently. A completely different string of amino acids gets built from that point on, usually ending at a new, out-of-place stop codon a short distance later.",
+      "demo": {"type": "delete", "atIndex": 6, "count": 1},
+      "realExample": {
+        "hgvs_c": "c.199del",
+        "hgvs_p": "p.Leu67Tyrfs*2",
+        "note": "A single-nucleotide deletion in exon 3 shifts the reading frame and creates a new premature stop just two codons later.",
+        "citations": [
+          {"title": "ClinVar: NM_006772.3(SYNGAP1):c.199del (p.Leu67Tyrfs*2)", "url": "https://www.ncbi.nlm.nih.gov/clinvar/RCV000645738/"},
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet (reports a second example, c.333del, p.Lys114Serfs*20)", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"}
+        ]
+      }
+    },
+    {
+      "id": "frameshift-insertion",
+      "order": 4,
+      "label": "Frameshift Insertion",
+      "mechanism": "helix",
+      "headline": "An extra letter appears → every codon after it regroups",
+      "explain": "An extra DNA letter is inserted where none existed before. Just like a deletion, this doesn't change any of the surrounding letters themselves — it just shifts the reading frame for everything downstream, regrouping it into new codons and usually hitting a premature stop a short distance later.",
+      "demo": {"type": "insert", "atIndex": 6, "base": "C"},
+      "realExample": {
+        "hgvs_c": "c.3271_3272insT",
+        "hgvs_p": "p.Leu1091Leufs*62",
+        "note": "A de novo single-thymine insertion in exon 15, found in a person with epileptic encephalopathy; shifts the reading frame with a premature stop 62 codons downstream.",
+        "citations": [
+          {"title": "Zeng et al. (2023), Novel variants of SYNGAP1 associated epileptic encephalopathy: two case reports and literature review — Acta Epileptologica", "url": "https://link.springer.com/article/10.1186/s42494-022-00114-z"}
+        ]
+      }
+    },
+    {
+      "id": "inframe-indel",
+      "order": 5,
+      "label": "In-frame Deletion/Insertion",
+      "mechanism": "helix",
+      "headline": "Three letters disappear (or appear) → the frame holds",
+      "explain": "Because the cell reads DNA in groups of three, removing (or adding) letters in multiples of three leaves the reading frame intact. Everything before and after the change is translated normally — only the amino acid(s) at the site of the change are lost or gained.",
+      "demo": {"type": "delete", "atIndex": 6, "count": 3},
+      "realExample": {
+        "hgvs_p": "p.Val222_Lys254del",
+        "note": "No small, single-codon in-frame indel has been published for SYNGAP1 specifically — this 3D demo uses an illustrative single-codon deletion to show the mechanism cleanly. The closest real, functionally validated in-frame deletion in SYNGAP1 is much larger in scale: a splice-site variant (c.664-2A>G, see the Splice-site tab) was shown by a lab-based minigene assay to cause whole-exon-7 skipping — an in-frame loss of 33 amino acids (Val222–Lys254). Large, but still in-frame, for the same reason: 33 amino acids × 3 = 99 bases, a multiple of three.",
+        "citations": [
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"}
+        ]
+      }
+    },
+    {
+      "id": "splice-site",
+      "order": 6,
+      "label": "Splice-site",
+      "mechanism": "schematic",
+      "headline": "The gene's punctuation breaks → the wrong piece gets kept or cut",
+      "explain": "Introns are removed using short 'signal' sequences right at each exon-intron boundary. A variant that damages one of these signals doesn't change any amino acid directly — but it can cause the splicing machinery to misread where an exon starts or ends, skipping a whole exon or keeping a piece of intron that should have been cut out.",
+      "demo": {"type": "splice", "exonIndex": 6},
+      "realExample": {
+        "hgvs_c": "c.664-2A>G",
+        "note": "A variant destroying the splice-acceptor site immediately before exon 7. A lab-based minigene test (not just a computer prediction) confirmed it produces two abnormal transcripts: one missing all of exon 7 (an in-frame 33-amino-acid deletion), and one with a 16-base-pair partial deletion that shifts the reading frame.",
+        "citations": [
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"},
+          {"title": "Mignot et al. (2016) reports a second splice-donor example, c.509+1G>T — J Med Genet", "url": "https://pubmed.ncbi.nlm.nih.gov/26989088/"}
+        ]
+      }
+    },
+    {
+      "id": "exon-deletion",
+      "order": 7,
+      "label": "Exon Deletion",
+      "mechanism": "schematic",
+      "headline": "A whole exon goes missing from the finished instructions",
+      "explain": "Rather than a single letter changing, an entire exon can be left out of the mature instructions — either because splicing goes wrong (as in the example above) or because that stretch of DNA is physically deleted from the gene itself. Depending on the exon's length, this can either preserve the reading frame (if it's a multiple of three) or shift it entirely.",
+      "demo": {"type": "exonDelete", "exonIndex": 6},
+      "realExample": {
+        "note": "The same c.664-2A>G splice-acceptor variant (Splice-site tab) was confirmed to cause complete skipping of exon 7 in the mature transcript. Separately, a larger genomic deletion spanning exons 2 through 9 — 16.6 kilobases of DNA physically missing from one copy of the gene — has also been reported in a person with SYNGAP1-RD.",
+        "citations": [
+          {"title": "Li et al. (2023), Identification and functional characterization of a de novo variant in SYNGAP1 — Front Genet", "url": "https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2023.1270175/full"},
+          {"title": "Mignot et al. (2016), Genetic and neurodevelopmental spectrum of SYNGAP1-associated ID and epilepsy — J Med Genet", "url": "https://pubmed.ncbi.nlm.nih.gov/26989088/"}
+        ]
+      }
+    },
+    {
+      "id": "gene-deletion",
+      "order": 8,
+      "label": "Gene Deletion",
+      "mechanism": "schematic",
+      "headline": "Part or all of one gene copy is missing entirely",
+      "explain": "At the largest scale, a person can be missing part or all of one copy of the SYNGAP1 gene — sometimes along with neighboring genes, as part of a larger deletion at 6p21.3. The other copy remains completely normal; the downstream mechanism is identical to every other type on this page: not enough functional SynGAP is produced from one copy alone.",
+      "demo": {"type": "geneDelete"},
+      "realExample": {
+        "note": "A 6p21.3 microdeletion involving SYNGAP1 was reported in a patient with intellectual disability, seizures, and severe speech impairment. Chromosomal microarray testing — which specifically looks for missing or duplicated DNA segments rather than reading the letters one by one — identifies the cause this way in roughly 11% of published SYNGAP1-RD cases (6 of 55 in the largest reported cohort).",
+        "citations": [
+          {"title": "Writzl et al. (2013), 6p21.3 microdeletion involving the SYNGAP1 gene — Am J Med Genet A", "url": "https://pubmed.ncbi.nlm.nih.gov/23687080/"},
+          {"title": "SYNGAP1-Related Intellectual Disability — GeneReviews®", "url": "https://www.ncbi.nlm.nih.gov/books/NBK537721/"}
+        ]
+      }
+    }
+  ]
+}
+</script>
+<script type="module">
+import * as THREE from './vendor/three.module.min.js';
+import { OrbitControls } from './vendor/OrbitControls.js';
+
+/* ---------------------------------------------------------------------
+   Data loading (fetch dna-data.json when served over http(s); otherwise
+   fall back to the embedded snapshot below so the app still works when
+   the file is opened directly from disk).
+--------------------------------------------------------------------- */
+var DATA = null;
+try {
+  var res = await fetch('dna-data.json', {cache: 'no-store'});
+  if(res.ok){ DATA = await res.json(); }
+} catch(e){ /* file:// CORS block — fall back below */ }
+if(!DATA){
+  try { DATA = JSON.parse(document.getElementById('app-data').textContent); }
+  catch(e){ console.error('Failed to parse embedded data', e); }
+}
+
+var levels = (DATA && DATA.levels) ? DATA.levels.slice().sort(function(a,b){return a.order-b.order;}) : [];
+var byId = {};
+levels.forEach(function(l){ byId[l.id] = l; });
+var MUTS = (DATA && DATA.mutationTypes) ? DATA.mutationTypes.slice().sort(function(a,b){return a.order-b.order;}) : [];
+var mutById = {};
+MUTS.forEach(function(m){ mutById[m.id] = m; });
+var SEQ = (DATA && DATA.sequence && DATA.sequence.dna) ? DATA.sequence.dna.toUpperCase() : '';
+
+var current = 0;
+var maxSeen = 0;
+var isFirstRender = true;
+var currentMutationId = MUTS.length ? MUTS[0].id : null;
+var mutatedShown = false; // false = "Original" toggle state, true = "Mutated"
+
+var levelmapEl = document.getElementById('levelmap');
+var crumbsEl = document.getElementById('crumbs');
+var cardEl = document.getElementById('card');
+var footerEl = document.getElementById('footer');
+var viewerInstructionsEl = document.getElementById('viewerInstructions');
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+/* =======================================================================
+   Genetic code + mutation math — pure functions, no DOM/Three.js here.
+======================================================================= */
+var CODON_TABLE = {
+  TTT:['Phe','F'],TTC:['Phe','F'],TTA:['Leu','L'],TTG:['Leu','L'],
+  CTT:['Leu','L'],CTC:['Leu','L'],CTA:['Leu','L'],CTG:['Leu','L'],
+  ATT:['Ile','I'],ATC:['Ile','I'],ATA:['Ile','I'],ATG:['Met','M'],
+  GTT:['Val','V'],GTC:['Val','V'],GTA:['Val','V'],GTG:['Val','V'],
+  TCT:['Ser','S'],TCC:['Ser','S'],TCA:['Ser','S'],TCG:['Ser','S'],
+  CCT:['Pro','P'],CCC:['Pro','P'],CCA:['Pro','P'],CCG:['Pro','P'],
+  ACT:['Thr','T'],ACC:['Thr','T'],ACA:['Thr','T'],ACG:['Thr','T'],
+  GCT:['Ala','A'],GCC:['Ala','A'],GCA:['Ala','A'],GCG:['Ala','A'],
+  TAT:['Tyr','Y'],TAC:['Tyr','Y'],TAA:['STOP','*'],TAG:['STOP','*'],
+  CAT:['His','H'],CAC:['His','H'],CAA:['Gln','Q'],CAG:['Gln','Q'],
+  AAT:['Asn','N'],AAC:['Asn','N'],AAA:['Lys','K'],AAG:['Lys','K'],
+  GAT:['Asp','D'],GAC:['Asp','D'],GAA:['Glu','E'],GAG:['Glu','E'],
+  TGT:['Cys','C'],TGC:['Cys','C'],TGA:['STOP','*'],TGG:['Trp','W'],
+  CGT:['Arg','R'],CGC:['Arg','R'],CGA:['Arg','R'],CGG:['Arg','R'],
+  AGT:['Ser','S'],AGC:['Ser','S'],AGA:['Arg','R'],AGG:['Arg','R'],
+  GGT:['Gly','G'],GGC:['Gly','G'],GGA:['Gly','G'],GGG:['Gly','G']
+};
+var BASE_COLOR = {A:'#4ade80', T:'#f87171', G:'#fbbf24', C:'#60a5fa'};
+
+function translateSeq(seq){
+  var out = [];
+  for(var i=0;i+3<=seq.length;i+=3){
+    var cod = seq.substring(i,i+3);
+    var info = CODON_TABLE[cod] || ['?','?'];
+    out.push({codon:cod, aa3:info[0], aa1:info[1], isStop: info[0]==='STOP', start:i});
+    if(info[0]==='STOP') break;
+  }
+  return out;
+}
+
+// Applies one mutation-demo spec to the base sequence. Returns the mutated
+// sequence plus indices (in the ORIGINAL sequence's coordinate space where
+// relevant) used to highlight what changed.
+function applyMutation(seq, demo){
+  if(!demo) return {seq: seq, changedIdx: [], insertedAt: -1, deletedAt: -1, deletedCount: 0};
+  if(demo.type === 'substitute'){
+    var flat = demo.codonIndex*3 + demo.baseIndex;
+    var mutated = seq.substring(0,flat) + demo.newBase + seq.substring(flat+1);
+    return {seq: mutated, changedIdx: [flat], insertedAt: -1, deletedAt: -1, deletedCount: 0};
+  }
+  if(demo.type === 'delete'){
+    var mutated2 = seq.substring(0,demo.atIndex) + seq.substring(demo.atIndex+demo.count);
+    return {seq: mutated2, changedIdx: [], insertedAt: -1, deletedAt: demo.atIndex, deletedCount: demo.count};
+  }
+  if(demo.type === 'insert'){
+    var mutated3 = seq.substring(0,demo.atIndex) + demo.base + seq.substring(demo.atIndex);
+    return {seq: mutated3, changedIdx: [], insertedAt: demo.atIndex, deletedAt: -1, deletedCount: 0};
+  }
+  return {seq: seq, changedIdx: [], insertedAt: -1, deletedAt: -1, deletedCount: 0};
+}
+
+/* =======================================================================
+   Card + mutation-panel rendering
+======================================================================= */
+
+function renderLevelMap(){
+  levelmapEl.innerHTML = '';
+  levels.forEach(function(l, i){
+    if(i > 0){
+      var conn = document.createElement('span');
+      conn.className = 'connector';
+      conn.textContent = '→';
+      levelmapEl.appendChild(conn);
+    }
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'level' + (i === current ? ' active' : '') + (i <= maxSeen ? ' done' : '');
+    btn.innerHTML = '<span class="ic">' + l.icon + '</span><span>' + escapeHtml(l.shortName) + '</span>';
+    btn.disabled = i > maxSeen;
+    btn.addEventListener('click', function(){ goTo(i); });
+    levelmapEl.appendChild(btn);
+  });
+}
+
+function renderCrumbs(){
+  crumbsEl.innerHTML = '';
+  for(var i=0;i<=current;i++){
+    if(i>0){
+      var sep = document.createElement('span');
+      sep.className = 'sep';
+      sep.textContent = '/';
+      crumbsEl.appendChild(sep);
+    }
+    var l = levels[i];
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    if(i === current){
+      btn.className = 'current';
+      btn.textContent = l.name;
+      btn.disabled = true;
+    } else {
+      btn.textContent = l.name;
+      btn.addEventListener('click', function(idx){ return function(){ goTo(idx); }; }(i));
+    }
+    crumbsEl.appendChild(btn);
+  }
+}
+
+function codonCellHTML(entry, cls){
+  if(!entry) return '';
+  var extra = cls || '';
+  return '<div class="codon '+extra+'"><span class="nt">'+escapeHtml(entry.codon)+'</span><span class="aa">'+escapeHtml(entry.isStop ? 'STOP' : entry.aa3)+'</span></div>';
+}
+
+function buildCodonStripHTML(mut){
+  var orig = translateSeq(SEQ);
+  var applied = applyMutation(SEQ, mut.demo);
+  var mutatedSeq = applied.seq;
+  var mutd = translateSeq(mutatedSeq);
+
+  // Which ORIGINAL codon index is first affected, for highlighting purposes.
+  var firstAffectedCodon = -1;
+  if(mut.demo){
+    if(mut.demo.type === 'substitute') firstAffectedCodon = mut.demo.codonIndex;
+    else if(mut.demo.type === 'delete') firstAffectedCodon = Math.floor(mut.demo.atIndex/3);
+    else if(mut.demo.type === 'insert') firstAffectedCodon = Math.floor(mut.demo.atIndex/3);
+  }
+
+  var html = '<div class="codonstrip">';
+  html += '<div class="codonrow"><span class="rowlabel">Original</span>';
+  orig.forEach(function(c, idx){
+    var cls = (idx === firstAffectedCodon && mut.demo && mut.demo.type==='substitute') ? 'changed' : (c.isStop ? 'stop' : '');
+    html += codonCellHTML(c, cls);
+  });
+  html += '</div>';
+
+  html += '<div class="codonrow"><span class="rowlabel">Mutated</span>';
+  var stopHit = false;
+  mutd.forEach(function(c, idx){
+    var cls = '';
+    if(stopHit) cls = 'ghost';
+    if(c.isStop){ cls = 'stop'; stopHit = true; }
+    else if(idx >= firstAffectedCodon && firstAffectedCodon >= 0) cls = (cls + ' changed').trim();
+    html += codonCellHTML(c, cls);
+  });
+  if(!mutd.length || !mutd[mutd.length-1].isStop){
+    html += '<div class="codon gap"><span class="nt">…</span><span class="aa">cont.</span></div>';
+  }
+  html += '</div></div>';
+  return {html: html, mutatedSeq: mutatedSeq, orig: orig, mutd: mutd};
+}
+
+function buildConsequenceSentence(mut, built){
+  var orig = built.orig, mutd = built.mutd;
+  if(mut.demo && mut.demo.type === 'substitute'){
+    var i = mut.demo.codonIndex;
+    var before = orig[i], after = mutd[i];
+    if(after && after.isStop){
+      return 'Result: codon ' + (i+1) + ' (' + before.aa3 + ') becomes a STOP signal — protein assembly halts after ' + i + ' amino acid' + (i===1?'':'s') + '.';
+    }
+    return 'Result: one amino acid changes at position ' + (i+1) + ' (' + before.aa3 + ' → ' + (after? after.aa3 : '?') + '). Every other amino acid is unaffected.';
+  }
+  if(mut.demo && (mut.demo.type === 'delete' || mut.demo.type === 'insert')){
+    var shifted = (mut.demo.type==='delete' ? mut.demo.count : 1) % 3 !== 0;
+    var fromCodon = Math.floor((mut.demo.type==='delete'?mut.demo.atIndex:mut.demo.atIndex)/3) + 1;
+    if(shifted){
+      var stopIdx = -1;
+      for(var k=0;k<mutd.length;k++){ if(mutd[k].isStop){ stopIdx = k; break; } }
+      if(stopIdx >= 0){
+        return 'Result: the reading frame shifts starting at codon ' + fromCodon + ' — every amino acid after that point is different, ending in a premature STOP at position ' + (stopIdx+1) + '.';
+      }
+      return 'Result: the reading frame shifts starting at codon ' + fromCodon + ' — every amino acid after that point is different.';
+    }
+    return 'Result: the reading frame is unaffected — only the amino acid(s) right at the change are lost or gained; everything else stays identical.';
+  }
+  return '';
+}
+
+function buildRealBoxHTML(mut){
+  var ex = mut.realExample || {};
+  var html = '<div class="realbox"><div class="rb-label">📄 Real published example</div>';
+  if(ex.hgvs_c || ex.hgvs_p){
+    html += '<div class="rb-hgvs">' + [ex.hgvs_c, ex.hgvs_p].filter(Boolean).map(escapeHtml).join('  ·  ') + '</div>';
+  }
+  if(ex.note) html += '<p>' + escapeHtml(ex.note) + '</p>';
+  if(ex.citations && ex.citations.length){
+    html += '<ol>';
+    ex.citations.forEach(function(c){ html += '<li><a href="'+escapeHtml(c.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(c.title)+'</a></li>'; });
+    html += '</ol>';
+  }
+  html += '</div>';
+  if(mut.extraNote){
+    html += '<p class="extranote">' + escapeHtml(mut.extraNote.text) + '</p>';
+    if(mut.extraNote.citations && mut.extraNote.citations.length){
+      html += '<div class="realbox" style="margin-top:8px;"><ol>';
+      mut.extraNote.citations.forEach(function(c){ html += '<li><a href="'+escapeHtml(c.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(c.title)+'</a></li>'; });
+      html += '</ol></div>';
+    }
+  }
+  return html;
+}
+
+function renderMutationTabsHTML(){
+  var html = '<div class="mutTabs" id="mutTabs">';
+  MUTS.forEach(function(m){
+    var kind = m.mechanism === 'helix' ? '' : ' <span class="mt-kind">(schematic)</span>';
+    html += '<button type="button" data-mut="'+escapeHtml(m.id)+'" class="'+(m.id===currentMutationId?'active':'')+'">'+escapeHtml(m.label)+kind+'</button>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderMutationPanelHTML(mut){
+  var html = '<div class="mutpanel">';
+  html += '<p class="mut-headline">' + escapeHtml(mut.headline) + '</p>';
+  html += '<p class="mut-explain">' + escapeHtml(mut.explain) + '</p>';
+  if(mut.mechanism === 'helix'){
+    var built = buildCodonStripHTML(mut);
+    html += built.html;
+    html += '<div class="consequence">' + escapeHtml(buildConsequenceSentence(mut, built)) + '</div>';
+  }
+  html += buildRealBoxHTML(mut);
+  html += '</div>';
+  return html;
+}
+
+function renderCard(){
+  var l = levels[current];
+  document.documentElement.style.setProperty('--level-color', l.color);
+  document.documentElement.style.setProperty('--level-color-soft', l.color + '1f');
+
+  var html = '';
+  html += '<div class="level-pill">Level ' + (current+1) + ' of ' + levels.length + '</div>';
+  html += '<div class="card-head">';
+  html += '  <div class="icon">' + l.icon + '</div>';
+  html += '  <div><h2>' + escapeHtml(l.name) + '</h2><p class="tagline">' + escapeHtml(l.tagline) + '</p></div>';
+  html += '</div>';
+
+  html += '<p class="summary">' + escapeHtml(l.summary) + '</p>';
+
+  if(l.id === 'helix' && MUTS.length){
+    html += renderMutationTabsHTML();
+    html += renderMutationPanelHTML(mutById[currentMutationId]);
+  }
+
+  if(l.facts && l.facts.length){
+    html += '<div class="factbox"><h3>' + (l.id==='helix' ? 'About this fragment' : 'Quick facts') + '</h3><ul>';
+    l.facts.forEach(function(f){ html += '<li>' + escapeHtml(f) + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  if(l.citations && l.citations.length){
+    html += '<div class="citebox"><h3>Published sources</h3><ol>';
+    l.citations.forEach(function(c){
+      html += '<li><a href="' + escapeHtml(c.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(c.title) + '</a></li>';
+    });
+    html += '</ol></div>';
+  }
+
+  html += '<div class="navrow">';
+  html += '<button class="navbtn prev" id="prevBtn" ' + (current===0?'disabled':'') + '><span class="arrow">←</span> Back up</button>';
+  if(l.childId){
+    html += '<button class="navbtn next" id="nextBtn">Zoom into ' + escapeHtml(byId[l.childId].shortName) + ' <span class="arrow">→</span></button>';
+  } else {
+    var comp = (DATA.meta && DATA.meta.companionApp) || {url:'../index.html', label:'the main explorer'};
+    html += '<a class="navbtn companion" href="'+escapeHtml(comp.url)+'">See it at the protein &amp; brain level <span class="arrow">→</span></a>';
+  }
+  html += '</div>';
+  html += '<p class="zoomhint">' + (l.childId ? 'Click the 3D model above, use the level map, the breadcrumb, or ← / → arrow keys to navigate.' : 'You\'ve reached the largest scale on this page — the two-copy view above is where DNA mutations become SYNGAP1-RD.') + '</p>';
+
+  cardEl.innerHTML = html;
+
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  if(prevBtn) prevBtn.addEventListener('click', function(){ goTo(current-1); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ goTo(current+1); });
+
+  if(l.id === 'helix'){
+    var tabsEl = document.getElementById('mutTabs');
+    if(tabsEl){
+      Array.prototype.forEach.call(tabsEl.querySelectorAll('button'), function(b){
+        b.addEventListener('click', function(){ setMutation(b.getAttribute('data-mut')); });
+      });
+    }
+  }
+
+  if(!isFirstRender){
+    document.getElementById('viewerWrap').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  isFirstRender = false;
+}
+
+function renderFooter(){
+  var meta = DATA.meta || {};
+  var comp = meta.companionApp || {url:'../index.html', label:'SYNGAP1: From Brain to Atom'};
+  footerEl.innerHTML = '<strong>' + escapeHtml(meta.title||'') + '</strong> — ' + escapeHtml(meta.disclaimer||'') +
+    (meta.lastUpdated ? ' <br>Last updated ' + escapeHtml(meta.lastUpdated) : '') +
+    '<span class="back">← Back to <a href="'+escapeHtml(comp.url)+'">'+escapeHtml(comp.label)+'</a></span>';
+}
+
+function goTo(i){
+  if(i < 0 || i >= levels.length) return;
+  current = i;
+  if(i > maxSeen) maxSeen = i;
+  if(levels[i].id === 'helix' && !currentMutationId && MUTS.length) currentMutationId = MUTS[0].id;
+  renderLevelMap();
+  renderCrumbs();
+  renderCard();
+  Viewer3D.loadLevel(levels[current], currentMutationId);
+}
+
+function setMutation(id){
+  if(!mutById[id] || id === currentMutationId){ if(!mutById[id]) return; }
+  currentMutationId = id;
+  mutatedShown = false;
+  renderCard();
+  Viewer3D.setMutation(id);
+}
+
+document.addEventListener('keydown', function(e){
+  var tag = (document.activeElement && document.activeElement.tagName) || '';
+  if(tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if(e.key === 'ArrowRight'){ goTo(current+1); }
+  if(e.key === 'ArrowLeft'){ goTo(current-1); }
+});
+
+/* =======================================================================
+   Viewer3D — small Three.js engine, one procedural rotatable scene per
+   level (chromosome / gene / helix / copies). Mirrors the pattern used in
+   the main SYNGAP1 explorer's Viewer3D (same init/resize/raycast/flyTo/
+   hotspot machinery), with two DNA-page-specific additions:
+     - loadLevel(level, mutationId) carries which of the 8 mutation types
+       is currently selected (only meaningful on the "helix" level).
+     - setMutation(id) rebuilds just the current scene for a new mutation
+       type — used when the mutation-tab strip is clicked without leaving
+       the helix level.
+======================================================================= */
+var Viewer3D = (function(){
+  var hostEl, labelsEl, loadingEl, badgeEl, controlsEl;
+  var renderer, camera, scene, controls, raycaster, pointer;
+  var currentGroup = null, currentSceneObj = null, currentModel3d = null, currentLevel = null;
+  var clock = new THREE.Clock();
+  var ready = false;
+  var camAnim = null;
+  var pointerDownInfo = null;
+  var idleTimer = null;
+  var advanceCallback = function(){};
+
+  function easeInOutCubic(x){ return x<0.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; }
+
+  function resize(){
+    if(!renderer || !hostEl) return;
+    var w = hostEl.clientWidth || 1, h = hostEl.clientHeight || 1;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+
+  function init(opts){
+    hostEl = opts.hostEl; labelsEl = opts.labelsEl; loadingEl = opts.loadingEl; badgeEl = opts.badgeEl; controlsEl = opts.controlsEl;
+    advanceCallback = opts.onAdvance || function(){};
+    try{
+      renderer = new THREE.WebGLRenderer({antialias:true, alpha:true, powerPreference:'low-power'});
+    } catch(e){
+      return false;
+    }
+    if(!renderer){ return false; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+    hostEl.appendChild(renderer.domElement);
+
+    camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0,0,7);
+
+    scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0c0a18, 10, 26);
+
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x1a1330, 1.15));
+    var d1 = new THREE.DirectionalLight(0xffffff, 1.0); d1.position.set(4,6,5); scene.add(d1);
+    var d2 = new THREE.DirectionalLight(0x8fa8ff, 0.45); d2.position.set(-5,-3,-4); scene.add(d2);
+
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.minDistance = 1.8;
+    controls.maxDistance = 30;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.5;
+    controls.enablePan = false;
+
+    raycaster = new THREE.Raycaster();
+    pointer = new THREE.Vector2();
+
+    renderer.domElement.addEventListener('pointerdown', onPointerDown);
+    renderer.domElement.addEventListener('pointerup', onPointerUp);
+    renderer.domElement.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('resize', resize);
+    if(window.ResizeObserver){
+      new ResizeObserver(resize).observe(hostEl);
+    }
+
+    resize();
+    ready = true;
+    if(loadingEl) loadingEl.style.display = 'none';
+    animate();
+    return true;
+  }
+
+  function wakeAutoRotate(){
+    controls.autoRotate = false;
+    if(idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(function(){ controls.autoRotate = true; }, 3500);
+  }
+
+  function onPointerDown(e){
+    pointerDownInfo = {x:e.clientX, y:e.clientY, t:performance.now()};
+    wakeAutoRotate();
+  }
+  function onPointerUp(e){
+    if(!pointerDownInfo) return;
+    var dx = e.clientX-pointerDownInfo.x, dy = e.clientY-pointerDownInfo.y;
+    var dist = Math.sqrt(dx*dx+dy*dy);
+    var dt = performance.now()-pointerDownInfo.t;
+    pointerDownInfo = null;
+    if(dist < 6 && dt < 600){ handleClick(e); }
+  }
+  function onPointerMove(e){
+    if(!currentSceneObj || !currentSceneObj.clickables || !currentSceneObj.clickables.length){
+      renderer.domElement.style.cursor = 'grab';
+      return;
+    }
+    setPointerFromEvent(e);
+    raycaster.setFromCamera(pointer, camera);
+    var hits = raycaster.intersectObjects(currentSceneObj.clickables, true);
+    renderer.domElement.style.cursor = hits.length ? 'pointer' : 'grab';
+  }
+  function setPointerFromEvent(e){
+    var rect = renderer.domElement.getBoundingClientRect();
+    pointer.x = ((e.clientX-rect.left)/rect.width)*2-1;
+    pointer.y = -((e.clientY-rect.top)/rect.height)*2+1;
+  }
+  function handleClick(e){
+    if(!currentSceneObj || !currentSceneObj.clickables || !currentSceneObj.clickables.length) return;
+    setPointerFromEvent(e);
+    raycaster.setFromCamera(pointer, camera);
+    var hits = raycaster.intersectObjects(currentSceneObj.clickables, true);
+    if(hits.length && currentModel3d && currentModel3d.canAdvance){
+      advanceCallback();
+    }
+  }
+
+  function disposeObject3D(obj){
+    obj.traverse(function(node){
+      if(node.geometry) node.geometry.dispose();
+      if(node.material){
+        var mats = Array.isArray(node.material) ? node.material : [node.material];
+        mats.forEach(function(m){
+          for(var k in m){ if(m[k] && m[k].isTexture) m[k].dispose(); }
+          m.dispose();
+        });
+      }
+    });
+  }
+
+  function flyTo(pos, target, duration){
+    camAnim = {
+      fromPos: camera.position.clone(), fromTarget: controls.target.clone(),
+      toPos: pos.clone(), toTarget: target.clone(),
+      t0: performance.now(), duration: duration || 950
+    };
+  }
+
+  function makeHotspot(colorHex, localPos){
+    var g = new THREE.Group();
+    g.position.copy(localPos);
+    var core = new THREE.Mesh(new THREE.SphereGeometry(0.085,16,16), new THREE.MeshBasicMaterial({color:0xffffff}));
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.017,8,32), new THREE.MeshBasicMaterial({color:new THREE.Color(colorHex), transparent:true, opacity:0.9}));
+    ring.rotation.x = Math.PI/2;
+    var ring2 = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.017,8,32), new THREE.MeshBasicMaterial({color:new THREE.Color(colorHex), transparent:true, opacity:0.4}));
+    ring2.rotation.x = Math.PI/2;
+    g.add(core, ring, ring2);
+    g.userData = {core:core, ring:ring, ring2:ring2};
+    return g;
+  }
+  function pulseHotspot(h, t){
+    h.userData.ring.scale.setScalar(1+0.22*Math.sin(t*3));
+    h.userData.ring2.scale.setScalar(1.5+0.5*Math.sin(t*3+0.7));
+    h.userData.ring2.material.opacity = 0.28+0.18*Math.sin(t*3+0.7);
+    h.userData.core.scale.setScalar(1+0.35*Math.sin(t*3+1.1));
+  }
+
+  /* ---------------- scene builders ---------------- */
+
+  // A row of exon "blocks" joined by thin intron lines — reused for the
+  // Gene level (the real 19-exon layout) and, zoomed into a small window,
+  // for the three "schematic" mutation types (splice-site, exon deletion,
+  // whole/partial gene deletion) where showing individual DNA letters
+  // wouldn't make sense.
+  function buildExonBarVisual(opts){
+    opts = opts || {};
+    var n = Math.max(1, opts.exonCount || 19);
+    var spacing = 0.62;
+    var totalW = (n-1)*spacing;
+    var group = new THREE.Group();
+    var boxes = [];
+    var mode = opts.mode || 'normal';
+    var target = (opts.targetExonIndex != null) ? opts.targetExonIndex : -1;
+    var highlight = (opts.highlightIndex != null) ? opts.highlightIndex : -1;
+
+    for(var i=0;i<n;i++){
+      var x = -totalW/2 + i*spacing;
+      var isTarget = (i === target);
+      var isHighlight = (i === highlight);
+      var deleted = (mode === 'exonDelete' && isTarget);
+      var geoBox = new THREE.BoxGeometry(0.42, 0.62, 0.3);
+      var color = deleted ? 0x3a3350 : (isTarget ? 0xf87171 : (isHighlight ? (opts.color||'#ec4899') : 0x8b7cf6));
+      var mat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(color), roughness:0.5,
+        transparent: deleted || mode==='geneDelete',
+        opacity: deleted ? 0.16 : (mode==='geneDelete' ? 0.14 : 1),
+        emissive: (isTarget && !deleted) ? new THREE.Color(0xf87171) : 0x000000,
+        emissiveIntensity: (isTarget && !deleted) ? 0.45 : 0
+      });
+      var box = new THREE.Mesh(geoBox, mat);
+      box.position.set(x, 0, 0);
+      if(deleted) box.scale.y = 0.14;
+      group.add(box);
+      boxes.push({mesh:box, x:x, i:i, deleted:deleted});
+
+      if(i>0){
+        var prevX = -totalW/2 + (i-1)*spacing;
+        var midX = (prevX+x)/2;
+        var lineLen = Math.max(0.05, spacing-0.42);
+        var isSpliceJunction = (mode==='splice' && (i-1===target || i===target));
+        var lineMat = new THREE.MeshStandardMaterial({
+          color: isSpliceJunction ? 0xf87171 : 0x59477a,
+          emissive: isSpliceJunction ? new THREE.Color(0xf87171) : 0x000000,
+          emissiveIntensity: isSpliceJunction ? 0.55 : 0,
+          transparent: mode==='geneDelete', opacity: mode==='geneDelete' ? 0.14 : 1
+        });
+        var lineMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,lineLen,6), lineMat);
+        lineMesh.rotation.z = Math.PI/2;
+        lineMesh.position.set(midX, 0, 0);
+        group.add(lineMesh);
+        if(isSpliceJunction){
+          var flag = new THREE.Mesh(new THREE.ConeGeometry(0.08,0.22,8), new THREE.MeshStandardMaterial({color:0xf87171, emissive:0xf87171, emissiveIntensity:0.6}));
+          flag.position.set(midX, 0.52, 0);
+          group.add(flag);
+        }
+      }
+    }
+
+    // Exon deletion: draw a bypass arc showing the neighbors now splicing
+    // directly to each other, skipping the excised exon.
+    if(mode === 'exonDelete' && target > 0 && target < n-1){
+      var pStart = boxes[target-1].mesh.position;
+      var pEnd = boxes[target+1].mesh.position;
+      var mid = pStart.clone().lerp(pEnd, 0.5); mid.y += 0.55;
+      var curve = new THREE.CatmullRomCurve3([pStart.clone(), mid, pEnd.clone()]);
+      var bypass = new THREE.Mesh(new THREE.TubeGeometry(curve, 24, 0.03, 8, false), new THREE.MeshStandardMaterial({color:0x4ade80, emissive:0x4ade80, emissiveIntensity:0.5}));
+      group.add(bypass);
+    }
+
+    if(mode === 'geneDelete'){
+      var edges = new THREE.EdgesGeometry(new THREE.BoxGeometry(totalW+0.5, 0.9, 0.5));
+      var outline = new THREE.LineSegments(edges, new THREE.LineDashedMaterial({color:0xf87171, dashSize:0.12, gapSize:0.09, transparent:true, opacity:0.75}));
+      outline.computeLineDistances();
+      group.add(outline);
+    }
+
+    group.userData.boxes = boxes;
+    group.userData.width = totalW;
+    return group;
+  }
+
+  function buildChromosomeScene(level){
+    var group = new THREE.Group();
+    var clickables = [group];
+
+    function chromatidCurve(sign){
+      return new THREE.CatmullRomCurve3([
+        new THREE.Vector3(sign*-0.9, 1.95, 0),
+        new THREE.Vector3(sign*-0.25, 0.55, 0.05*sign),
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(sign*0.25, -0.6, -0.05*sign),
+        new THREE.Vector3(sign*0.95, -2.0, 0)
+      ]);
+    }
+    var mat = new THREE.MeshStandardMaterial({color:0x8b7cf6, roughness:0.55});
+    var curveA = chromatidCurve(1), curveB = chromatidCurve(-1);
+    group.add(new THREE.Mesh(new THREE.TubeGeometry(curveA, 60, 0.34, 12, false), mat));
+    group.add(new THREE.Mesh(new THREE.TubeGeometry(curveB, 60, 0.34, 12, false), mat.clone()));
+
+    var bandColors = [0x2b2440, 0x8b7cf6, 0x2b2440, 0x59477a, 0x2b2440];
+    for(var i=0;i<18;i++){
+      var t = i/17;
+      var pos = curveA.getPointAt(t);
+      var torus = new THREE.Mesh(new THREE.TorusGeometry(0.36,0.05,6,16), new THREE.MeshStandardMaterial({color:bandColors[i%bandColors.length], roughness:0.85}));
+      torus.position.copy(pos);
+      torus.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), curveA.getTangentAt(t));
+      group.add(torus);
+    }
+
+    var locusT = 0.22;
+    var locusPos = curveA.getPointAt(locusT);
+    var locusMat = new THREE.MeshStandardMaterial({color:new THREE.Color(level.color), emissive:new THREE.Color(level.color), emissiveIntensity:0.5, roughness:0.4});
+    var locusBand = new THREE.Mesh(new THREE.TorusGeometry(0.4,0.09,8,20), locusMat);
+    locusBand.position.copy(locusPos);
+    locusBand.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), curveA.getTangentAt(locusT));
+    group.add(locusBand); clickables.push(locusBand);
+
+    var hotspot = makeHotspot(level.color, locusPos.clone().add(new THREE.Vector3(0.5,0,0)));
+    group.add(hotspot); clickables.push(hotspot);
+
+    return {
+      group:group, clickables:clickables,
+      labels:[{anchor:locusPos, text:'6p21.32 — SYNGAP1 locus'}],
+      camPos: new THREE.Vector3(2.2,0.4,5.6), camTarget: new THREE.Vector3(0,0,0),
+      update: function(t){ pulseHotspot(hotspot, t); locusMat.emissiveIntensity = 0.35+0.25*Math.sin(t*2.2); }
+    };
+  }
+
+  function buildGeneScene(level, m){
+    var group = new THREE.Group();
+    var exonCount = (m && m.exonCount) || 19;
+    var bar = buildExonBarVisual({exonCount:exonCount, highlightIndex:0, color:level.color, mode:'normal'});
+    group.add(bar);
+
+    var firstBoxX = bar.userData.boxes[0].x;
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(firstBoxX, -0.65, 0));
+    group.add(hotspot);
+    var clickables = [group, bar.userData.boxes[0].mesh, hotspot];
+
+    return {
+      group:group, clickables:clickables,
+      labels:[{anchor:new THREE.Vector3(firstBoxX, 0.62, 0), text:'Exon 1 — our DNA fragment is here'}],
+      camPos: new THREE.Vector3(0, 1.15, bar.userData.width*0.6+2.7), camTarget: new THREE.Vector3(0,0,0),
+      update: function(t){ pulseHotspot(hotspot,t); }
+    };
+  }
+
+  // A short window of exons around a mutation-type's schematic event
+  // (splice-site / exon-deletion), or the whole gene hollowed out
+  // (whole/partial gene deletion).
+  function buildMutationSchematic(mut){
+    var demo = mut.demo || {};
+    if(demo.type === 'geneDelete'){
+      var bar = buildExonBarVisual({exonCount:19, mode:'geneDelete'});
+      return {group: (function(){ var g=new THREE.Group(); g.add(bar); return g; })(), width: bar.userData.width};
+    }
+    var absIndex = (demo.exonIndex != null) ? demo.exonIndex : 6;
+    var radius = 2;
+    var winStart = Math.max(0, absIndex-radius);
+    var n = Math.min(5, 19-winStart);
+    var target = absIndex - winStart;
+    var mode = demo.type === 'splice' ? 'splice' : 'exonDelete';
+    var bar2 = buildExonBarVisual({exonCount:n, targetExonIndex:target, mode:mode});
+    var g2 = new THREE.Group(); g2.add(bar2);
+    return {group:g2, width:bar2.userData.width};
+  }
+
+  // The DNA double helix itself — two backbone strands (matching curve+tube
+  // technique used elsewhere in this app) plus one colored rung per base,
+  // wound at realistic B-DNA proportions (~10.5 bases/turn).
+  function buildHelixMeshFromSeq(seq, opts){
+    opts = opts || {};
+    var changedSet = {}; (opts.changedIndices||[]).forEach(function(i){changedSet[i]=true;});
+    var insertedSet = {}; (opts.insertedIndices||[]).forEach(function(i){insertedSet[i]=true;});
+    var deletedIndex = (opts.deletedIndex != null) ? opts.deletedIndex : -1;
+
+    var n = seq.length;
+    var group = new THREE.Group();
+    if(n === 0) return {group:group, n:0, height:0};
+
+    var RISE = 0.155, TWIST = (2*Math.PI)/10.5, RADIUS = 0.72;
+    var ptsA = [], ptsB = [];
+    var yOff = (n-1)*RISE/2;
+    for(var i=0;i<n;i++){
+      var ang = i*TWIST;
+      var y = i*RISE - yOff;
+      ptsA.push(new THREE.Vector3(Math.cos(ang)*RADIUS, y, Math.sin(ang)*RADIUS));
+      ptsB.push(new THREE.Vector3(Math.cos(ang+Math.PI)*RADIUS, y, Math.sin(ang+Math.PI)*RADIUS));
+    }
+
+    if(n > 1){
+      var curveA = new THREE.CatmullRomCurve3(ptsA);
+      var curveB = new THREE.CatmullRomCurve3(ptsB);
+      group.add(new THREE.Mesh(new THREE.TubeGeometry(curveA, Math.max(8,n*3), 0.055, 8, false), new THREE.MeshStandardMaterial({color:0x8b7cf6, roughness:0.5})));
+      group.add(new THREE.Mesh(new THREE.TubeGeometry(curveB, Math.max(8,n*3), 0.055, 8, false), new THREE.MeshStandardMaterial({color:0x6d5bd0, roughness:0.5})));
+    }
+
+    var codons = translateSeq(seq);
+    var stopBaseStart = -1;
+    codons.forEach(function(c){ if(c.isStop && stopBaseStart===-1) stopBaseStart = c.start; });
+
+    for(var i2=0;i2<n;i2++){
+      var pA = ptsA[i2], pB = ptsB[i2];
+      var mid = pA.clone().lerp(pB, 0.5);
+      var dir = pB.clone().sub(pA);
+      var len = dir.length();
+      dir.normalize();
+      var baseChar = seq[i2];
+      var baseColorHex = BASE_COLOR[baseChar] || '#9ca3af';
+      var isGhost = (stopBaseStart>=0 && i2 >= stopBaseStart+3);
+      var isChanged = !!changedSet[i2];
+      var isInserted = !!insertedSet[i2];
+      var isDeletionMark = (i2 === deletedIndex);
+      var mat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(baseColorHex), roughness:0.4,
+        transparent: isGhost, opacity: isGhost ? 0.22 : 1,
+        emissive: isDeletionMark ? new THREE.Color(0xff4d6d) : (isInserted ? new THREE.Color(0x4ade80) : (isChanged ? new THREE.Color(0xffffff) : 0x000000)),
+        emissiveIntensity: (isDeletionMark||isInserted||isChanged) ? 0.65 : 0
+      });
+      var cyl = new THREE.Mesh(new THREE.CylinderGeometry(0.062,0.062,len,10), mat);
+      cyl.position.copy(mid);
+      cyl.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir);
+      group.add(cyl);
+    }
+
+    for(var c2=0; c2*3 < n; c2++){
+      var bIdx = c2*3;
+      var isStopRing = (bIdx === stopBaseStart);
+      var ringY = ptsA[bIdx].y - RISE*0.5;
+      var ring = new THREE.Mesh(
+        new THREE.TorusGeometry(RADIUS*1.18, isStopRing?0.028:0.016, 6, 28),
+        new THREE.MeshBasicMaterial({color: isStopRing ? 0xff4d6d : 0xffffff, transparent:true, opacity:isStopRing?0.85:0.22})
+      );
+      ring.rotation.x = Math.PI/2;
+      ring.position.set(0, ringY, 0);
+      group.add(ring);
+    }
+
+    return {group:group, n:n, height:n*RISE};
+  }
+
+  function buildHelixContentForMutation(mut){
+    var demo = mut.demo || {};
+    var applied = applyMutation(SEQ, demo);
+    var mutatedSeq = applied.seq;
+    var origOpts = {}, mutOpts = {};
+
+    if(demo.type === 'substitute'){
+      var flat = demo.codonIndex*3+demo.baseIndex;
+      origOpts.changedIndices = [flat];
+      mutOpts.changedIndices = [flat];
+    } else if(demo.type === 'delete'){
+      origOpts.deletedIndex = demo.atIndex;
+    } else if(demo.type === 'insert'){
+      mutOpts.insertedIndices = [demo.atIndex];
+    }
+
+    var origBuilt = buildHelixMeshFromSeq(SEQ, origOpts);
+    var mutBuilt = buildHelixMeshFromSeq(mutatedSeq, mutOpts);
+    origBuilt.group.position.x = -1.35;
+    mutBuilt.group.position.x = 1.35;
+
+    var group = new THREE.Group();
+    group.add(origBuilt.group, mutBuilt.group);
+
+    return {group:group, height: Math.max(origBuilt.height, mutBuilt.height)};
+  }
+
+  function buildCopiesScene(level){
+    var group = new THREE.Group();
+    var sampleSeq = SEQ.substring(0, Math.min(24, SEQ.length));
+
+    var goodHelix = buildHelixMeshFromSeq(sampleSeq, {});
+    goodHelix.group.position.set(-2.6, 0, 0);
+    goodHelix.group.scale.setScalar(0.85);
+    group.add(goodHelix.group);
+
+    var badHelix = buildHelixMeshFromSeq(sampleSeq, {changedIndices:[4]});
+    badHelix.group.traverse(function(o){
+      if(o.isMesh && o.material){
+        var mats = Array.isArray(o.material) ? o.material : [o.material];
+        mats.forEach(function(mm){
+          if(mm.color) mm.color.lerp(new THREE.Color(0x2a2438), 0.55);
+          mm.transparent = true;
+          mm.opacity = Math.min(mm.opacity != null ? mm.opacity : 1, 0.7);
+        });
+      }
+    });
+    badHelix.group.position.set(2.6, 0, 0);
+    badHelix.group.scale.setScalar(0.85);
+    group.add(badHelix.group);
+
+    var crack = new THREE.Mesh(new THREE.TorusGeometry(0.55,0.05,8,20), new THREE.MeshStandardMaterial({color:0xef4444, emissive:0xef4444, emissiveIntensity:0.6}));
+    crack.position.set(2.6, 0, 0);
+    crack.rotation.x = Math.PI/2.3;
+    group.add(crack);
+
+    var meterMaxH = 2.6, meterW = 0.55;
+    var frame = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.BoxGeometry(meterW, meterMaxH, meterW*0.6)),
+      new THREE.LineBasicMaterial({color:0xffffff, transparent:true, opacity:0.35})
+    );
+    group.add(frame);
+
+    var fillLevel = 0.62; // conceptually reduced, not exactly 50% — see level facts
+    var fillH = meterMaxH*fillLevel;
+    var fillMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(meterW*0.82, fillH, meterW*0.42),
+      new THREE.MeshStandardMaterial({color:new THREE.Color(level.color), emissive:new THREE.Color(level.color), emissiveIntensity:0.3, roughness:0.45})
+    );
+    fillMesh.position.set(0, -meterMaxH/2 + fillH/2, 0);
+    group.add(fillMesh);
+
+    var fullMark = new THREE.Mesh(new THREE.BoxGeometry(meterW*1.15,0.02,meterW*0.7), new THREE.MeshBasicMaterial({color:0x4ade80, transparent:true, opacity:0.7}));
+    fullMark.position.set(0, meterMaxH/2, 0);
+    group.add(fullMark);
+
+    return {
+      group: group, clickables: [group],
+      labels: [
+        {anchor:new THREE.Vector3(-2.6, 1.6, 0), text:'Copy 1 — functional'},
+        {anchor:new THREE.Vector3(2.6, 1.6, 0), text:'Copy 2 — impaired'},
+        {anchor:new THREE.Vector3(0, meterMaxH/2+0.35, 0), text:'Typical output'},
+        {anchor:new THREE.Vector3(0, -meterMaxH/2-0.35, 0), text:'SynGAP1 protein output (reduced)'}
+      ],
+      camPos: new THREE.Vector3(0.5, 0.6, 7.3), camTarget: new THREE.Vector3(0,0,0),
+      update: function(t){ fillMesh.material.emissiveIntensity = 0.22+0.12*Math.sin(t*1.6); }
+    };
+  }
+
+  function buildHelixLevelScene(level, mutationId){
+    var mut = mutById[mutationId] || MUTS[0];
+    var group = new THREE.Group();
+    var labels = [];
+    var camPos = new THREE.Vector3(0.6,0.3,7), camTarget = new THREE.Vector3(0,0,0);
+
+    if(mut){
+      if(mut.mechanism === 'helix'){
+        var built = buildHelixContentForMutation(mut);
+        group.add(built.group);
+        var half = built.height/2;
+        labels.push({anchor:new THREE.Vector3(-1.35, half+0.5, 0), text:'Original'});
+        labels.push({anchor:new THREE.Vector3(1.35, half+0.5, 0), text:'Mutated'});
+        camPos = new THREE.Vector3(0.7, 0.25, Math.max(6.5, built.height*0.62+2.4));
+      } else {
+        var schem = buildMutationSchematic(mut);
+        group.add(schem.group);
+        labels.push({anchor:new THREE.Vector3(0, 0.85, 0), text: mut.label});
+        camPos = new THREE.Vector3(0.5, 1.5, Math.max(6.5, (schem.width||6)*0.65+3.2));
+      }
+    }
+
+    var hotspot = makeHotspot(level.color, new THREE.Vector3(2.6, -0.2, 0.4));
+    group.add(hotspot);
+
+    return {
+      group: group, clickables: [group, hotspot], labels: labels,
+      camPos: camPos, camTarget: camTarget,
+      update: function(t){ pulseHotspot(hotspot, t); }
+    };
+  }
+
+  var builders = {
+    chromosome: function(level){ return buildChromosomeScene(level); },
+    gene: function(level, m){ return buildGeneScene(level, m); },
+    helix: function(level, m, mutationId){ return buildHelixLevelScene(level, mutationId); },
+    copies: function(level){ return buildCopiesScene(level); }
+  };
+
+  /* ---------------- controls UI (base-color legend on the helix level) ---------------- */
+
+  function renderControlsUI(level){
+    if(!controlsEl) return;
+    controlsEl.innerHTML = '';
+    if(level.id !== 'helix') return;
+    var legend = document.createElement('div');
+    legend.className = 'vc-legend';
+    legend.style.cssText = 'display:flex;gap:12px;align-items:center;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);padding:6px 14px;border-radius:999px;color:#fff;font-size:0.72rem;font-weight:700;';
+    ['A','T','G','C'].forEach(function(b){
+      var dot = document.createElement('span');
+      dot.style.cssText = 'display:inline-flex;align-items:center;gap:5px;';
+      dot.innerHTML = '<span style="width:10px;height:10px;border-radius:50%;background:'+BASE_COLOR[b]+';display:inline-block;"></span>'+b;
+      legend.appendChild(dot);
+    });
+    controlsEl.appendChild(legend);
+  }
+
+  /* ---------------- label overlay ---------------- */
+
+  function updateLabels(){
+    if(!labelsEl) return;
+    var labels = (currentSceneObj && currentSceneObj.labels) || [];
+    while(labelsEl.children.length < labels.length){
+      var d = document.createElement('div'); d.className = 'viewer-label'; labelsEl.appendChild(d);
+    }
+    while(labelsEl.children.length > labels.length){ labelsEl.removeChild(labelsEl.lastChild); }
+    if(!labels.length || !currentGroup) return;
+    var rect = renderer.domElement.getBoundingClientRect();
+    labels.forEach(function(l, i){
+      var el = labelsEl.children[i];
+      el.textContent = l.text;
+      var world = currentGroup.localToWorld(l.anchor.clone());
+      var ndc = world.project(camera);
+      if(ndc.z > 1 || ndc.z < -1){ el.style.display = 'none'; return; }
+      el.style.display = 'block';
+      var x = (ndc.x*0.5+0.5)*rect.width;
+      var y = (1-(ndc.y*0.5+0.5))*rect.height;
+      el.style.transform = 'translate(-50%, -125%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+    });
+  }
+
+  /* ---------------- public: load a level's scene / switch mutation type ---------------- */
+
+  function swapScene(built){
+    if(currentSceneObj && currentSceneObj.onDispose){ currentSceneObj.onDispose(); }
+    if(currentGroup){ scene.remove(currentGroup); disposeObject3D(currentGroup); }
+    currentGroup = built.group;
+    currentSceneObj = built;
+    scene.add(currentGroup);
+  }
+
+  function loadLevel(level, mutationId){
+    if(!ready) return;
+    currentLevel = level;
+    var m = level.model3d || {};
+    var builder = builders[m.type];
+    if(!builder){ if(badgeEl) badgeEl.style.display='none'; return; }
+    if(badgeEl) badgeEl.style.display = 'inline-block';
+
+    var built = builder(level, m, mutationId);
+    swapScene(built);
+    currentModel3d = { canAdvance: !!level.childId };
+    scene.fog.color.set(0x0c0a18);
+
+    flyTo(built.camPos, built.camTarget, 950);
+    controls.autoRotate = true;
+    renderControlsUI(level);
+
+    if(viewerInstructionsEl){
+      viewerInstructionsEl.textContent = level.childId
+        ? '🖱️ Drag to rotate • Scroll to zoom • Click the glowing marker to zoom in'
+        : '🖱️ Drag to rotate • Scroll to zoom — largest scale reached';
+    }
+  }
+
+  function setMutation(id){
+    if(!ready || !currentLevel || currentLevel.id !== 'helix') return;
+    var m = currentLevel.model3d || {};
+    var builder = builders[m.type];
+    if(!builder) return;
+    var built = builder(currentLevel, m, id);
+    swapScene(built);
+    currentModel3d = { canAdvance: !!currentLevel.childId };
+    flyTo(built.camPos, built.camTarget, 850);
+    renderControlsUI(currentLevel);
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var t = clock.elapsedTime; clock.getDelta();
+    if(camAnim){
+      var e = Math.min(1, (performance.now()-camAnim.t0)/camAnim.duration);
+      var k = easeInOutCubic(e);
+      camera.position.lerpVectors(camAnim.fromPos, camAnim.toPos, k);
+      controls.target.lerpVectors(camAnim.fromTarget, camAnim.toTarget, k);
+      if(e>=1) camAnim = null;
+    }
+    if(currentSceneObj && currentSceneObj.update) currentSceneObj.update(t);
+    controls.update();
+    updateLabels();
+    renderer.render(scene, camera);
+  }
+
+  return { init: init, loadLevel: loadLevel, setMutation: setMutation };
+})();
+
+/* ---------------- boot ---------------- */
+
+if(levels.length){
+  renderFooter();
+  var viewerOk = false;
+  try{
+    viewerOk = Viewer3D.init({
+      hostEl: document.getElementById('viewerHost'),
+      labelsEl: document.getElementById('viewerLabels'),
+      loadingEl: document.getElementById('viewerLoading'),
+      badgeEl: document.getElementById('viewerBadge'),
+      controlsEl: document.getElementById('viewerControls'),
+      onAdvance: function(){ goTo(current+1); }
+    });
+  } catch(e){ viewerOk = false; console.error('3D viewer failed to start', e); }
+
+  if(!viewerOk){
+    var wrap = document.getElementById('viewerWrap');
+    wrap.innerHTML = '<div class="viewer-fallback"><div class="big">🧬</div><div>3D preview isn\'t available in this browser.<br>Use the buttons and level map below to navigate instead.</div></div>';
+  }
+
+  // Deep-link support: ?level=<id> (e.g. ?level=helix) jumps straight to a
+  // level, and ?mutation=<id> additionally pre-selects a mutation-type tab.
+  // Used by the main "SYNGAP1: From Brain to Atom" explorer's Amino Acids /
+  // Protein levels to link straight into the relevant mutation demo.
+  var initialLevelIdx = 0;
+  try{
+    var qp = new URLSearchParams(window.location.search);
+    var wantLevel = qp.get('level');
+    if(wantLevel && byId[wantLevel]) initialLevelIdx = levels.indexOf(byId[wantLevel]);
+    var wantMut = qp.get('mutation');
+    if(wantMut && mutById[wantMut]) currentMutationId = wantMut;
+  } catch(e){ /* URLSearchParams unsupported / file:// quirk — fall back to level 0 */ }
+
+  goTo(initialLevelIdx);
+} else {
+  cardEl.innerHTML = '<p style="color:#c00;">Could not load app data.</p>';
+}
+
+window.__syngapBooted = true;
+</script>
+<script>
+// Classic (non-module) safety net — see the main SYNGAP1 explorer's
+// template.html for the full rationale: ES module <script> tags cannot
+// load at all over the file:// protocol in Chrome/Edge.
+setTimeout(function(){
+  if(window.__syngapBooted) return;
+  var wrap = document.getElementById('viewerWrap');
+  if(wrap) wrap.style.display = 'none';
+  var card = document.getElementById('card');
+  if(card){
+    card.innerHTML =
+      '<div style="text-align:center;padding:20px 10px;">' +
+      '<div style="font-size:2.4rem;margin-bottom:10px;">🧬</div>' +
+      '<h2 style="margin:0 0 10px;">This app needs to be served over a local web server</h2>' +
+      '<p style="color:#5b5470;max-width:520px;margin:0 auto 16px;line-height:1.6;">' +
+      'The 3D viewer uses JavaScript modules, which Chrome and Edge block when a file is opened directly from disk (a file:// address). ' +
+      'This is a one-time setup — from a terminal, in the folder with these files, run:</p>' +
+      '<pre style="background:#f2effc;padding:14px 18px;border-radius:10px;display:inline-block;text-align:left;font-size:0.9rem;">cd path/to/this/folder\npython3 -m http.server 8000</pre>' +
+      '<p style="color:#5b5470;max-width:520px;margin:16px auto 0;line-height:1.6;">Then open <strong>http://localhost:8000</strong> in your browser. ' +
+      'See the included README for details, or try Firefox, which can often run this app directly from disk.</p>' +
+      '</div>';
+  }
+}, 2200);
+</script>
+</body>
+</html>
+
