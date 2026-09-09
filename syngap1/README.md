@@ -14,6 +14,7 @@ Both views share the same navigation (level map, breadcrumb, ← / → arrow key
 - `vendor/` — a local copy of the Three.js 3D library the viewer uses (`three.module.min.js`, `OrbitControls.js`, `GLTFLoader.js`, `BufferGeometryUtils.js`) — no internet connection needed once you have these files
 - `models/brain-whole.glb` — the high-fidelity brain mesh used at the Brain and Brain Regions levels (see "About the 3D models" below)
 - `dna/` — a second, standalone page zooming into the DNA level and the 8 mutation types (see "The DNA & Mutations page" below)
+- `research-gaps.html` — a third, standalone page: a researcher-facing heatmap of open questions in SYNGAP1-RD science (see "The Research Gaps page" below)
 
 ## How to use it — run a local server (required for the 3D viewer)
 
@@ -93,3 +94,13 @@ A second, standalone page — "SYNGAP1: DNA & Mutations" — zooms in one level 
 It lets you choose between the 8 ways a SYNGAP1 mutation can occur — missense, nonsense, frameshift deletion, frameshift insertion, in-frame deletion/insertion, splice-site, exon deletion, and whole/partial gene deletion — and see, side by side, the original DNA next to the mutated version. The five "letter-level" mutation types render as two real double helices; the three larger-scale types (splice-site, exon deletion, gene deletion) render as a schematic exon map instead, since showing individual DNA letters wouldn't make sense at that scale. A final "Two Copies" level explains haploinsufficiency — why a working copy of SYNGAP1 alongside a broken one still isn't enough.
 
 **Cross-links:** the DNA page links back to this app (`../index.html`) from its header, footer, and final level. In the other direction, this app's **Protein** and **Amino Acids** levels (in 🔬 For Researchers mode only) show a "See how a DNA mutation…" link straight into the DNA page's helix level (`dna/index.html?level=helix`). Both apps support a `?level=<id>` URL parameter for deep-linking straight to a level (the DNA page also supports `&mutation=<id>` to pre-select a mutation type).
+
+## The Research Gaps page (`research-gaps.html`)
+
+A third, standalone page — "Where the Science Still Has Gaps" — sits outside the level hierarchy entirely. It's a 7×3 heatmap for researchers: seven knowledge domains (genotype-phenotype correlation, molecular/synaptic mechanism, natural history across the lifespan, non-neurological/systemic features, treatment & clinical trial pipeline, biomarkers & outcome measures, and true prevalence/diagnostic ascertainment) crossed against the three broad classes of SYNGAP1 variant (loss-of-function, missense, in-frame indel). Each cell is rated Established / Partial / Largely unknown and is clickable — it expands in place to show the one-sentence justification and the real citations behind that rating.
+
+It's a single self-contained file (no separate data.json or template.html — the matrix content lives directly in a `DATA`-style array near the top of the `<script>` tag in `research-gaps.html`, since it's a periodically-refreshed research synthesis rather than hand-edited narrative content). It needs no 3D library and no local server to view — it's plain HTML/CSS/JS (though `fetch`-based pages in this project generally still work best served, not opened directly from disk).
+
+It follows the same honest-gap-flagging philosophy as the rest of this app: a "Sourcing notes" panel at the top of the page explicitly flags where primary sources were paywalled/blocked during research, where a claim rests on press releases rather than a peer-reviewed source or trial registry, and where an advocacy-org source was used for context only. This is a snapshot compiled from a literature search, not a living tracker — re-run the research periodically to keep it current.
+
+**Cross-links:** linked from the main app's header (🔬 For Researchers mode only, since the content is written for a research audience) and from the DNA page's header, both via a "📊 Where the science still has gaps" link. It links back to both `index.html` and `dna/index.html` in its own header.

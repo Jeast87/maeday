@@ -49,6 +49,10 @@
     color: #cfc9e6;
     font-size: 0.98rem;
   }
+  header.top .companion{ margin-top:12px; font-size:0.85rem; display:none; }
+  header.top .companion.visible{ display:block; }
+  header.top .companion a{ color:#fff; font-weight:700; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.4); }
+  header.top .companion a:hover{ border-color:#fff; }
 
   /* Mode toggle (Family guide vs Research view) */
   .modeToggle{
@@ -548,6 +552,7 @@
     <header class="top">
       <h1>SYNGAP1: From Brain to Atom</h1>
       <p id="headerSub">A simple, illustrated guide to SYNGAP1-Related Disorder — follow the shipping network, from the global system all the way down to the LEGO-like bricks it's built from.</p>
+      <p class="companion" id="headerResearchLink">📊 <a href="research-gaps.html">Where the science still has gaps →</a></p>
     </header>
 
     <div class="modeToggle" id="modeToggle" role="group" aria-label="Explanation depth">
@@ -1360,6 +1365,7 @@ var viewerWrapEl = document.getElementById('viewerWrap');
 var viewer2dEl = document.getElementById('viewer2d');
 var modeToggleEl = document.getElementById('modeToggle');
 var headerSubEl = document.getElementById('headerSub');
+var headerResearchLinkEl = document.getElementById('headerResearchLink');
 
 var HEADER_SUB = {
   layman: 'A simple, illustrated guide to SYNGAP1-Related Disorder — follow the shipping network, from the global system all the way down to the LEGO-like bricks it\'s built from.',
@@ -1702,6 +1708,7 @@ function setMode(newMode){
   }
   if(viewerWrapEl){ viewerWrapEl.classList.toggle('mode-layman', mode === 'layman'); }
   if(headerSubEl){ headerSubEl.textContent = HEADER_SUB[mode]; }
+  if(headerResearchLinkEl){ headerResearchLinkEl.classList.toggle('visible', mode === 'research'); }
   renderCard();
 }
 

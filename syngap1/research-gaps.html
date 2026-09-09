@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYNGAP1-RD: Where the Science Still Has Gaps</title>
+<style>
+  :root{
+    --level-color: #7c3aed;
+    --level-color-soft: #7c3aed22;
+    --bg-1: #0f0b1e;
+    --bg-2: #1a1330;
+    --panel: #ffffff;
+    --ink: #1c1730;
+    --ink-soft: #5b5470;
+    --line: #e8e4f5;
+    --est: #16a34a;    --est-bg: #16a34a1f;    --est-line: #16a34a55;
+    --partial: #d97706; --partial-bg: #f59e0b26; --partial-line: #f59e0b66;
+    --unk: #dc2626;    --unk-bg: #ef444424;    --unk-line: #ef444466;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 800px at 15% -10%, var(--level-color-soft), transparent),
+                linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    background-repeat: no-repeat;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+
+  header.top{ text-align:center; color:#fff; margin-bottom: 22px; }
+  header.top .eyebrow{ display:inline-block; font-size:0.7rem; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:#cfc9e6; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18); padding:4px 12px; border-radius:999px; margin-bottom:12px; }
+  header.top h1{ font-size: clamp(1.5rem, 4vw, 2.2rem); margin: 0 0 10px; font-weight: 800; letter-spacing: -0.02em; }
+  header.top p{ margin: 0 auto; max-width: 720px; color: #cfc9e6; font-size: 0.98rem; line-height:1.6; }
+  header.top .companion{ margin-top:14px; font-size:0.85rem; display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  header.top .companion a{ color:#fff; font-weight:700; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.4); }
+  header.top .companion a:hover{ border-color:#fff; }
+
+  .methodnote{
+    background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); border-radius:14px;
+    padding:16px 20px; margin: 0 0 24px; color:#e4e0f5; font-size:0.85rem; line-height:1.6;
+  }
+  .methodnote strong{ color:#fff; }
+  .methodnote summary{ cursor:pointer; font-weight:700; color:#fff; }
+
+  .legend{ display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin: 0 0 22px; }
+  .legend .item{ display:flex; align-items:center; gap:8px; color:#e4e0f5; font-size:0.82rem; font-weight:700; }
+  .legend .swatch{ width:16px; height:16px; border-radius:5px; flex-shrink:0; }
+  .legend .swatch.est{ background: var(--est); }
+  .legend .swatch.partial{ background: var(--partial); }
+  .legend .swatch.unk{ background: var(--unk); }
+
+  .matrix-scroll{ overflow-x:auto; padding-bottom:6px; margin-bottom: 30px; }
+  .matrix{
+    display:grid;
+    grid-template-columns: minmax(240px, 1.5fr) repeat(3, minmax(150px, 1fr));
+    gap:8px;
+    min-width: 720px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    padding: 14px;
+  }
+  .colhead{ color:#fff; font-size:0.78rem; font-weight:800; text-align:center; padding: 6px 4px 12px; letter-spacing:0.01em; }
+  .colhead.corner{ visibility:hidden; }
+
+  .rowlabel{
+    background: rgba(255,255,255,0.05); border-radius:12px; padding:14px 16px; color:#fff;
+    display:flex; flex-direction:column; justify-content:center; gap:6px;
+  }
+  .rowlabel .rl-name{ font-weight:800; font-size:0.98rem; display:flex; align-items:center; gap:8px; }
+  .rowlabel .rl-bottom{ font-size:0.78rem; color:#cbc4e6; line-height:1.5; }
+
+  .cell{
+    border-radius:12px; padding:14px 10px; cursor:pointer; text-align:center;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    border:1.5px solid transparent; transition: transform 0.12s ease, box-shadow 0.12s ease;
+    min-height: 74px;
+  }
+  .cell:hover{ transform: translateY(-2px); }
+  .cell.selected{ box-shadow: 0 0 0 2px #fff inset; }
+  .cell.est{ background: var(--est-bg); border-color: var(--est-line); color:#bbf7d0; }
+  .cell.partial{ background: var(--partial-bg); border-color: var(--partial-line); color:#fde68a; }
+  .cell.unk{ background: var(--unk-bg); border-color: var(--unk-line); color:#fecaca; }
+  .cell .rating{ font-weight:800; font-size:0.82rem; }
+  .cell .hint{ font-size:0.66rem; opacity:0.75; }
+
+  .detailwrap{ grid-column: 1 / -1; }
+  .detail{
+    background: #14101f; border:1px solid rgba(255,255,255,0.14); border-radius:14px;
+    padding:18px 20px; margin-top:2px; color:#e4e0f5; animation: rise 0.25s ease;
+  }
+  @keyframes rise{ from{ opacity:0; transform: translateY(-6px); } to{ opacity:1; transform: translateY(0); } }
+  .detail .dt-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap; }
+  .detail .dt-badge{ font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; padding:3px 10px; border-radius:999px; }
+  .detail .dt-badge.est{ background: var(--est-bg); color:#bbf7d0; }
+  .detail .dt-badge.partial{ background: var(--partial-bg); color:#fde68a; }
+  .detail .dt-badge.unk{ background: var(--unk-bg); color:#fecaca; }
+  .detail .dt-title{ font-weight:800; color:#fff; }
+  .detail p{ margin: 0 0 10px; font-size:0.9rem; line-height:1.6; }
+  .detail .dt-note{ font-size:0.82rem; font-style:italic; color:#cbc4e6; margin: 0 0 10px; }
+  .detail ol{ margin:0; padding-left:1.2em; display:grid; gap:6px; }
+  .detail li{ font-size:0.82rem; line-height:1.5; color:#cbc4e6; }
+  .detail a{ color:#c4b5fd; font-weight:600; }
+  .detail .flag{ display:inline-block; font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#fca5a5; background:#ef44441f; border:1px solid #ef444455; padding:1px 7px; border-radius:6px; margin-left:6px; }
+
+  .hintline{ text-align:center; color:#a89fd4; font-size:0.8rem; margin: -18px 0 30px; }
+
+  footer.app-footer{ max-width: 900px; margin: 30px auto 0; color: #a89fd4; font-size: 0.78rem; text-align:center; line-height:1.6; }
+  footer.app-footer strong{ color:#cfc9e6; }
+  footer.app-footer .back{ display:block; margin-top:8px; }
+  footer.app-footer a{ color:#cfc9e6; }
+
+  @media (max-width: 640px){
+    .matrix{ grid-template-columns: minmax(200px, 1.3fr) repeat(3, minmax(120px, 1fr)); }
+    .rowlabel .rl-bottom{ display:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <span class="eyebrow">For Researchers</span>
+      <h1>Where the Science Still Has Gaps</h1>
+      <p>A quick map of what's well-established about SYNGAP1-Related Disorder versus what's still genuinely open — across seven knowledge domains and the three broad classes of variant. Compiled from peer-reviewed literature, GeneReviews, and (where noted) trial/registry sources. Click any cell for the evidence behind it.</p>
+      <p class="companion">
+        <a href="index.html">← SYNGAP1: From Brain to Atom</a>
+        <a href="dna/index.html">SYNGAP1: DNA &amp; Mutations →</a>
+      </p>
+    </header>
+
+    <details class="methodnote">
+      <summary>Sourcing notes — read before citing this page</summary>
+      <div style="margin-top:10px;">
+        <p style="margin:0 0 8px;">This page follows the same citation bar as the rest of this app: peer-reviewed literature, GeneReviews, ClinicalTrials.gov, UniProt, Orphanet, and NORD are treated as primary sources; foundation/advocacy sources are used only for supporting context and are labeled explicitly wherever they appear.</p>
+        <p style="margin:0 0 8px;">A few honest limits from compiling this: several primary sources (Wiley/Clinical Genetics, ScienceDirect, some journal sites) blocked automated access during research, so those citations rely on verified titles/abstracts rather than confirmed full text — noted individually below. Clinical-trial-pipeline status for the most advanced treatment candidate is currently sourced to company press releases and trade press, not to a confirmed ClinicalTrials.gov registry entry or peer-reviewed publication. One prevalence estimate is sourced to an advocacy-org summary of a model that couldn't be independently verified against its original peer-reviewed publication in this pass.</p>
+        <p style="margin:0;">This is a snapshot, not a living tracker — SYNGAP1-RD research is moving quickly, and some of what's marked "largely unknown" here may already be better understood by the time you're reading this. Always check the original sources.</p>
+      </div>
+    </details>
+
+    <div class="legend">
+      <span class="item"><span class="swatch est"></span> Established</span>
+      <span class="item"><span class="swatch partial"></span> Partial</span>
+      <span class="item"><span class="swatch unk"></span> Largely unknown</span>
+    </div>
+
+    <div class="matrix-scroll">
+      <div class="matrix" id="matrix"></div>
+    </div>
+    <p class="hintline">Rows are knowledge domains. Columns are the three broad classes of SYNGAP1 variant. Tap/click a colored cell to open the evidence and citations behind that rating.</p>
+
+    <footer class="app-footer" id="footer">
+      <strong>SYNGAP1-RD: Where the Science Still Has Gaps</strong> — An educational research-gap summary compiled from published literature for researchers and clinicians. Not medical advice, and not a substitute for a full literature review.
+      <span class="back">← Back to <a href="index.html">SYNGAP1: From Brain to Atom</a></span>
+    </footer>
+  </div>
+
+<script>
+var LOF = 'lof', MIS = 'missense', INF = 'inframe';
+var COLS = [
+  {key: LOF, label: 'Loss-of-function', sub: '(nonsense, frameshift, splice, gene deletion)'},
+  {key: MIS, label: 'Missense', sub: ''},
+  {key: INF, label: 'In-frame indel', sub: '(rare)'}
+];
+
+var GENEREVIEWS = {title:'GeneReviews: SYNGAP1-Related Intellectual Disability', url:'https://www.ncbi.nlm.nih.gov/books/NBK537721/'};
+
+var DOMAINS = [
+  {
+    id:'genopheno', icon:'🧬', name:'Genotype–phenotype correlation',
+    bottomLine:'No variant-type or variant-location rule reliably predicts an individual’s severity or specific features yet — GeneReviews itself states no definitive correlation has been established.',
+    cells:{
+      lof:{ rating:'partial', justification:'A 2025 pooled analysis of 246 published cases finds a possible exon-location gradient (variants in exons 1–6 → milder intellectual disability and lower autism risk, but higher refractory-epilepsy risk) — a real, actively-researched signal that hasn’t yet resolved into a validated predictive rule.',
+        citations:[GENEREVIEWS, {title:'Hong L, Yuan Q. "Genotype-Phenotype Correlations in SYNGAP1-Related Mental Retardation Type 5." Clinical Genetics, 2025 (n=246 pooled cases)', url:'https://onlinelibrary.wiley.com/doi/10.1111/cge.14661'}] },
+      missense:{ rating:'unk', justification:'Missense variants have heterogeneous biochemical effects — some disrupt GTPase signaling, others protein stability or localization — but this functional variety hasn’t been mapped onto clinical-severity predictions, and missense is the smaller, less-studied subgroup (~13% of one large characterized dataset).',
+        citations:[{title:'Walkup WG et al. "Multi-parametric analysis of 57 SYNGAP1 variants reveal impacts on GTPase signaling, localization, and protein stability." Am J Hum Genet, 2020', url:'https://pubmed.ncbi.nlm.nih.gov/33308442/', flag:'full text blocked — title/abstract only'}, {title:'"Clinical signatures of SYNGAP1-related disorders through data integration." Genetics in Medicine, 2025', url:'https://www.medrxiv.org/content/10.1101/2024.10.02.24314452v1.full.pdf'}] },
+      inframe:{ rating:'unk', justification:'Essentially case-report-level literature — one large integrated dataset found only 2 in-frame/complex variants among 157 characterized cases, far too few for any correlation analysis.',
+        citations:[{title:'"Clinical signatures of SYNGAP1-related disorders through data integration." Genetics in Medicine, 2025', url:'https://www.medrxiv.org/content/10.1101/2024.10.02.24314452v1.full.pdf'}] },
+      note:'This domain is unusual: unlike most rows below, there is active peer-reviewed work specifically trying to differentiate outcomes by variant class/location — it just hasn’t converged into a settled rule yet.'
+    }
+  },
+  {
+    id:'mechanism', icon:'⚡', name:'Molecular / synaptic mechanism',
+    bottomLine:'Haploinsufficiency is the accepted root cause, but the field’s model of exactly how it causes dysfunction was significantly revised as recently as 2024 — the mechanistic story is still being actively rewritten, not settled fact.',
+    cells:{
+      lof:{ rating:'partial', justification:'Roughly 50% SynGAP protein as the unifying mechanism is well-replicated across ~20 years of mouse/cell work, but a 2024 Science paper overturned the assumption that SynGAP’s enzymatic (GAP) activity drives synaptic plasticity — showing a structural/scaffolding role is sufficient instead — so the precise causal chain from "half the protein" to network dysfunction is still moving.',
+        citations:[{title:'Araki Y et al. "SynGAP regulates synaptic plasticity and cognition independently of its catalytic activity." Science, 2024', url:'https://pubmed.ncbi.nlm.nih.gov/38422154/'}, {title:'Araki, Zeng, Huganir. "Twenty Years of SynGAP Research: From Synapses to Cognition." J Neurosci, 2020', url:'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7046327/'}] },
+      missense:{ rating:'unk', justification:'Because individual missense variants can independently disrupt catalytic activity, structural/scaffolding function, stability, or localization, it isn’t established whether a given missense variant behaves like a simple loss-of-function equivalent or acts through a distinct mechanism — this is an open, variant-by-variant question.',
+        citations:[{title:'Walkup WG et al., Am J Hum Genet, 2020', url:'https://pubmed.ncbi.nlm.nih.gov/33308442/', flag:'full text blocked — title/abstract only'}] },
+      inframe:{ rating:'unk', justification:'No dedicated mechanistic studies specific to in-frame insertions/deletions were found in this search.', citations:[] },
+      note:null
+    }
+  },
+  {
+    id:'natural-history', icon:'📈', name:'Natural history across the lifespan',
+    bottomLine:'Childhood is reasonably well described, but adolescent and especially adult trajectories are almost entirely uncharacterized — the first purpose-built lifespan study only began reporting its protocol in 2026.',
+    cells:{
+      lof:{ rating:'partial', justification:'Pediatric natural history is fairly well described, but GeneReviews notes only a single documented case reaching age 31, and a 2025 retrospective analysis explicitly flags the absence of adult phenotypic data. A 2026 prospective study (ages 6 weeks–68 years) is now enrolling but hasn’t reported longitudinal results yet. This rating applies uniformly across variant classes — no cohort yet stratifies lifespan outcomes by genotype with adequate power.',
+        citations:[GENEREVIEWS, {title:'Scott, Misko, Liu, Sverdlov. "Analysis of retrospective natural history data... SYNGAP1-related disorders (Citizen database)." Orphanet J Rare Dis, 2025', url:'https://link.springer.com/article/10.1186/s13023-025-03918-7'}, {title:'McKee JL et al. "A Prospective Natural History Study Protocol for Clinical Trial Readiness in Synaptic Disorders." Epilepsia, 2026', url:'https://pubmed.ncbi.nlm.nih.gov/41674643/'}] },
+      missense:{ rating:'partial', justification:'Same population-wide gap as loss-of-function — no lifespan cohort currently has the power to stratify by variant class.', citations:[GENEREVIEWS] },
+      inframe:{ rating:'partial', justification:'Same population-wide gap — sample sizes for this rare category are far too small for any lifespan-specific analysis.', citations:[GENEREVIEWS] },
+      note:'One partial exception: the 2025 exon-location study (see Genotype–phenotype row) found a link to refractory-epilepsy risk — a natural-history-adjacent, variant-location-linked finding, though not a full lifespan trajectory analysis.'
+    }
+  },
+  {
+    id:'systemic', icon:'🩺', name:'Non-neurological / systemic features',
+    bottomLine:'GI, sleep, and orthopedic problems are consistently reported in small caregiver-survey studies, but none have been measured with objective tools or at a scale that gives real prevalence numbers.',
+    cells:{
+      lof:{ rating:'partial', justification:'Multiple small peer-reviewed caregiver-report studies (n=11–27) consistently find high rates of sleep disturbance (82% in one n=11 cohort), GI issues, and orthopedic findings (hip dysplasia, kyphoscoliosis), but samples are too small for reliable prevalence estimates and none stratify by variant class.',
+        citations:[{title:'Wright D et al. "Clinical and behavioural features of SYNGAP1-related intellectual disability: a parent and caregiver description." J Neurodevelopmental Disorders, 2022 (n=27)', url:'https://link.springer.com/article/10.1186/s11689-022-09437-x'}, {title:'Mosini AC et al. "Subjective sleep assessment in individuals with SYNGAP1-associated syndrome." J Clin Sleep Med, 2024 (n=11)', url:'https://link.springer.com/article/10.5664/jcsm.11246'}, GENEREVIEWS] },
+      missense:{ rating:'partial', justification:'Same small, unstratified caregiver-report literature applies — no systemic-features study currently differentiates by variant class.', citations:[GENEREVIEWS] },
+      inframe:{ rating:'partial', justification:'Same gap — sample sizes are too small to say anything specific to this rare category.', citations:[GENEREVIEWS] },
+      note:null
+    }
+  },
+  {
+    id:'treatment', icon:'💊', name:'Targeted treatment & clinical trial pipeline',
+    bottomLine:'No SYNGAP1-specific therapy is FDA-approved. The most advanced candidate only cleared regulatory approval for its first human dosing in mid/late 2026 — and even that status currently rests on press releases, not a confirmed trial registry entry.',
+    cells:{
+      lof:{ rating:'unk', justification:'Management remains symptomatic only (GeneReviews: "no specific pharmacological guidelines established"; roughly half of seizures respond to anti-seizure monotherapy). The most advanced disease-modifying candidate (an RNA-based, haploinsufficiency-rescue approach from CAMP4 Therapeutics) received Australian clearance for a first-in-human trial in July 2026 but had not dosed patients as of this search — and this status is sourced to company/trade press, not ClinicalTrials.gov or a journal.',
+        citations:[GENEREVIEWS, {title:'CAMP4 Therapeutics — "Secures Australian Regulatory Clearance to Initiate First-in-Human Clinical Trial of CMP-002" (press release)', url:'https://investors.camp4tx.com/news-releases/news-release-details/camp4-therapeutics-secures-australian-regulatory-clearance', flag:'press release, not peer-reviewed'}, {title:'CNBC — "CAMP4 advances rare disease treatment for SYNGAP1 into human trials"', url:'https://www.cnbc.com/2026/08/06/camp4-advances-rare-disease-treatment-for-syngap1-into-human-trials.html', flag:'trade press, not peer-reviewed'}] },
+      missense:{ rating:'unk', justification:'No published pipeline differentiates treatment approach by variant class; the same absence of an approved therapy applies.', citations:[GENEREVIEWS] },
+      inframe:{ rating:'unk', justification:'Same — no variant-class-specific treatment pipeline exists in the literature searched.', citations:[GENEREVIEWS] },
+      note:'No ClinicalTrials.gov-registered interventional (drug/gene-therapy) trial could be independently verified in this search pass — only a natural-history study and company-announced, not-yet-registry-confirmed early trials. That reflects a real limitation of this search, not proof that no such registry entry exists.'
+    }
+  },
+  {
+    id:'biomarkers', icon:'📏', name:'Biomarkers & clinical outcome measures',
+    bottomLine:'No validated biomarker or outcome measure yet exists that’s ready to serve as a trial endpoint — a large 2026 study is actively trying to build one precisely because the field currently has none.',
+    cells:{
+      lof:{ rating:'unk', justification:'The most advanced effort — the 2026 prospective natural-history study — is explicitly piloting candidate measures (developmental scales, quantitative EEG with evoked potentials) because none are yet validated; its authors state existing knowledge "has been limited to retrospective phenotyping." This applies uniformly regardless of variant class.',
+        citations:[{title:'McKee JL et al. "A Prospective Natural History Study Protocol for Clinical Trial Readiness in Synaptic Disorders." Epilepsia, 2026', url:'https://pubmed.ncbi.nlm.nih.gov/41674643/'}, {title:'"Developmental outcome of electroencephalographic findings in SYNGAP1 encephalopathy." Front Cell Dev Biol, 2024', url:'https://pubmed.ncbi.nlm.nih.gov/38505260/'}] },
+      missense:{ rating:'unk', justification:'Same population-wide gap — no biomarker/outcome-measure study stratifies by genotype.', citations:[] },
+      inframe:{ rating:'unk', justification:'Same population-wide gap.', citations:[] },
+      note:null
+    }
+  },
+  {
+    id:'prevalence', icon:'🔍', name:'True prevalence & diagnostic ascertainment',
+    bottomLine:'SYNGAP1-RD is almost certainly underdiagnosed, but by how much is genuinely unknown — published estimates of the gap between predicted and diagnosed cases vary roughly ten-fold depending on the method.',
+    cells:{
+      lof:{ rating:'partial', justification:'Frequency in clinically-ascertained cohorts is fairly consistent (~0.5–1% of unselected intellectual-disability or epilepsy cohorts), but that reflects sequencing-accessed populations, not true genetic prevalence. A 2025 study estimated 6 per 100,000 in an ascertained population — itself a diagnosed-population figure, not a birth-prevalence model — and broadened testing access is actively shifting detection.',
+        citations:[GENEREVIEWS, {title:'"Clinical signatures of SYNGAP1-related disorders through data integration." Genetics in Medicine, 2025', url:'https://www.medrxiv.org/content/10.1101/2024.10.02.24314452v1.full.pdf'}, {title:'CURE SYNGAP1 (advocacy org) — summary of a genetic-prevalence model (López-Rivera et al.) predicting ~6.1/100,000 conceptions', url:'https://curesyngap1.org/blog/why-are-we-so-sure-that-syngap1-related-intellectual-disability-is-under-diagnosed/', flag:'advocacy source, underlying model not independently verified'}] },
+      missense:{ rating:'partial', justification:'Milder, more clinically ambiguous phenotypes plausibly make missense variants more likely to be missed by suspicion-driven testing than the more recognizable loss-of-function phenotype — but no peer-reviewed study directly quantifies this differential ascertainment bias by variant class.', citations:[GENEREVIEWS] },
+      inframe:{ rating:'partial', justification:'Same underlying uncertainty; no variant-class-specific ascertainment data exists for this rare category.', citations:[GENEREVIEWS] },
+      note:'The direction (underdiagnosis) is well-supported; the magnitude is not well pinned down.'
+    }
+  }
+];
+
+function ratingLabel(r){ return r==='est' ? 'Established' : (r==='partial' ? 'Partial' : 'Largely unknown'); }
+
+var expanded = {}; // domainId -> colKey currently open
+
+function citationsHTML(list){
+  if(!list || !list.length) return '<p style="opacity:0.7;font-style:italic;">No citation could be matched to this specific cell in this search pass.</p>';
+  var html = '<ol>';
+  list.forEach(function(c){
+    html += '<li><a href="'+c.url+'" target="_blank" rel="noopener noreferrer">'+c.title+'</a>'+(c.flag?' <span class="flag">'+c.flag+'</span>':'')+'</li>';
+  });
+  html += '</ol>';
+  return html;
+}
+
+function render(){
+  var el = document.getElementById('matrix');
+  var html = '';
+  html += '<div class="colhead corner">.</div>';
+  COLS.forEach(function(c){ html += '<div class="colhead">'+c.label+(c.sub?'<br><span style="font-weight:600;opacity:0.65;font-size:0.68rem;">'+c.sub+'</span>':'')+'</div>'; });
+
+  DOMAINS.forEach(function(d){
+    html += '<div class="rowlabel"><span class="rl-name">'+d.icon+' '+d.name+'</span><span class="rl-bottom">'+d.bottomLine+'</span></div>';
+    COLS.forEach(function(c){
+      var cell = d.cells[c.key];
+      var isOpen = expanded[d.id] === c.key;
+      html += '<div class="cell '+cell.rating+(isOpen?' selected':'')+'" data-domain="'+d.id+'" data-col="'+c.key+'">'+
+              '<span class="rating">'+ratingLabel(cell.rating)+'</span><span class="hint">'+(isOpen?'click to close':'click for evidence')+'</span></div>';
+    });
+    if(expanded[d.id]){
+      var colKey = expanded[d.id];
+      var col = COLS.filter(function(c){return c.key===colKey;})[0];
+      var cell = d.cells[colKey];
+      html += '<div class="detailwrap"><div class="detail">'+
+        '<div class="dt-head"><span class="dt-badge '+cell.rating+'">'+ratingLabel(cell.rating)+'</span>'+
+        '<span class="dt-title">'+d.icon+' '+d.name+' — '+col.label+'</span></div>'+
+        '<p>'+cell.justification+'</p>'+
+        (d.cells.note ? '<p class="dt-note">Note: '+d.cells.note+'</p>' : '')+
+        citationsHTML(cell.citations)+
+        '</div></div>';
+    }
+  });
+
+  el.innerHTML = html;
+
+  Array.prototype.forEach.call(el.querySelectorAll('.cell'), function(cellEl){
+    cellEl.addEventListener('click', function(){
+      var domain = cellEl.getAttribute('data-domain');
+      var col = cellEl.getAttribute('data-col');
+      expanded[domain] = (expanded[domain] === col) ? null : col;
+      render();
+      if(expanded[domain]){
+        setTimeout(function(){ cellEl.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 50);
+      }
+    });
+  });
+}
+
+// Open the first cell by default so the page isn't empty on load.
+expanded[DOMAINS[0].id] = LOF;
+render();
+</script>
+</body>
+</html>
