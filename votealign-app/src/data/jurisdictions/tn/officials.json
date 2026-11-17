@@ -1,0 +1,1190 @@
+[
+ {
+  "id": "tn-upper-01",
+  "name": "Casey Zephyr",
+  "party": "D",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "1",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-02",
+  "name": "Sutton Quill",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "2",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-03",
+  "name": "Emerson Bellweather",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "3",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-04",
+  "name": "Riley Linden",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "4",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-05",
+  "name": "Quinn Zephyr",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "5",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-06",
+  "name": "Marlow Driftwood",
+  "party": "D",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "6",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-07",
+  "name": "Harper Pinecrest",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "7",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-08",
+  "name": "Quinn Northam-Vale",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "8",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-09",
+  "name": "Skyler Wildacre",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "9",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-10",
+  "name": "Sage Wildacre",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "10",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-11",
+  "name": "Sawyer Tanglewood",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "11",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-12",
+  "name": "Hollis Juniper",
+  "party": "D",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "12",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-13",
+  "name": "Harper Oakhurst",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "13",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-14",
+  "name": "Skyler Pembrook",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "14",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-15",
+  "name": "Finley Glenwood",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "15",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-16",
+  "name": "Lennox Linden",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "16",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-17",
+  "name": "Morgan Pembrook",
+  "party": "D",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "17",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-18",
+  "name": "Parker Thornbury",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "18",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-19",
+  "name": "Sutton Bellweather",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "19",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-20",
+  "name": "Kendall Greystone",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "20",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-21",
+  "name": "Arden Copperfield",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "21",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-22",
+  "name": "Tatum Copperfield",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "22",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-23",
+  "name": "Remy Bellweather",
+  "party": "D",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "23",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-24",
+  "name": "Sage Ashgrove",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "24",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-25",
+  "name": "Jordan Driftwood",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "25",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-26",
+  "name": "Jordan Whitlock",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "26",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-27",
+  "name": "Remy Kingsley",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "27",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-28",
+  "name": "Hayden Elmstead",
+  "party": "D",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "28",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-29",
+  "name": "Shiloh Hollowell",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "29",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-30",
+  "name": "Skyler Pinecrest",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "30",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-31",
+  "name": "Harper Tanglewood",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "31",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-32",
+  "name": "Sage Underhill",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "32",
+  "sample": true
+ },
+ {
+  "id": "tn-upper-33",
+  "name": "Lane Elmstead",
+  "party": "R",
+  "chamber": "upper",
+  "state": "TN",
+  "district": "33",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-01",
+  "name": "Reese Hollowell",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "1",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-02",
+  "name": "Marlow Everly",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "2",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-03",
+  "name": "Tatum Vantreese",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "3",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-04",
+  "name": "Morgan Westbrook",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "4",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-05",
+  "name": "Hollis Copperfield",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "5",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-06",
+  "name": "Briar Yarborough",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "6",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-07",
+  "name": "Remy Driftwood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "7",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-08",
+  "name": "Emerson Vantreese",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "8",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-09",
+  "name": "Blair Juniper",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "9",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-10",
+  "name": "Reese Ravenscroft",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "10",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-11",
+  "name": "Hayden Ironside",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "11",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-12",
+  "name": "Arden Vantreese",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "12",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-13",
+  "name": "Jordan Ironside",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "13",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-14",
+  "name": "Morgan Merriweather",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "14",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-15",
+  "name": "Rowan Hollowell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "15",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-16",
+  "name": "Kendall Glenwood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "16",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-17",
+  "name": "Morgan Juniper",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "17",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-18",
+  "name": "Emerson Hollowell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "18",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-19",
+  "name": "Riley Pinecrest",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "19",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-20",
+  "name": "Skyler Zephyr",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "20",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-21",
+  "name": "Arden Rosemont",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "21",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-22",
+  "name": "Rowan Oakhurst",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "22",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-23",
+  "name": "Rowan Thornbury",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "23",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-24",
+  "name": "Riley Hartwell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "24",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-25",
+  "name": "Dakota Birchfield",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "25",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-26",
+  "name": "Emerson Stillwater",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "26",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-27",
+  "name": "Sutton Stillwater",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "27",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-28",
+  "name": "Briar Calloway",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "28",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-29",
+  "name": "Finley Ravenscroft",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "29",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-30",
+  "name": "Tatum Driftwood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "30",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-31",
+  "name": "Avery Ashgrove",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "31",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-32",
+  "name": "Sage Stillwater",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "32",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-33",
+  "name": "Arden Dunmore",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "33",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-34",
+  "name": "Marlow Silverton",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "34",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-35",
+  "name": "Briar Hollowell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "35",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-36",
+  "name": "Arden Quill",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "36",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-37",
+  "name": "Morgan Fairbank",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "37",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-38",
+  "name": "Riley Kingsley",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "38",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-39",
+  "name": "Blair Tanglewood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "39",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-40",
+  "name": "Blair Ashgrove",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "40",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-41",
+  "name": "Kendall Elmstead",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "41",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-42",
+  "name": "Lane Ravenscroft",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "42",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-43",
+  "name": "Finley Vantreese",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "43",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-44",
+  "name": "Parker Hollowell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "44",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-45",
+  "name": "Riley Westbrook",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "45",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-46",
+  "name": "Avery Kingsley",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "46",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-47",
+  "name": "Morgan Silverton",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "47",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-48",
+  "name": "Hollis Foxhollow",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "48",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-49",
+  "name": "Sutton Pinecrest",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "49",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-50",
+  "name": "Sutton Vantreese",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "50",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-51",
+  "name": "Harper Dunmore",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "51",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-52",
+  "name": "Briar Linden",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "52",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-53",
+  "name": "Briar Everly",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "53",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-54",
+  "name": "Hollis Hollowell",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "54",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-55",
+  "name": "Skyler Whitlock",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "55",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-56",
+  "name": "Arden Tanglewood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "56",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-57",
+  "name": "Emerson Calloway",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "57",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-58",
+  "name": "Shiloh Foxhollow",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "58",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-59",
+  "name": "Ellis Copperfield",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "59",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-60",
+  "name": "Jordan Tanglewood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "60",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-61",
+  "name": "Hayden Linden",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "61",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-62",
+  "name": "Avery Vantreese",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "62",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-63",
+  "name": "Avery Thornbury",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "63",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-64",
+  "name": "Quinn Driftwood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "64",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-65",
+  "name": "Ellis Northam-Vale",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "65",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-66",
+  "name": "Reese Calloway",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "66",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-67",
+  "name": "Lennox Hartwell",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "67",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-68",
+  "name": "Kendall Silverton",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "68",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-69",
+  "name": "Shiloh Pembrook",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "69",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-70",
+  "name": "Parker Vantreese",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "70",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-71",
+  "name": "Jordan Everly",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "71",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-72",
+  "name": "Finley Pembrook",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "72",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-73",
+  "name": "Briar Driftwood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "73",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-74",
+  "name": "Tatum Juniper",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "74",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-75",
+  "name": "Remy Merriweather",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "75",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-76",
+  "name": "Reese Birchfield",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "76",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-77",
+  "name": "Briar Westbrook",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "77",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-78",
+  "name": "Dakota Hollowell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "78",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-79",
+  "name": "Skyler Juniper",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "79",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-80",
+  "name": "Kendall Copperfield",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "80",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-81",
+  "name": "Dakota Pembrook",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "81",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-82",
+  "name": "Hollis Zephyr",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "82",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-83",
+  "name": "Sage Zephyr",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "83",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-84",
+  "name": "Parker Juniper",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "84",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-85",
+  "name": "Avery Oakhurst",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "85",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-86",
+  "name": "Arden Stillwater",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "86",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-87",
+  "name": "Sutton Yarborough",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "87",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-88",
+  "name": "Tatum Yarborough",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "88",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-89",
+  "name": "Hayden Ashgrove",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "89",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-90",
+  "name": "Dakota Stillwater",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "90",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-91",
+  "name": "Dakota Juniper",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "91",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-92",
+  "name": "Shiloh Vantreese",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "92",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-93",
+  "name": "Kendall Ravenscroft",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "93",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-94",
+  "name": "Avery Ironside",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "94",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-95",
+  "name": "Sawyer Stillwater",
+  "party": "D",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "95",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-96",
+  "name": "Lennox Pinecrest",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "96",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-97",
+  "name": "Reese Hartwell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "97",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-98",
+  "name": "Rowan Ashgrove",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "98",
+  "sample": true
+ },
+ {
+  "id": "tn-lower-99",
+  "name": "Sawyer Fairbank",
+  "party": "R",
+  "chamber": "lower",
+  "state": "TN",
+  "district": "99",
+  "sample": true
+ }
+]

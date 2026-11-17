@@ -4,3 +4,4 @@
 !.vscode/extensions.json
 *.suo
 *.sw?
+votealign-app/node_modules

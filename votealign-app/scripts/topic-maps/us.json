@@ -1,0 +1,6 @@
+[
+  { "bill": "H.R. 29", "note": "Laken Riley Act (2025): detention of undocumented immigrants charged with theft or violent crimes", "topics": [{ "topicId": "immigration", "yesSupports": true }] },
+  { "bill": "S. 5", "note": "Laken Riley Act, Senate version", "topics": [{ "topicId": "immigration", "yesSupports": true }] },
+  { "bill": "H.R. 22", "note": "SAVE Act (2025): documentary proof of citizenship to register to vote", "topics": [{ "topicId": "voting", "yesSupports": true }] },
+  { "bill": "H.R. 1", "note": "One Big Beautiful Bill Act (2025): extends tax cuts, reduces Medicaid spending", "topics": [{ "topicId": "taxes", "yesSupports": true }, { "topicId": "healthcare", "yesSupports": false }] }
+]

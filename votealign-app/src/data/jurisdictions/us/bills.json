@@ -1,0 +1,458 @@
+[
+ {
+  "id": "us-sample-107",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 107",
+  "title": "Universal Background Check Act",
+  "summary": "Requires background checks for all firearm sales, including private sales.",
+  "date": "2025-12-27",
+  "topics": [
+   {
+    "topicId": "guns",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-114",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 114",
+  "title": "Permitless Carry Expansion Act",
+  "summary": "Removes permit requirements to carry a handgun.",
+  "date": "2025-07-07",
+  "topics": [
+   {
+    "topicId": "guns",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-121",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 121",
+  "title": "Reproductive Access Protection Act",
+  "summary": "Protects access to abortion services up to fetal viability.",
+  "date": "2025-02-14",
+  "topics": [
+   {
+    "topicId": "abortion",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-128",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 128",
+  "title": "Heartbeat Protection Act",
+  "summary": "Prohibits most abortions after cardiac activity is detected.",
+  "date": "2025-09-21",
+  "topics": [
+   {
+    "topicId": "abortion",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-135",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 135",
+  "title": "Border Enforcement Funding Act",
+  "summary": "Increases funding for border enforcement and detention.",
+  "date": "2025-04-01",
+  "topics": [
+   {
+    "topicId": "immigration",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-142",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 142",
+  "title": "Pathway to Residency Act",
+  "summary": "Creates a path to legal residency for long-term undocumented residents.",
+  "date": "2025-11-08",
+  "topics": [
+   {
+    "topicId": "immigration",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-149",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 149",
+  "title": "Medicaid Expansion Act",
+  "summary": "Expands Medicaid eligibility to adults up to 138% of the poverty line.",
+  "date": "2025-06-15",
+  "topics": [
+   {
+    "topicId": "healthcare",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-156",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 156",
+  "title": "Health Program Spending Cap Act",
+  "summary": "Caps annual growth in public health program spending.",
+  "date": "2025-01-22",
+  "topics": [
+   {
+    "topicId": "healthcare",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-163",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 163",
+  "title": "Clean Energy Standard Act",
+  "summary": "Sets a target for utilities to reach 80% clean electricity.",
+  "date": "2025-08-02",
+  "topics": [
+   {
+    "topicId": "climate",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-170",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 170",
+  "title": "Energy Permitting Relief Act",
+  "summary": "Shortens environmental review for fossil fuel projects.",
+  "date": "2025-03-09",
+  "topics": [
+   {
+    "topicId": "climate",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-177",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 177",
+  "title": "Income Tax Relief Act",
+  "summary": "Cuts income tax rates across brackets.",
+  "date": "2025-10-16",
+  "topics": [
+   {
+    "topicId": "taxes",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-184",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 184",
+  "title": "Revenue Restoration Act",
+  "summary": "Raises the top tax rate to fund public services.",
+  "date": "2025-05-23",
+  "topics": [
+   {
+    "topicId": "taxes",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-191",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 191",
+  "title": "Education Freedom Scholarship Act",
+  "summary": "Creates vouchers usable at private schools.",
+  "date": "2025-12-03",
+  "topics": [
+   {
+    "topicId": "school-choice",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-198",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 198",
+  "title": "Public School Funding Guarantee Act",
+  "summary": "Bars public education funds from going to private schools.",
+  "date": "2025-07-10",
+  "topics": [
+   {
+    "topicId": "school-choice",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-205",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 205",
+  "title": "Fair Wage Act",
+  "summary": "Raises the minimum wage in steps to $15 per hour.",
+  "date": "2025-02-17",
+  "topics": [
+   {
+    "topicId": "min-wage",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-212",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 212",
+  "title": "Wage Preemption Act",
+  "summary": "Prevents local governments from setting their own minimum wage.",
+  "date": "2025-09-24",
+  "topics": [
+   {
+    "topicId": "min-wage",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-219",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 219",
+  "title": "Safer Streets Act",
+  "summary": "Increases police funding and penalties for violent crime.",
+  "date": "2025-04-04",
+  "topics": [
+   {
+    "topicId": "policing",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-226",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 226",
+  "title": "Police Accountability Act",
+  "summary": "Creates civilian oversight boards and limits no-knock warrants.",
+  "date": "2025-11-11",
+  "topics": [
+   {
+    "topicId": "policing",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-233",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 233",
+  "title": "Election Integrity Act",
+  "summary": "Requires photo ID to vote and more frequent roll purges.",
+  "date": "2025-06-18",
+  "topics": [
+   {
+    "topicId": "voting",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-240",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 240",
+  "title": "Ballot Access Act",
+  "summary": "Expands early voting and automatic voter registration.",
+  "date": "2025-01-25",
+  "topics": [
+   {
+    "topicId": "voting",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-247",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 247",
+  "title": "Cannabis Regulation Act",
+  "summary": "Legalizes and regulates adult-use marijuana.",
+  "date": "2025-08-05",
+  "topics": [
+   {
+    "topicId": "marijuana",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-254",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 254",
+  "title": "Drug-Free Communities Act",
+  "summary": "Increases penalties for marijuana possession.",
+  "date": "2025-03-12",
+  "topics": [
+   {
+    "topicId": "marijuana",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-261",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 261",
+  "title": "Equality in Employment Act",
+  "summary": "Adds sexual orientation and gender identity to anti-discrimination law.",
+  "date": "2025-10-19",
+  "topics": [
+   {
+    "topicId": "lgbtq",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "us-sample-268",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 268",
+  "title": "Religious Liberty in Services Act",
+  "summary": "Lets businesses refuse services that conflict with religious beliefs.",
+  "date": "2025-05-26",
+  "topics": [
+   {
+    "topicId": "lgbtq",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "us-sample-275",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 275",
+  "title": "General Appropriations Act",
+  "summary": "Funds government operations for the fiscal year.",
+  "date": "2025-12-06",
+  "topics": []
+ },
+ {
+  "id": "us-sample-282",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 282",
+  "title": "Infrastructure Investment Act",
+  "summary": "Funds roads, bridges and broadband.",
+  "date": "2025-07-13",
+  "topics": []
+ },
+ {
+  "id": "us-sample-289",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "H.R. 289",
+  "title": "Veterans Services Improvement Act",
+  "summary": "Expands mental health services for veterans.",
+  "date": "2025-02-20",
+  "topics": []
+ },
+ {
+  "id": "us-sample-296",
+  "chambers": [
+   "senate",
+   "house"
+  ],
+  "number": "S. 296",
+  "title": "Regulatory Review Act",
+  "summary": "Requires legislative approval for major new regulations.",
+  "date": "2025-09-27",
+  "topics": []
+ }
+]

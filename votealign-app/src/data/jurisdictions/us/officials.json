@@ -1,0 +1,214 @@
+[
+ {
+  "id": "us-senate-tn-1",
+  "name": "Finley Copperfield",
+  "party": "R",
+  "chamber": "senate",
+  "state": "TN",
+  "sample": true
+ },
+ {
+  "id": "us-senate-tn-2",
+  "name": "Riley Dunmore",
+  "party": "R",
+  "chamber": "senate",
+  "state": "TN",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-01",
+  "name": "Ellis Whitlock",
+  "party": "D",
+  "chamber": "house",
+  "state": "TN",
+  "district": "1",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-02",
+  "name": "Sage Stillwater",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "2",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-03",
+  "name": "Sage Hartwell",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "3",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-04",
+  "name": "Finley Yarborough",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "4",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-05",
+  "name": "Blair Greystone",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "5",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-06",
+  "name": "Hayden Greystone",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "6",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-07",
+  "name": "Morgan Northam-Vale",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "7",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-08",
+  "name": "Emerson Oakhurst",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "8",
+  "sample": true
+ },
+ {
+  "id": "us-house-tn-09",
+  "name": "Reese Birchfield",
+  "party": "R",
+  "chamber": "house",
+  "state": "TN",
+  "district": "9",
+  "sample": true
+ },
+ {
+  "id": "us-senate-va-1",
+  "name": "Parker Calloway",
+  "party": "D",
+  "chamber": "senate",
+  "state": "VA",
+  "sample": true
+ },
+ {
+  "id": "us-senate-va-2",
+  "name": "Quinn Juniper",
+  "party": "D",
+  "chamber": "senate",
+  "state": "VA",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-01",
+  "name": "Dakota Everly",
+  "party": "D",
+  "chamber": "house",
+  "state": "VA",
+  "district": "1",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-02",
+  "name": "Tatum Stillwater",
+  "party": "D",
+  "chamber": "house",
+  "state": "VA",
+  "district": "2",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-03",
+  "name": "Sawyer Glenwood",
+  "party": "R",
+  "chamber": "house",
+  "state": "VA",
+  "district": "3",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-04",
+  "name": "Riley Hartwell",
+  "party": "D",
+  "chamber": "house",
+  "state": "VA",
+  "district": "4",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-05",
+  "name": "Shiloh Hartwell",
+  "party": "R",
+  "chamber": "house",
+  "state": "VA",
+  "district": "5",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-06",
+  "name": "Sage Wildacre",
+  "party": "D",
+  "chamber": "house",
+  "state": "VA",
+  "district": "6",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-07",
+  "name": "Harper Quill",
+  "party": "R",
+  "chamber": "house",
+  "state": "VA",
+  "district": "7",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-08",
+  "name": "Marlow Driftwood",
+  "party": "D",
+  "chamber": "house",
+  "state": "VA",
+  "district": "8",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-09",
+  "name": "Skyler Northam-Vale",
+  "party": "R",
+  "chamber": "house",
+  "state": "VA",
+  "district": "9",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-10",
+  "name": "Sawyer Birchfield",
+  "party": "D",
+  "chamber": "house",
+  "state": "VA",
+  "district": "10",
+  "sample": true
+ },
+ {
+  "id": "us-house-va-11",
+  "name": "Hollis Driftwood",
+  "party": "R",
+  "chamber": "house",
+  "state": "VA",
+  "district": "11",
+  "sample": true
+ }
+]

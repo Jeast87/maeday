@@ -1,0 +1,1262 @@
+[
+ {
+  "id": "va-upper-01",
+  "name": "Shiloh Rosemont",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "1",
+  "sample": true
+ },
+ {
+  "id": "va-upper-02",
+  "name": "Hollis Glenwood",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "2",
+  "sample": true
+ },
+ {
+  "id": "va-upper-03",
+  "name": "Skyler Glenwood",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "3",
+  "sample": true
+ },
+ {
+  "id": "va-upper-04",
+  "name": "Avery Driftwood",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "4",
+  "sample": true
+ },
+ {
+  "id": "va-upper-05",
+  "name": "Briar Fairbank",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "5",
+  "sample": true
+ },
+ {
+  "id": "va-upper-06",
+  "name": "Parker Foxhollow",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "6",
+  "sample": true
+ },
+ {
+  "id": "va-upper-07",
+  "name": "Marlow Underhill",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "7",
+  "sample": true
+ },
+ {
+  "id": "va-upper-08",
+  "name": "Dakota Glenwood",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "8",
+  "sample": true
+ },
+ {
+  "id": "va-upper-09",
+  "name": "Lennox Copperfield",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "9",
+  "sample": true
+ },
+ {
+  "id": "va-upper-10",
+  "name": "Tatum Pembrook",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "10",
+  "sample": true
+ },
+ {
+  "id": "va-upper-11",
+  "name": "Avery Stillwater",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "11",
+  "sample": true
+ },
+ {
+  "id": "va-upper-12",
+  "name": "Remy Everly",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "12",
+  "sample": true
+ },
+ {
+  "id": "va-upper-13",
+  "name": "Arden Vantreese",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "13",
+  "sample": true
+ },
+ {
+  "id": "va-upper-14",
+  "name": "Skyler Oakhurst",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "14",
+  "sample": true
+ },
+ {
+  "id": "va-upper-15",
+  "name": "Blair Thornbury",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "15",
+  "sample": true
+ },
+ {
+  "id": "va-upper-16",
+  "name": "Sage Yarborough",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "16",
+  "sample": true
+ },
+ {
+  "id": "va-upper-17",
+  "name": "Blair Fairbank",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "17",
+  "sample": true
+ },
+ {
+  "id": "va-upper-18",
+  "name": "Remy Whitlock",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "18",
+  "sample": true
+ },
+ {
+  "id": "va-upper-19",
+  "name": "Tatum Ashgrove",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "19",
+  "sample": true
+ },
+ {
+  "id": "va-upper-20",
+  "name": "Reese Ironside",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "20",
+  "sample": true
+ },
+ {
+  "id": "va-upper-21",
+  "name": "Dakota Stillwater",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "21",
+  "sample": true
+ },
+ {
+  "id": "va-upper-22",
+  "name": "Hollis Vantreese",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "22",
+  "sample": true
+ },
+ {
+  "id": "va-upper-23",
+  "name": "Jordan Silverton",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "23",
+  "sample": true
+ },
+ {
+  "id": "va-upper-24",
+  "name": "Casey Whitlock",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "24",
+  "sample": true
+ },
+ {
+  "id": "va-upper-25",
+  "name": "Rowan Oakhurst",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "25",
+  "sample": true
+ },
+ {
+  "id": "va-upper-26",
+  "name": "Marlow Wildacre",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "26",
+  "sample": true
+ },
+ {
+  "id": "va-upper-27",
+  "name": "Hollis Hartwell",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "27",
+  "sample": true
+ },
+ {
+  "id": "va-upper-28",
+  "name": "Remy Dunmore",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "28",
+  "sample": true
+ },
+ {
+  "id": "va-upper-29",
+  "name": "Lennox Stillwater",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "29",
+  "sample": true
+ },
+ {
+  "id": "va-upper-30",
+  "name": "Tatum Fairbank",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "30",
+  "sample": true
+ },
+ {
+  "id": "va-upper-31",
+  "name": "Emerson Glenwood",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "31",
+  "sample": true
+ },
+ {
+  "id": "va-upper-32",
+  "name": "Casey Yarborough",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "32",
+  "sample": true
+ },
+ {
+  "id": "va-upper-33",
+  "name": "Tatum Underhill",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "33",
+  "sample": true
+ },
+ {
+  "id": "va-upper-34",
+  "name": "Casey Elmstead",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "34",
+  "sample": true
+ },
+ {
+  "id": "va-upper-35",
+  "name": "Emerson Bellweather",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "35",
+  "sample": true
+ },
+ {
+  "id": "va-upper-36",
+  "name": "Dakota Oakhurst",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "36",
+  "sample": true
+ },
+ {
+  "id": "va-upper-37",
+  "name": "Quinn Calloway",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "37",
+  "sample": true
+ },
+ {
+  "id": "va-upper-38",
+  "name": "Quinn Ashgrove",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "38",
+  "sample": true
+ },
+ {
+  "id": "va-upper-39",
+  "name": "Finley Westbrook",
+  "party": "D",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "39",
+  "sample": true
+ },
+ {
+  "id": "va-upper-40",
+  "name": "Remy Quill",
+  "party": "R",
+  "chamber": "upper",
+  "state": "VA",
+  "district": "40",
+  "sample": true
+ },
+ {
+  "id": "va-lower-01",
+  "name": "Kendall Hollowell",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "1",
+  "sample": true
+ },
+ {
+  "id": "va-lower-02",
+  "name": "Riley Larkspur",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "2",
+  "sample": true
+ },
+ {
+  "id": "va-lower-03",
+  "name": "Blair Merriweather",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "3",
+  "sample": true
+ },
+ {
+  "id": "va-lower-04",
+  "name": "Quinn Dunmore",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "4",
+  "sample": true
+ },
+ {
+  "id": "va-lower-05",
+  "name": "Blair Everly",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "5",
+  "sample": true
+ },
+ {
+  "id": "va-lower-06",
+  "name": "Marlow Bellweather",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "6",
+  "sample": true
+ },
+ {
+  "id": "va-lower-07",
+  "name": "Finley Silverton",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "7",
+  "sample": true
+ },
+ {
+  "id": "va-lower-08",
+  "name": "Lane Glenwood",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "8",
+  "sample": true
+ },
+ {
+  "id": "va-lower-09",
+  "name": "Remy Rosemont",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "9",
+  "sample": true
+ },
+ {
+  "id": "va-lower-10",
+  "name": "Avery Merriweather",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "10",
+  "sample": true
+ },
+ {
+  "id": "va-lower-11",
+  "name": "Reese Ravenscroft",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "11",
+  "sample": true
+ },
+ {
+  "id": "va-lower-12",
+  "name": "Harper Larkspur",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "12",
+  "sample": true
+ },
+ {
+  "id": "va-lower-13",
+  "name": "Rowan Underhill",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "13",
+  "sample": true
+ },
+ {
+  "id": "va-lower-14",
+  "name": "Sawyer Calloway",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "14",
+  "sample": true
+ },
+ {
+  "id": "va-lower-15",
+  "name": "Quinn Rosemont",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "15",
+  "sample": true
+ },
+ {
+  "id": "va-lower-16",
+  "name": "Kendall Zephyr",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "16",
+  "sample": true
+ },
+ {
+  "id": "va-lower-17",
+  "name": "Casey Juniper",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "17",
+  "sample": true
+ },
+ {
+  "id": "va-lower-18",
+  "name": "Dakota Merriweather",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "18",
+  "sample": true
+ },
+ {
+  "id": "va-lower-19",
+  "name": "Quinn Bellweather",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "19",
+  "sample": true
+ },
+ {
+  "id": "va-lower-20",
+  "name": "Sawyer Yarborough",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "20",
+  "sample": true
+ },
+ {
+  "id": "va-lower-21",
+  "name": "Emerson Underhill",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "21",
+  "sample": true
+ },
+ {
+  "id": "va-lower-22",
+  "name": "Remy Wildacre",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "22",
+  "sample": true
+ },
+ {
+  "id": "va-lower-23",
+  "name": "Arden Copperfield",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "23",
+  "sample": true
+ },
+ {
+  "id": "va-lower-24",
+  "name": "Avery Northam-Vale",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "24",
+  "sample": true
+ },
+ {
+  "id": "va-lower-25",
+  "name": "Jordan Linden",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "25",
+  "sample": true
+ },
+ {
+  "id": "va-lower-26",
+  "name": "Dakota Northam-Vale",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "26",
+  "sample": true
+ },
+ {
+  "id": "va-lower-27",
+  "name": "Hayden Larkspur",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "27",
+  "sample": true
+ },
+ {
+  "id": "va-lower-28",
+  "name": "Kendall Silverton",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "28",
+  "sample": true
+ },
+ {
+  "id": "va-lower-29",
+  "name": "Briar Silverton",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "29",
+  "sample": true
+ },
+ {
+  "id": "va-lower-30",
+  "name": "Tatum Foxhollow",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "30",
+  "sample": true
+ },
+ {
+  "id": "va-lower-31",
+  "name": "Sutton Calloway",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "31",
+  "sample": true
+ },
+ {
+  "id": "va-lower-32",
+  "name": "Kendall Whitlock",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "32",
+  "sample": true
+ },
+ {
+  "id": "va-lower-33",
+  "name": "Sutton Rosemont",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "33",
+  "sample": true
+ },
+ {
+  "id": "va-lower-34",
+  "name": "Skyler Linden",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "34",
+  "sample": true
+ },
+ {
+  "id": "va-lower-35",
+  "name": "Skyler Quill",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "35",
+  "sample": true
+ },
+ {
+  "id": "va-lower-36",
+  "name": "Emerson Ashgrove",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "36",
+  "sample": true
+ },
+ {
+  "id": "va-lower-37",
+  "name": "Quinn Ironside",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "37",
+  "sample": true
+ },
+ {
+  "id": "va-lower-38",
+  "name": "Blair Yarborough",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "38",
+  "sample": true
+ },
+ {
+  "id": "va-lower-39",
+  "name": "Reese Quill",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "39",
+  "sample": true
+ },
+ {
+  "id": "va-lower-40",
+  "name": "Arden Pinecrest",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "40",
+  "sample": true
+ },
+ {
+  "id": "va-lower-41",
+  "name": "Remy Thornbury",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "41",
+  "sample": true
+ },
+ {
+  "id": "va-lower-42",
+  "name": "Jordan Bellweather",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "42",
+  "sample": true
+ },
+ {
+  "id": "va-lower-43",
+  "name": "Riley Copperfield",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "43",
+  "sample": true
+ },
+ {
+  "id": "va-lower-44",
+  "name": "Kendall Kingsley",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "44",
+  "sample": true
+ },
+ {
+  "id": "va-lower-45",
+  "name": "Marlow Oakhurst",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "45",
+  "sample": true
+ },
+ {
+  "id": "va-lower-46",
+  "name": "Lane Stillwater",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "46",
+  "sample": true
+ },
+ {
+  "id": "va-lower-47",
+  "name": "Skyler Stillwater",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "47",
+  "sample": true
+ },
+ {
+  "id": "va-lower-48",
+  "name": "Parker Hartwell",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "48",
+  "sample": true
+ },
+ {
+  "id": "va-lower-49",
+  "name": "Avery Copperfield",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "49",
+  "sample": true
+ },
+ {
+  "id": "va-lower-50",
+  "name": "Casey Copperfield",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "50",
+  "sample": true
+ },
+ {
+  "id": "va-lower-51",
+  "name": "Harper Oakhurst",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "51",
+  "sample": true
+ },
+ {
+  "id": "va-lower-52",
+  "name": "Dakota Calloway",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "52",
+  "sample": true
+ },
+ {
+  "id": "va-lower-53",
+  "name": "Emerson Larkspur",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "53",
+  "sample": true
+ },
+ {
+  "id": "va-lower-54",
+  "name": "Emerson Greystone",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "54",
+  "sample": true
+ },
+ {
+  "id": "va-lower-55",
+  "name": "Skyler Northam-Vale",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "55",
+  "sample": true
+ },
+ {
+  "id": "va-lower-56",
+  "name": "Casey Quill",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "56",
+  "sample": true
+ },
+ {
+  "id": "va-lower-57",
+  "name": "Hollis Linden",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "57",
+  "sample": true
+ },
+ {
+  "id": "va-lower-58",
+  "name": "Sawyer Larkspur",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "58",
+  "sample": true
+ },
+ {
+  "id": "va-lower-59",
+  "name": "Rowan Rosemont",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "59",
+  "sample": true
+ },
+ {
+  "id": "va-lower-60",
+  "name": "Hayden Pinecrest",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "60",
+  "sample": true
+ },
+ {
+  "id": "va-lower-61",
+  "name": "Remy Stillwater",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "61",
+  "sample": true
+ },
+ {
+  "id": "va-lower-62",
+  "name": "Jordan Greystone",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "62",
+  "sample": true
+ },
+ {
+  "id": "va-lower-63",
+  "name": "Lane Underhill",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "63",
+  "sample": true
+ },
+ {
+  "id": "va-lower-64",
+  "name": "Reese Pinecrest",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "64",
+  "sample": true
+ },
+ {
+  "id": "va-lower-65",
+  "name": "Hayden Stillwater",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "65",
+  "sample": true
+ },
+ {
+  "id": "va-lower-66",
+  "name": "Sage Ashgrove",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "66",
+  "sample": true
+ },
+ {
+  "id": "va-lower-67",
+  "name": "Riley Yarborough",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "67",
+  "sample": true
+ },
+ {
+  "id": "va-lower-68",
+  "name": "Rowan Driftwood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "68",
+  "sample": true
+ },
+ {
+  "id": "va-lower-69",
+  "name": "Blair Bellweather",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "69",
+  "sample": true
+ },
+ {
+  "id": "va-lower-70",
+  "name": "Emerson Hollowell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "70",
+  "sample": true
+ },
+ {
+  "id": "va-lower-71",
+  "name": "Morgan Ironside",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "71",
+  "sample": true
+ },
+ {
+  "id": "va-lower-72",
+  "name": "Emerson Ravenscroft",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "72",
+  "sample": true
+ },
+ {
+  "id": "va-lower-73",
+  "name": "Rowan Northam-Vale",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "73",
+  "sample": true
+ },
+ {
+  "id": "va-lower-74",
+  "name": "Sawyer Greystone",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "74",
+  "sample": true
+ },
+ {
+  "id": "va-lower-75",
+  "name": "Kendall Thornbury",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "75",
+  "sample": true
+ },
+ {
+  "id": "va-lower-76",
+  "name": "Finley Hartwell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "76",
+  "sample": true
+ },
+ {
+  "id": "va-lower-77",
+  "name": "Dakota Vantreese",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "77",
+  "sample": true
+ },
+ {
+  "id": "va-lower-78",
+  "name": "Lane Hollowell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "78",
+  "sample": true
+ },
+ {
+  "id": "va-lower-79",
+  "name": "Harper Pinecrest",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "79",
+  "sample": true
+ },
+ {
+  "id": "va-lower-80",
+  "name": "Hollis Tanglewood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "80",
+  "sample": true
+ },
+ {
+  "id": "va-lower-81",
+  "name": "Briar Quill",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "81",
+  "sample": true
+ },
+ {
+  "id": "va-lower-82",
+  "name": "Riley Vantreese",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "82",
+  "sample": true
+ },
+ {
+  "id": "va-lower-83",
+  "name": "Sutton Ashgrove",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "83",
+  "sample": true
+ },
+ {
+  "id": "va-lower-84",
+  "name": "Riley Dunmore",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "84",
+  "sample": true
+ },
+ {
+  "id": "va-lower-85",
+  "name": "Kendall Oakhurst",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "85",
+  "sample": true
+ },
+ {
+  "id": "va-lower-86",
+  "name": "Riley Northam-Vale",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "86",
+  "sample": true
+ },
+ {
+  "id": "va-lower-87",
+  "name": "Morgan Calloway",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "87",
+  "sample": true
+ },
+ {
+  "id": "va-lower-88",
+  "name": "Dakota Whitlock",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "88",
+  "sample": true
+ },
+ {
+  "id": "va-lower-89",
+  "name": "Kendall Hartwell",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "89",
+  "sample": true
+ },
+ {
+  "id": "va-lower-90",
+  "name": "Quinn Whitlock",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "90",
+  "sample": true
+ },
+ {
+  "id": "va-lower-91",
+  "name": "Ellis Calloway",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "91",
+  "sample": true
+ },
+ {
+  "id": "va-lower-92",
+  "name": "Lennox Glenwood",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "92",
+  "sample": true
+ },
+ {
+  "id": "va-lower-93",
+  "name": "Briar Vantreese",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "93",
+  "sample": true
+ },
+ {
+  "id": "va-lower-94",
+  "name": "Jordan Wildacre",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "94",
+  "sample": true
+ },
+ {
+  "id": "va-lower-95",
+  "name": "Ellis Pinecrest",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "95",
+  "sample": true
+ },
+ {
+  "id": "va-lower-96",
+  "name": "Skyler Hartwell",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "96",
+  "sample": true
+ },
+ {
+  "id": "va-lower-97",
+  "name": "Skyler Kingsley",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "97",
+  "sample": true
+ },
+ {
+  "id": "va-lower-98",
+  "name": "Remy Westbrook",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "98",
+  "sample": true
+ },
+ {
+  "id": "va-lower-99",
+  "name": "Finley Thornbury",
+  "party": "D",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "99",
+  "sample": true
+ },
+ {
+  "id": "va-lower-100",
+  "name": "Arden Underhill",
+  "party": "R",
+  "chamber": "lower",
+  "state": "VA",
+  "district": "100",
+  "sample": true
+ }
+]
