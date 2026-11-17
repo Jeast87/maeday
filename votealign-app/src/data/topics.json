@@ -1,0 +1,14 @@
+[
+  { "id": "guns", "name": "Gun control", "icon": "🛡️", "statement": "We need stricter gun laws, such as universal background checks and red flag laws." },
+  { "id": "abortion", "name": "Abortion", "icon": "⚖️", "statement": "Abortion should be legal and accessible." },
+  { "id": "immigration", "name": "Immigration", "icon": "🛂", "statement": "Immigration enforcement and border security should be stricter." },
+  { "id": "healthcare", "name": "Healthcare", "icon": "🏥", "statement": "Government should expand access to healthcare, such as Medicaid expansion." },
+  { "id": "climate", "name": "Climate & energy", "icon": "🌎", "statement": "We need stronger climate and environmental regulations." },
+  { "id": "taxes", "name": "Taxes & spending", "icon": "💵", "statement": "Taxes should be cut, even if it means reducing government services." },
+  { "id": "school-choice", "name": "School choice", "icon": "🎓", "statement": "Public money should follow students to private or charter schools (vouchers)." },
+  { "id": "min-wage", "name": "Minimum wage", "icon": "🧾", "statement": "The minimum wage should be raised." },
+  { "id": "policing", "name": "Policing & crime", "icon": "🚓", "statement": "Police funding and criminal penalties should be increased." },
+  { "id": "voting", "name": "Election rules", "icon": "🗳️", "statement": "Voting should require stricter ID and verification rules." },
+  { "id": "marijuana", "name": "Marijuana", "icon": "🌿", "statement": "Marijuana should be legal for adults." },
+  { "id": "lgbtq", "name": "LGBTQ rights", "icon": "🏳️‍🌈", "statement": "Anti-discrimination protections for LGBTQ people should be expanded." }
+]

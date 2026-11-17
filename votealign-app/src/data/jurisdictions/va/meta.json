@@ -1,0 +1,38 @@
+{
+ "id": "va",
+ "name": "Virginia",
+ "level": "state",
+ "chambers": [
+  {
+   "id": "upper",
+   "name": "Virginia Senate",
+   "districtLabel": "Senate District",
+   "order": 1
+  },
+  {
+   "id": "lower",
+   "name": "Virginia House of Delegates",
+   "districtLabel": "House District",
+   "order": 2
+  }
+ ],
+ "sources": [
+  {
+   "name": "Open States API",
+   "url": "https://open.pluralpolicy.com/data/",
+   "note": "Virginia legislators, bills and votes (free API key)."
+  },
+  {
+   "name": "Virginia General Assembly",
+   "url": "https://lis.virginia.gov/",
+   "note": "Official source for bills and vote records."
+  },
+  {
+   "name": "Vote Smart",
+   "url": "https://justfacts.votesmart.org/",
+   "note": "Issue positions and interest-group ratings."
+  }
+ ],
+ "sample": true,
+ "updated": "2026-11-04"
+}

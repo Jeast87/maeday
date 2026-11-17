@@ -1,0 +1,48 @@
+{
+ "id": "us",
+ "name": "Federal",
+ "level": "federal",
+ "chambers": [
+  {
+   "id": "senate",
+   "name": "U.S. Senate",
+   "districtLabel": "Statewide",
+   "order": 1
+  },
+  {
+   "id": "house",
+   "name": "U.S. House",
+   "districtLabel": "Congressional District",
+   "order": 2
+  }
+ ],
+ "sources": [
+  {
+   "name": "Congress.gov API",
+   "url": "https://api.congress.gov/",
+   "note": "Members, bills and roll-call votes (free API key)."
+  },
+  {
+   "name": "Voteview",
+   "url": "https://voteview.com/data",
+   "note": "Every congressional roll call, CSV download, no key."
+  },
+  {
+   "name": "ProPublica Congress API",
+   "url": "https://www.propublica.org/datastore/api/propublica-congress-api",
+   "note": "Historic; no longer accepting new keys."
+  },
+  {
+   "name": "unitedstates/congress-legislators",
+   "url": "https://github.com/unitedstates/congress-legislators",
+   "note": "Current members with IDs and photos."
+  },
+  {
+   "name": "Vote Smart",
+   "url": "https://justfacts.votesmart.org/",
+   "note": "Issue positions and interest-group ratings."
+  }
+ ],
+ "sample": true,
+ "updated": "2026-11-04"
+}

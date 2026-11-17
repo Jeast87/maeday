@@ -1,0 +1,458 @@
+[
+ {
+  "id": "va-sample-107",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 107",
+  "title": "Universal Background Check Act",
+  "summary": "Requires background checks for all firearm sales, including private sales.",
+  "date": "2025-12-27",
+  "topics": [
+   {
+    "topicId": "guns",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-114",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 114",
+  "title": "Permitless Carry Expansion Act",
+  "summary": "Removes permit requirements to carry a handgun.",
+  "date": "2025-07-07",
+  "topics": [
+   {
+    "topicId": "guns",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-121",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 121",
+  "title": "Reproductive Access Protection Act",
+  "summary": "Protects access to abortion services up to fetal viability.",
+  "date": "2025-02-14",
+  "topics": [
+   {
+    "topicId": "abortion",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-128",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 128",
+  "title": "Heartbeat Protection Act",
+  "summary": "Prohibits most abortions after cardiac activity is detected.",
+  "date": "2025-09-21",
+  "topics": [
+   {
+    "topicId": "abortion",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-135",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 135",
+  "title": "Border Enforcement Funding Act",
+  "summary": "Increases funding for border enforcement and detention.",
+  "date": "2025-04-01",
+  "topics": [
+   {
+    "topicId": "immigration",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-142",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 142",
+  "title": "Pathway to Residency Act",
+  "summary": "Creates a path to legal residency for long-term undocumented residents.",
+  "date": "2025-11-08",
+  "topics": [
+   {
+    "topicId": "immigration",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-149",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 149",
+  "title": "Medicaid Expansion Act",
+  "summary": "Expands Medicaid eligibility to adults up to 138% of the poverty line.",
+  "date": "2025-06-15",
+  "topics": [
+   {
+    "topicId": "healthcare",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-156",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 156",
+  "title": "Health Program Spending Cap Act",
+  "summary": "Caps annual growth in public health program spending.",
+  "date": "2025-01-22",
+  "topics": [
+   {
+    "topicId": "healthcare",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-163",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 163",
+  "title": "Clean Energy Standard Act",
+  "summary": "Sets a target for utilities to reach 80% clean electricity.",
+  "date": "2025-08-02",
+  "topics": [
+   {
+    "topicId": "climate",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-170",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 170",
+  "title": "Energy Permitting Relief Act",
+  "summary": "Shortens environmental review for fossil fuel projects.",
+  "date": "2025-03-09",
+  "topics": [
+   {
+    "topicId": "climate",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-177",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 177",
+  "title": "Income Tax Relief Act",
+  "summary": "Cuts income tax rates across brackets.",
+  "date": "2025-10-16",
+  "topics": [
+   {
+    "topicId": "taxes",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-184",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 184",
+  "title": "Revenue Restoration Act",
+  "summary": "Raises the top tax rate to fund public services.",
+  "date": "2025-05-23",
+  "topics": [
+   {
+    "topicId": "taxes",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-191",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 191",
+  "title": "Education Freedom Scholarship Act",
+  "summary": "Creates vouchers usable at private schools.",
+  "date": "2025-12-03",
+  "topics": [
+   {
+    "topicId": "school-choice",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-198",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 198",
+  "title": "Public School Funding Guarantee Act",
+  "summary": "Bars public education funds from going to private schools.",
+  "date": "2025-07-10",
+  "topics": [
+   {
+    "topicId": "school-choice",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-205",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 205",
+  "title": "Fair Wage Act",
+  "summary": "Raises the minimum wage in steps to $15 per hour.",
+  "date": "2025-02-17",
+  "topics": [
+   {
+    "topicId": "min-wage",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-212",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 212",
+  "title": "Wage Preemption Act",
+  "summary": "Prevents local governments from setting their own minimum wage.",
+  "date": "2025-09-24",
+  "topics": [
+   {
+    "topicId": "min-wage",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-219",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 219",
+  "title": "Safer Streets Act",
+  "summary": "Increases police funding and penalties for violent crime.",
+  "date": "2025-04-04",
+  "topics": [
+   {
+    "topicId": "policing",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-226",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 226",
+  "title": "Police Accountability Act",
+  "summary": "Creates civilian oversight boards and limits no-knock warrants.",
+  "date": "2025-11-11",
+  "topics": [
+   {
+    "topicId": "policing",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-233",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 233",
+  "title": "Election Integrity Act",
+  "summary": "Requires photo ID to vote and more frequent roll purges.",
+  "date": "2025-06-18",
+  "topics": [
+   {
+    "topicId": "voting",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-240",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 240",
+  "title": "Ballot Access Act",
+  "summary": "Expands early voting and automatic voter registration.",
+  "date": "2025-01-25",
+  "topics": [
+   {
+    "topicId": "voting",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-247",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 247",
+  "title": "Cannabis Regulation Act",
+  "summary": "Legalizes and regulates adult-use marijuana.",
+  "date": "2025-08-05",
+  "topics": [
+   {
+    "topicId": "marijuana",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-254",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 254",
+  "title": "Drug-Free Communities Act",
+  "summary": "Increases penalties for marijuana possession.",
+  "date": "2025-03-12",
+  "topics": [
+   {
+    "topicId": "marijuana",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-261",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 261",
+  "title": "Equality in Employment Act",
+  "summary": "Adds sexual orientation and gender identity to anti-discrimination law.",
+  "date": "2025-10-19",
+  "topics": [
+   {
+    "topicId": "lgbtq",
+    "yesSupports": true
+   }
+  ]
+ },
+ {
+  "id": "va-sample-268",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 268",
+  "title": "Religious Liberty in Services Act",
+  "summary": "Lets businesses refuse services that conflict with religious beliefs.",
+  "date": "2025-05-26",
+  "topics": [
+   {
+    "topicId": "lgbtq",
+    "yesSupports": false
+   }
+  ]
+ },
+ {
+  "id": "va-sample-275",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 275",
+  "title": "General Appropriations Act",
+  "summary": "Funds government operations for the fiscal year.",
+  "date": "2025-12-06",
+  "topics": []
+ },
+ {
+  "id": "va-sample-282",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 282",
+  "title": "Infrastructure Investment Act",
+  "summary": "Funds roads, bridges and broadband.",
+  "date": "2025-07-13",
+  "topics": []
+ },
+ {
+  "id": "va-sample-289",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "HB 289",
+  "title": "Veterans Services Improvement Act",
+  "summary": "Expands mental health services for veterans.",
+  "date": "2025-02-20",
+  "topics": []
+ },
+ {
+  "id": "va-sample-296",
+  "chambers": [
+   "upper",
+   "lower"
+  ],
+  "number": "SB 296",
+  "title": "Regulatory Review Act",
+  "summary": "Requires legislative approval for major new regulations.",
+  "date": "2025-09-27",
+  "topics": []
+ }
+]

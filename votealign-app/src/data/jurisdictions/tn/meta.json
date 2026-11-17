@@ -1,0 +1,38 @@
+{
+ "id": "tn",
+ "name": "Tennessee",
+ "level": "state",
+ "chambers": [
+  {
+   "id": "upper",
+   "name": "Tennessee Senate",
+   "districtLabel": "Senate District",
+   "order": 1
+  },
+  {
+   "id": "lower",
+   "name": "Tennessee House",
+   "districtLabel": "House District",
+   "order": 2
+  }
+ ],
+ "sources": [
+  {
+   "name": "Open States API",
+   "url": "https://open.pluralpolicy.com/data/",
+   "note": "Tennessee legislators, bills and votes (free API key)."
+  },
+  {
+   "name": "Tennessee General Assembly",
+   "url": "https://wapp.capitol.tn.gov/apps/",
+   "note": "Official source for bills and vote records."
+  },
+  {
+   "name": "Vote Smart",
+   "url": "https://justfacts.votesmart.org/",
+   "note": "Issue positions and interest-group ratings."
+  }
+ ],
+ "sample": true,
+ "updated": "2026-11-04"
+}

@@ -1,0 +1,6 @@
+[
+  { "code": "D", "name": "Democratic", "color": "#2563eb" },
+  { "code": "R", "name": "Republican", "color": "#dc2626" },
+  { "code": "I", "name": "Independent", "color": "#7c3aed" },
+  { "code": "L", "name": "Libertarian", "color": "#ca8a04" }
+]
